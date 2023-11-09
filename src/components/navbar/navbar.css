@@ -2,6 +2,7 @@ nav {
     display: flex;    
     justify-content: space-around;
     align-items: center;
+    padding: 1rem 0;
 }
 
 .nav-content {
@@ -11,6 +12,18 @@ nav {
     justify-content: space-around;
 }
 
+
+.nav-content li:hover {
+    cursor: pointer;
+}
+
+.nav-content li:hover {
+    color: var(--primary-color);
+    
+
+    transition: 0.5s;
+}
+
 .nav-actions {
     width: 15%;
     display: flex;
@@ -18,8 +31,12 @@ nav {
 }
 
 .nav-actions button {
-    padding: 0.5rem 0.7rem;
     border: none;
-    font-size: var(--fontsize-normal);
-    cursor: pointer;
+    font-size: var(--fontsize-normal);    
+    border-radius: 8px;
+}
+
+.nav-actions button:nth-child(1) {
+    background-color: var(--primary-color);
+    color: #fff;
 }
