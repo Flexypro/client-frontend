@@ -1,0 +1,25 @@
+nav {
+    display: flex;    
+    justify-content: space-around;
+    align-items: center;
+}
+
+.nav-content {
+    display: flex;
+    list-style: none;
+    width: 40%;
+    justify-content: space-around;
+}
+
+.nav-actions {
+    width: 15%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.nav-actions button {
+    padding: 0.5rem 0.7rem;
+    border: none;
+    font-size: var(--fontsize-normal);
+    cursor: pointer;
+}

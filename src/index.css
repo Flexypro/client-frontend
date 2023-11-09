@@ -1,0 +1,15 @@
+* {
+  --fontsize-normal:1.1rem;
+}
+
+:root {
+  font-family: sans-serif;
+  line-height: 1.5;
+  font-weight: 400;  
+  font-size: var(--fontsize-normal);
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
