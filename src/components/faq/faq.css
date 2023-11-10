@@ -1,0 +1,22 @@
+.faq {
+    margin: 1rem 0;
+}
+.faq-content {
+    display: grid;
+    grid-template-columns: repeat(2, 45%);
+    justify-content: center;
+    gap: 1rem;
+}
+
+.faq-content div {
+    border: solid 1px var(--secondary-color);
+    border-radius: 8px;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.faq-content div:hover {
+    box-shadow: 0 4px 8px var(--secondary-color);
+    border: none;
+    transition: 0.6s;
+}
