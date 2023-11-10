@@ -3,6 +3,7 @@
   --primary-color:#0360d1;
   --secondary-color:#a7caff;
   --complementary:#eb7100;
+  --text-color:rgb(56, 56, 56);
 }
 
 :root {
@@ -10,6 +11,8 @@
   line-height: 1.5;
   font-weight: 400;  
   font-size: var(--fontsize-normal);
+  color: var(--text-color);
+  letter-spacing: 0.3px;
 }
 
 body {
@@ -21,6 +24,7 @@ button {
   padding: 0.5rem 0.7rem;
   cursor: pointer;
   font-size: var(--fontsize-normal);
+  width: fit-content;
 }
 
 h1 {

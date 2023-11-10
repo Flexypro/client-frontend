@@ -1,10 +1,11 @@
 .body {
     /* padding: 1rem; */
+    margin-top: 1rem;
     display: flex;
     flex-direction: column;
 }
 
-.body h1 {
+.body h2 {
     text-align: center;
 }
 
@@ -22,6 +23,31 @@
     font-size: var(--fontsize-normal);
     outline: none;
     color: var(--secondary-color);
+}
+
+
+.common-services {
+    /* margin-top: 1rem; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.common-services div {
+    display: flex;
+    gap: 3rem;
+}
+
+.common-services div article {
+    background-color: var(--secondary-color);
+    padding: 0.5rem 0.7rem;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.common-services div article:hover {
+    box-shadow: 0 8px 36px var(--secondary-color);
+    transition: 0.6s;
 }
 
 /*  */
@@ -43,14 +69,16 @@
     width: 45%;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1rem;
+    text-align: center;
 }
 
 .hire-us {
     border-radius: 2rem;
     border: none;
     color: #fff;
-    width: fit-content;
+    width: 8rem;
     background-color: var(--primary-color);
 }
 
@@ -75,6 +103,7 @@ img {
 
 .promo h2 span {
     color: var(--secondary-color);
+    text-decoration: underline;
 }
 
 .promo button {
@@ -89,4 +118,36 @@ img {
 .promo button:hover {
     box-shadow: 0 4px 36px var(--complementary);
     transition: 0.7s;
+}
+
+.call-to-action {
+    margin: 2rem 0;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    /* background-color: #f5f5f5; */
+    background-color: var(--secondary-color);
+    /* background-color: var(--primary-color); */
+    /* color: #fff;     */
+}
+
+.call-to-action {
+    border: none;
+}
+
+.call-to-action:hover {
+    /* box-shadow: 0 4px 24px var(--secondary-color); */
+    transition: 0.6s;
+}
+
+.call-to-action div {
+    position: inherit;
+    /* background-color: red; */
+    width: 50%;
+}
+
+.call-to-action button {
+    background-color: var(--complementary);
+    border: none;
+    color: #fff;
 }
