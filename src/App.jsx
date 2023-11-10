@@ -1,6 +1,7 @@
 import './App.css';
 import Navbar from './components/navbar/Navbar';
 import Body from './pages/landing/body/Body';
+import Footer from './components/footer/Footer';
 
 function App() {
 
@@ -15,7 +16,8 @@ function App() {
   return (
     <>
       <Navbar />
-      <BodyContent />      
+      <BodyContent />
+      <Footer />
     </>
   )
 }
