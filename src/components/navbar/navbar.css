@@ -18,14 +18,10 @@ nav {
 
 
 .nav-content li:hover {
-    cursor: pointer;
-}
-
-.nav-content li:hover {
     color: var(--primary-color);
-    
-
+    cursor: pointer;    
     transition: 0.5s;
+    /* border-bottom: solid; */
 }
 
 .nav-actions {
