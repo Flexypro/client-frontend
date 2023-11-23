@@ -2,8 +2,12 @@ import React from 'react';
 import './body.css';
 import Steps from '../../../components/steps/Steps';
 import Faq from '../../../components/faq/Faq';
+import { useNavigate } from 'react-router-dom'
 
 const Body = () => {
+
+    const navigate = useNavigate();
+
     return (
         <div className='body'>
             <div className="search-content">
@@ -25,7 +29,7 @@ const Body = () => {
                     <article>
                         Lorem ipsum dolor, sit amet consectetur adipisicing elit. At facilis autem provident?
                     </article>
-                    <button className='hire-us'>Hire Us</button>
+                    <button className='hire-us' onClick={()=>navigate('/app')}>Hire Us</button>
                 </div>
                 <img src="https://img.freepik.com/free-vector/studying-concept-illustration_114360-1301.jpg?w=740&t=st=1699562478~exp=1699563078~hmac=f7e370e5ddf75e11e9d7d411932c595f3642961775fad204b6be5a17ed4f9dbe" alt="" />
             </div>
