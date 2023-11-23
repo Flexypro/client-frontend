@@ -6,27 +6,36 @@
 }
 
 .search-nav {
-    width: 20rem;
+    position: inherit;
+    width: 30%;
 }
 
 .search-nav input {
-    position: relative;
-    width: inherit;
-    padding: 0.6rem 0.7rem;
+    position: relative;    
+    width: 100%;
+    padding: 0.6rem 0.8rem;
     border-radius: 2rem;
     border: solid 1px gray;
     font-size: var(--fontsize-normal);
+    outline: none;
+    color: gray;
 }
 
 .add-task {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    cursor: pointer;
 }
 
 .notif-bell {
     position: relative;
     padding: 0.3rem;
+    transition: transform ease-in-out;
+}
+
+.notif-bell:hover {
+    transform: rotate(10deg);
 }
 
 .notif-bell div {
@@ -45,6 +54,14 @@
 .notif-bell div article {
     color: white;
     font-size: 0.8rem;
+}
+
+.settings {
+    transition: transform 0.5 ease-in-out;
+}
+
+.settings:hover {
+    transform: rotate(90deg);
 }
 
 .profile {
@@ -70,4 +87,5 @@
 
 .profile-info {
     gap: 0.5rem;
+    cursor: pointer;
 }
