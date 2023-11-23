@@ -1,9 +1,10 @@
 * {
-  --fontsize-normal:1.1rem;
+  --fontsize-normal: 1rem;
+  --fontsize-small:  0.95rem;
   --primary-color:#0360d1;
   --secondary-color:#a7caff;
   --complementary:#eb7100;
-  --text-color:rgb(56, 56, 56);
+  --text-color:#535354;
 }
 
 :root {
