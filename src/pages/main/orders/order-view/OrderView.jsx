@@ -3,7 +3,7 @@ import React from 'react';
 const OrderView = () => {
     return (
         <div>
-            <h1>Order View</h1>
+            <h1>View Order</h1>
         </div>
     );
 }

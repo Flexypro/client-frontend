@@ -21,7 +21,7 @@ const InProgress = () => {
             </div>
             <div className='order-content'>
                 <div>
-                    <article>Lorem ipsum dolor sit amet consectetur adipisicing.</article>
+                    <article>Lorem ipsum dolor sit amet.</article>
                 </div>
                 <div className='bottom-box'>
                     <div>
