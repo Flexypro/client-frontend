@@ -2,6 +2,7 @@ import React from 'react';
 import './orderview.css';
 import { IoMdDownload } from "react-icons/io";
 import Chat from '../../../../components/main/chat/Chat';
+import { MdModeEdit } from "react-icons/md";
 
 const OrderView = () => {
     
@@ -15,6 +16,7 @@ const OrderView = () => {
                     <article>Programming</article>
                     <strong>$34.5</strong>
                     <article className='status'>Complete</article>
+                    <MdModeEdit size={iconSize}/>
                 </div>                
                 <div  className='order-soln'>
                     <strong>Uploaded Work</strong>
@@ -33,9 +35,9 @@ const OrderView = () => {
                         </div>
                     </div>
                 </div>
-                <div className='summary'>
+                {/* <div className='summary'>
                     <strong>Summary</strong>
-                </div>
+                </div> */}
                 <div className="instructions">
                     <strong>Instructions</strong>
                     <div>

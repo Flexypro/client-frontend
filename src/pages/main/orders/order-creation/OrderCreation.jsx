@@ -1,23 +1,24 @@
 import React from 'react';
 import './order-creation.css';
+import { IoMdArrowForward } from "react-icons/io";
 
 const OrderCreation = () => {
     return (
         <div className='order-creation'>
             <strong>Create a new order</strong>
-            <div className='order-creation-details'>
+            <form className='order-creation-details' onSubmit={()=>console.log('Submited')}>
                 <div className='order-required-details'>
                     <div>
                         {/* <div> */}
                             <label htmlFor="title">Title</label>
                         {/* </div> */}
-                        <input id='title' type="text" placeholder='Enter the title' />
+                        <input required id='title' type="text" placeholder='Enter the title' />
                     </div>
                     <div>
                         {/* <div> */}
                             <label htmlFor="category">Category</label>
                         {/* </div> */}
-                        <select name="category" id="category">
+                        <select required name="category" id="category">
                             <option value="">Writing</option>
                             <option value="">Programming</option>
                         </select>
@@ -26,13 +27,13 @@ const OrderCreation = () => {
                         {/* <div> */}
                             <label htmlFor="file">Upload file</label>   
                         {/* </div> */}
-                        <input type="file" />
+                        <input type="file" accept='' />
                     </div>
                     <div>
                         {/* <div> */}
                             <label htmlFor="deadline">Deadline</label>
                         {/* </div> */}
-                        <input type="date" id='deadline'/>
+                        <input required type="datetime-local" id='deadline'/>
                     </div>
                 </div>                
                 <div className='instructions-box'>
@@ -46,11 +47,11 @@ const OrderCreation = () => {
                         <label htmlFor="amount">Amount ($)</label>
                     </div>
                     <input type="number" id='amount' placeholder='$' min={1}/>                    
-                </div>                                                
-            </div>
-            <div>
-                <button className='create-task'>Create</button>
-            </div>
+                </div>
+                <div>
+                    <button type='submit' className='create-task'>Create <IoMdArrowForward size={20}/></button>                    
+                </div>                                              
+            </form>            
         </div>
     );
 }
