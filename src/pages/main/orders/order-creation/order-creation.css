@@ -30,7 +30,13 @@
     border: solid 1px var(--secondary-color);
     font-size: var(--fontsize-normal);
     outline-color: var(--secondary-color);
+    color: gray;
+    background-color: #fff;
 }
+/* 
+.order-required-details select option{
+    font-size: larger;
+} */
 
 .instructions-box textarea {
     position: inherit;
@@ -40,9 +46,14 @@
     border: solid 1px var(--secondary-color);
     outline-color: var(--secondary-color);
     padding: 0.7rem 0.5rem;
+    color: gray;
 }
 
 .create-task {
     border-radius: 8px;
     border: solid 1px var(--secondary-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
