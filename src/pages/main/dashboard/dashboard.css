@@ -32,6 +32,7 @@
 }
 
 .order-content {    
+    position: relative;
     padding: 1rem;
     border-radius: 4px;
     display: flex;
@@ -44,23 +45,35 @@
     cursor: pointer;
 }
 
+.order-content .title-box {
+    text-align: start;
+    width: 100%;
+}
+
 .order-content:hover {
     box-shadow: 0 4px 24px rgba(73, 73, 73, 0.2);
     transition: transform 0.6 ease-in-out;
 }
 
-.order-content div {
-    position: inherit;
+
+.bottom-box { 
+    position: relative;
     width: 100%;
+    font-size: var(--fontsize-small);
     display: flex;
-    gap: 0 3rem;
-    text-align: start;
+    justify-content: space-between;
 }
 
-.bottom-box {    
-    justify-content: space-between;
-    align-items: center;
-    font-size: var(--fontsize-small);
+.bottom-box .fx-start {
+    display: flex;
+    position: relative;
+    gap: 3rem;  
+}
+
+.bottom-box .fx-end{
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .deadline {
@@ -68,8 +81,6 @@
     padding: 0 0.5rem;
     color: white;
     border-radius: 2rem;
-    /* font-size: small; */
-    /* display: flex;
-    justify-content: center; */
+    width: fit-content;
 }
 
