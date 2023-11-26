@@ -9,6 +9,7 @@ import Notification from './pages/main/notification/Notification';
 import OrderCreation from './pages/main/orders/order-creation/OrderCreation';
 import Profile from './pages/main/profile/Profile';
 import Settings from './pages/main/settings/Settings';
+import OrderView from './pages/main/orders/order-view/OrderView';
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
           <Route path='create-task' element={<OrderCreation/>}/>        
           <Route path='profile' element={<Profile/>}/>       
           <Route path='settings' element={<Settings/>}/> 
+          <Route path='order/ID' element={<OrderView/>}/>
         </Routes>          
       </>
     )

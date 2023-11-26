@@ -1,10 +1,11 @@
 import React from 'react';
 import './sidenav.css';
 import { IoMdNotificationsOutline, IoMdSettings } from "react-icons/io";
-import { MdAdd } from "react-icons/md";
+import { MdAdd, MdHelpOutline } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 const Sidenav = () => {
+    
     const iconSize = 25;
 
     const navigate = useNavigate();
@@ -12,7 +13,7 @@ const Sidenav = () => {
     return (
         <div>
             <div className='top-nav'>
-                <h1>Flexypro</h1>
+                <h1 style={{cursor:'pointer'}}  onClick={()=>navigate('./')}>Flexypro</h1>
                 <div className='search-nav'>
                     <input type="text" placeholder='Search my orders' />
                 </div>                
@@ -21,12 +22,15 @@ const Sidenav = () => {
                     <article>Create a new task</article>
                 </div>                
                 <div className='profile'>
-                    <div className='notif-bell' style={{cursor:'pointer'}} >
-                        <IoMdNotificationsOutline onClick={()=>navigate('./notifications')} size={iconSize}/>
-                        <div>
-                            <article>3</article>
-                        </div>
+                <div className="help">
+                        <MdHelpOutline size={iconSize}/>
                     </div>
+                    <div className='notif-bell' style={{cursor:'pointer'}} onClick={()=>navigate('./notifications')} >
+                        <IoMdNotificationsOutline  size={iconSize}/>
+                        <div>
+                            <article>2</article>
+                        </div>
+                    </div>                    
                     <div className='settings'>
                         <IoMdSettings onClick={()=>navigate('./settings')} style={{cursor:'pointer'}} size={iconSize}/>
                     </div>
