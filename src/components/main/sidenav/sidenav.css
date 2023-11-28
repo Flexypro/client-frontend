@@ -31,7 +31,7 @@
 .notif-bell {
     position: relative;
     padding: 0.3rem;
-    transition: transform ease-in-out;
+    transition: transform 0.5 ease-in-out;
 }
 
 .notif-bell:hover {
