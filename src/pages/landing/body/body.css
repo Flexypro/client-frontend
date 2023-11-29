@@ -43,11 +43,11 @@
     padding: 0.5rem 0.7rem;
     cursor: pointer;
     border-radius: 4px;
+    transition: box-shadow 0.6s;
 }
 
 .common-services div article:hover {
     box-shadow: 0 8px 36px var(--secondary-color);
-    transition: 0.6s;
 }
 
 /*  */
@@ -80,11 +80,11 @@
     color: #fff;
     width: 8rem;
     background-color: var(--primary-color);
+    transition: box-shadow 0.7s;
 }
 
 .hire-us:hover {
     box-shadow: 0 4px 36px var(--primary-color);
-    transition: 0.7s;
 }
 
 img {
@@ -113,11 +113,11 @@ img {
     background-color: var(--complementary);
     color: #fff;
     font-weight: bold;
+    transition: box-shadow 0.7s;
 }
 
 .promo button:hover {
     box-shadow: 0 4px 36px var(--complementary);
-    transition: 0.7s;
 }
 
 .call-to-action {

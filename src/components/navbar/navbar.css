@@ -16,11 +16,13 @@ nav {
     justify-content: space-around;
 }
 
+.nav-content li {
+    transition: color 0.5s;
+    cursor: pointer;    
+}
 
 .nav-content li:hover {
     color: var(--primary-color);
-    cursor: pointer;    
-    transition: 0.5s;
     /* border-bottom: solid; */
 }
 
