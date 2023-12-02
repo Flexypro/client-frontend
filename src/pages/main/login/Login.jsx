@@ -3,7 +3,7 @@ import './login.css';
 import { useAuthContext } from '../../../providers/AuthProvider';
 const Login = () => {
     
-    const { handleLogin } = useAuthContext()
+    const { handleLogin } = useAuthContext();
     return (
         <div className='login'>
             <form onSubmit={handleLogin} className='login-form'>

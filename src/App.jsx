@@ -11,8 +11,10 @@ import Profile from './pages/main/profile/Profile';
 import Settings from './pages/main/settings/Settings';
 import OrderView from './pages/main/orders/order-view/OrderView';
 import Login from './pages/main/login/Login';
+import { useAuthContext } from './providers/AuthProvider';
 
 function App() {
+  const { userToken } = useAuthContext();
 
   const BodyContent = () => {
     return (
@@ -46,7 +48,7 @@ function App() {
       <Routes>
         <Route path='login' element={<Login/>}/>
         <Route exact path='/' element={<BodyContent/>}/>
-        <Route path='/app/*' element={<Main/>}/>
+        <Route path='/app/*' element={userToken?<Main/>:<Login/>}/>
       </Routes>
     </>
   )
