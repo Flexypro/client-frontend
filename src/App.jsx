@@ -10,6 +10,7 @@ import OrderCreation from './pages/main/orders/order-creation/OrderCreation';
 import Profile from './pages/main/profile/Profile';
 import Settings from './pages/main/settings/Settings';
 import OrderView from './pages/main/orders/order-view/OrderView';
+import Login from './pages/main/login/Login';
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
   return (
     <>
       <Routes>
+        <Route path='login' element={<Login/>}/>
         <Route exact path='/' element={<BodyContent/>}/>
         <Route path='/app/*' element={<Main/>}/>
       </Routes>
