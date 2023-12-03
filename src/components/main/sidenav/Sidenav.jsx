@@ -3,39 +3,84 @@ import './sidenav.css';
 import { IoMdNotificationsOutline, IoMdSettings } from "react-icons/io";
 import { MdAdd, MdHelpOutline } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from '../../../providers/AuthProvider';
+import { useState } from 'react';
+import { useOrderContext } from '../../../providers/OrderProvider';
 
 const Sidenav = () => {
-    
+
+    const { userProfile, handleLogOut } = useAuthContext();
+
+    const { orders } = useOrderContext();
+
     const iconSize = 25;
 
     const navigate = useNavigate();
+
+    const [searchQuery, setSearchQuery] = useState('');
+    const [suggestions, setSuggestions] = useState([]);
+
+    const searchOrdersFromQuery = (input) => {
+        setSearchQuery(input);
+
+        const filteredSuggestions = orders.filter((order)=>{
+            return order.title.toLowerCase().includes(searchQuery.toLowerCase())
+        })
+
+        setSuggestions(filteredSuggestions.slice(0,5));
+
+        // console.log(suggestions)
+    }
+
+    const goToOrder = (id) => {
+        setSearchQuery('');
+        setSuggestions([]);
+        navigate(`./order/${id}`);
+    }
 
     return (
         <div>
             <div className='top-nav'>
                 <h1 style={{cursor:'pointer'}}  onClick={()=>navigate('./')}>Flexypro</h1>
                 <div className='search-nav'>
-                    <input type="text" placeholder='Search my orders' />
+                    <input value={searchQuery} onChange={(e)=>searchOrdersFromQuery(e.target.value)} type="text" placeholder='Search my orders' />
+                    {
+                        (suggestions.length > 0 && searchQuery) && 
+                        <div className='suggestions'>
+                            {
+                                suggestions?.map((suggestedOrder, index)=>{
+                                    return(
+                                        <div className='suggested' key={index} onClick={()=>goToOrder(suggestedOrder.id)}>
+                                            <article>{suggestedOrder.title}</article>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                    }
                 </div>                
                 <div className='add-task' onClick={()=>navigate('./create-task')}>
                     <MdAdd size={iconSize}/>
                     <article>Create a new task</article>
-                </div>                
+                </div>                               
                 <div className='profile'>
-                <div className="help">
+                    <article className='logout' onClick={()=>handleLogOut()}>
+                        Logout
+                    </article> 
+                    <div className="help">
                         <MdHelpOutline size={iconSize}/>
                     </div>
                     <div className='notif-bell' style={{cursor:'pointer'}} onClick={()=>navigate('./notifications')} >
                         <IoMdNotificationsOutline  size={iconSize}/>
                         <div>
-                            <article>2</article>
+                            <article>{userProfile?.notification_count}</article>
                         </div>
                     </div>                    
                     <div className='settings'>
                         <IoMdSettings onClick={()=>navigate('./settings')} style={{cursor:'pointer'}} size={iconSize}/>
                     </div>
                     <div className='profile-info' onClick={()=>navigate('./profile')}>
-                        <article>Mucia Joe</article>
+                        <article>{userProfile?.username}</article>
                         <img src="https://imgs.search.brave.com/dfllJJpXVV-lm16dI5Uco-HqoZssP1PWLkghlZIMMNQ/rs:fit:500:0:0/g:ce/aHR0cHM6Ly93d3cu/bWVyY3VyeW5ld3Mu/Y29tL3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDE5LzA2L0dldHR5/SW1hZ2VzLTExNTg4/NjEyNjIuanBnP3c9/NjIw" alt="profile cover" />
                     </div>
                 </div>

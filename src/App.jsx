@@ -37,7 +37,7 @@ function App() {
           <Route path='create-task' element={<OrderCreation/>}/>        
           <Route path='profile' element={<Profile/>}/>       
           <Route path='settings' element={<Settings/>}/> 
-          <Route path='order/ID' element={<OrderView/>}/>
+          <Route path='order/:orderId' element={<OrderView/>}/>
         </Routes>          
       </>
     )

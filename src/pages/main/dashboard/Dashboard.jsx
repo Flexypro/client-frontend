@@ -4,14 +4,9 @@ import InProgress from '../orders/in-progress/InProgress';
 import Completed from '../orders/completed/Completed';
 import Solved from '../solved/Solved';
 import { useState } from 'react';
-import { useOrderContext } from '../../../providers/OrderProvider';
 
 const Dashboard = () => {
-    const [currentPage, setCurrentPage] = useState(0);
-
-    const { getAllOrders } = useOrderContext();
-
-    console.log(getAllOrders())
+    const [currentPage, setCurrentPage] = useState(0);    
 
     return (
         <div className='dashboard'>

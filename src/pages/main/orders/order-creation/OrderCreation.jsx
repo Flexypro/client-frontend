@@ -1,12 +1,16 @@
 import React from 'react';
 import './order-creation.css';
 import { IoMdArrowForward } from "react-icons/io";
-
+import { categories } from '../../../../utils/helpers/OrderCategories';
+import { useOrderContext } from '../../../../providers/OrderProvider';
 const OrderCreation = () => {
+
+    const { createOrder } = useOrderContext();    
+
     return (
         <div className='order-creation'>
             <strong>Create a new order</strong>
-            <form className='order-creation-details' onSubmit={()=>console.log('Submited')}>
+            <form className='order-creation-details' onSubmit={(e)=>createOrder(e)}>
                 <div className='order-required-details'>
                     <div>
                         {/* <div> */}
@@ -19,21 +23,24 @@ const OrderCreation = () => {
                             <label htmlFor="category">Category</label>
                         {/* </div> */}
                         <select required name="category" id="category">
-                            <option value="">Writing</option>
-                            <option value="">Programming</option>
+                            {
+                                categories.map((category, index)=>{
+                                    return <option key={index} value={category}>{category}</option>
+                                })
+                            }                            
                         </select>
                     </div>
                     <div>
                         {/* <div> */}
                             <label htmlFor="file">Upload file</label>   
                         {/* </div> */}
-                        <input type="file" accept='' />
+                        <input id='attachment' type="file" accept='' />
                     </div>
                     <div>
                         {/* <div> */}
                             <label htmlFor="deadline">Deadline</label>
                         {/* </div> */}
-                        <input required type="datetime-local" id='deadline'/>
+                        <input type="datetime-local" id='deadline'/>
                     </div>
                 </div>                
                 <div className='instructions-box'>
