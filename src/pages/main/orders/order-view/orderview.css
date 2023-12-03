@@ -16,7 +16,7 @@
     position: relative;
 }
 
-.order-soln, .summary, .instructions {
+.order-soln, .summary, .instructions, .attachments {
     position: relative;
     padding: 1rem;
     width: 80%;
@@ -38,8 +38,8 @@
     background-color: green;
     color: white;
     padding: 0 0.5rem;
+    font-size: small;
     border-radius: 2rem;
-    cursor: pointer;
 }
 
 
@@ -50,4 +50,10 @@
 
 .instructions {
     line-height: 1.7;
+}
+
+.instructions strong, .attachments strong {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
 }

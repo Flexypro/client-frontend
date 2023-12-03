@@ -50,6 +50,10 @@
     width: 100%;
 }
 
+.title-box article {
+    font-weight: 700;
+}
+
 .order-content:hover {
     box-shadow: 0 4px 24px rgba(73, 73, 73, 0.2);
     transition: transform 0.6 ease-in-out;
