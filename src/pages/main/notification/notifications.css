@@ -10,13 +10,25 @@
     padding: 1.5rem;
     background-color: aliceblue;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 1rem;
     line-height: 1.8;
     cursor: pointer;
+    border-radius: 4px;
+    height: 2rem;
 }
 
 .notif-message {
     display: flex;
-    width: 80%;
+    width: 75%;
+}
+
+.notif-duration {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    text-align: end;
+    align-items: center;
+    gap: 1rem;
 }
