@@ -8,6 +8,8 @@ export const OrderContext = createContext();
 
 export const OrderProvider = (props) => {
 
+    const ordersUrl = `${import.meta.env.VITE_API_URL}/orders/`
+
     const { userToken } = useAuthContext();
     const [orders, setOrders] = useState([]);
     const [ordersInProgress, setOrdersInProgress] = useState([]);
@@ -29,33 +31,57 @@ export const OrderProvider = (props) => {
         setOrdersInProgress(inProgress);
         setOrdersCompleted(completed);
         setOrders(orders);
+
+        return orders
+    }
+
+    const headersContent = {
+        'Content-Type':'application/json',
+        'Authorization':`Bearer ${userToken}`                
     }
 
     const createOrder = async(e) => {
         e.preventDefault();
         const title = e.target.title.value;
         const category = e.target.category.value;
-        const attachment = e.target.attachment.files[0];
         const deadline = new Date(e.target.deadline.value);
         const instructions = e.target.instructions.value;
         const amount = e.target.amount.value;
 
-        const data = new FormData();
+        const headers = {            
+            'Authorization': `Bearer ${userToken}`,                                        
+        }
 
-        data.append('title', title);
-        data.append('category', category);
-        data.append('attachment', attachment);
-        data.append('deadline', deadline.toISOString());
-        data.append('instructions', instructions);
-        data.append('amount', amount);
+        let bodyData;
 
-        const ordersUrl = `${import.meta.env.VITE_API_URL}/orders/`
+        if (e.target.attachment.files.length > 0) {
+            const attachment = e.target.attachment.files[0];
+            const data = new FormData();
+            data.append('title', title);
+            data.append('category', category);
+            data.append('attachment', attachment);
+            data.append('deadline', deadline.toISOString());
+            data.append('instructions', instructions);
+            data.append('amount', amount);
+
+            bodyData = data;
+        } else {
+            const jsonPayload = {
+                title,
+                category,
+                deadline: deadline.toISOString(),
+                instructions,
+                amount
+            }
+
+            bodyData = JSON.stringify(jsonPayload);
+            headers['Content-Type'] = 'application/json'
+        }
+
         const createOrder = await fetch(ordersUrl, {
             method:'post',
-            headers:{
-                'Authorization': `Bearer ${userToken}`
-            },
-            body: data
+            headers,
+            body: bodyData
         })
 
         const status = createOrder.status;
@@ -63,14 +89,72 @@ export const OrderProvider = (props) => {
         if (status===200){
             // navigate('/app')
         }
+    }
 
+    const getOrder = (orderId) => {        
+        const order = orders.find(order => order.id === orderId);
+        return order             
+    }
+
+    const updateInstructions = async(instructions, orderId) => {
+        const updateOrder = await fetch(`${ordersUrl}${orderId}/`, {
+            method:'put',
+            headers:headersContent,
+            body: JSON.stringify({
+                "instructions":instructions
+            })
+        })
+
+        const status = updateOrder.status;        
+
+        return status;
+    }
+
+    const uploadAttachment = async(file, orderId) => {
+        const data = new FormData();
+        data.append('attachment', file);
+        const response = await fetch(`${ordersUrl}${orderId}/`, {
+            method:'put',
+            headers:{
+                'Authorization':`Bearer ${userToken}`
+            },
+            body:data
+        })
+
+        const status = response.status;
+
+        return status
+    }
+
+    const completeOrder = async(orderId) => {
+        const completeOrderStatus = await fetch(`${ordersUrl}${orderId}/`, {
+            method:'put',
+            headers:headersContent,
+            body: JSON.stringify({
+                "status":'Completed'
+            })
+        })
+
+        const status = completeOrderStatus.status;
+
+        return status;
     }
 
     useEffect(()=>{
         userToken && getAllOrders()
     },[userToken])
 
-    return <OrderContext.Provider value={{orders, ordersInProgress, ordersCompleted, createOrder}}>
+    return <OrderContext.Provider value={{
+        orders, 
+        ordersInProgress, 
+        ordersCompleted, 
+        getOrder,
+        createOrder,
+        updateInstructions,
+        completeOrder,
+        getAllOrders,
+        uploadAttachment
+    }}>
         {props.children}
     </OrderContext.Provider>
 }

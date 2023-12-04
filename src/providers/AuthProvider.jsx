@@ -9,18 +9,23 @@ export const AuthContext = createContext();
 
 export const AuthProvider = props => {
 
+    const profileUrl = `${import.meta.env.VITE_API_URL}/profile`;
+
     const navigate = useNavigate();
     const [userToken, setUserToken] = useState();
     const [userProfile, setuserProfile] = useState();
 
+    
+    const headers = {
+        'content-Type':'application/json',
+        'Authorization':`Bearer ${userToken}`
+    }
+    
+
     const getUserProfile =  async (userToken) => {
-        const profileUrl = `${import.meta.env.VITE_API_URL}/profile`;
         const getProfile = await fetch(profileUrl, {
             method:'get',
-            headers:{
-                'content-Type':'application/json',
-                'Authorization':`Bearer ${userToken}`
-            }
+            headers
         });
 
         const profile = await getProfile.json();
@@ -67,6 +72,32 @@ export const AuthProvider = props => {
         }                
     }
 
+    const uploadProfilePhoto = async(photo, id) => {
+        const data = new FormData();
+        data.append('profile_photo', photo);
+        const response = await fetch(`${profileUrl}/${id}/`, {
+            method:'put',
+            headers:{
+                'Authorization':`Bearer ${userToken}`
+            },
+            body:data
+        })
+
+        const status = response.status;
+
+        return status;
+    }
+
+    const submitNewBio = async(newBio, id) => {
+        const response = await fetch(`${profileUrl}/${id}/`, {
+            method:'put',
+            headers:headers,
+            body:JSON.stringify({
+                "bio":newBio
+            })
+        })
+    }
+
     // const 
 
     const getUserToken = () => {
@@ -82,7 +113,14 @@ export const AuthProvider = props => {
         userToken && getUserProfile(userToken);
     }, [userToken])
     return (
-        <AuthContext.Provider value={{handleLogin, handleLogOut, userToken, userProfile}}>
+        <AuthContext.Provider value={{
+            handleLogin, 
+            handleLogOut, 
+            submitNewBio, 
+            uploadProfilePhoto, 
+            userToken, 
+            userProfile}
+        }>
             {props.children}
         </AuthContext.Provider>
     )
