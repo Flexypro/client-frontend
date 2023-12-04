@@ -72,9 +72,12 @@ const Sidenav = () => {
                     </div>
                     <div className='notif-bell' style={{cursor:'pointer'}} onClick={()=>navigate('./notifications')} >
                         <IoMdNotificationsOutline  size={iconSize}/>
-                        <div>
-                            <article>{userProfile?.notification_count}</article>
-                        </div>
+                        {
+                            userProfile?.unread_notifications.length > 0 &&
+                            <div>
+                                <article>{userProfile?.unread_notifications}</article>
+                            </div>
+                            }
                     </div>                    
                     <div className='settings'>
                         <IoMdSettings onClick={()=>navigate('./settings')} style={{cursor:'pointer'}} size={iconSize}/>

@@ -40,7 +40,7 @@ const OrderCreation = () => {
                         {/* <div> */}
                             <label htmlFor="deadline">Deadline</label>
                         {/* </div> */}
-                        <input type="datetime-local" id='deadline'/>
+                        <input required type="datetime-local" id='deadline'/>
                     </div>
                 </div>                
                 <div className='instructions-box'>
@@ -53,7 +53,7 @@ const OrderCreation = () => {
                     <div>
                         <label htmlFor="amount">Amount ($)</label>
                     </div>
-                    <input type="number" id='amount' placeholder='$' min={1}/>                    
+                    <input required type="number" id='amount' placeholder='$' min={1}/>                    
                 </div>
                 <div>
                     <button type='submit' className='create-task'>Create <IoMdArrowForward size={20}/></button>                    
