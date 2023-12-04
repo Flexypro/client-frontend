@@ -8,18 +8,71 @@ import { useAuthContext } from '../../../providers/AuthProvider';
 import { timeAgo } from '../../../utils/helpers/TimeAgo';
 import { useOrderContext } from '../../../providers/OrderProvider';
 import { MdAdd } from "react-icons/md";
+import { useState } from 'react';
+import { useRef } from 'react';
 
 const Profile = () => {
-    const { userProfile } = useAuthContext();
+    const { userProfile, submitNewBio, uploadProfilePhoto } = useAuthContext();
 
-    const { ordersCompleted, ordersInProgress } = useOrderContext();
+    const fileInputRef = useRef(null);
+
+    const { ordersCompleted, ordersInProgress, } = useOrderContext();
+
+    const [editBio, setEditBio] = useState(false);
+    const [editedBio, setEditedBio] = useState(userProfile?.bio);
+
+    const toggleEditBio = () => {
+        setEditBio(userProfile?.bio);
+        setEditBio(!editBio);
+    }
+
+    const openFileDialog = () => {
+        console.log("Open")
+        if(fileInputRef.current){
+            fileInputRef.current.click();
+        }
+    }
+
+    const updateProfilePhoto = (e) => {
+        const profilePhoto = e.target.files[0];
+        console.log("Submitted");
+        
+        if (profilePhoto) {
+            if (profilePhoto.size <= 5 *1024 *1024){
+                uploadProfilePhoto(profilePhoto, userProfile?.id)
+                .then((status)=>{
+                    if (status===200){
+                        console.log("Profile photo updated");
+                    }
+                })
+            }
+            else {
+                console.log("Select lower resolution image")
+            }
+        } else {
+            console.log("Select correct img format")
+        }
+    }
+
+    const submitEditedProfile = () => {
+        if(userProfile.bio != editedBio){
+            submitNewBio(editedBio, (userProfile?.id))
+            .then((status)=>{
+                if (status === 200){
+                    console.log("Profile edited")
+                }
+            })
+        }
+        setEditBio(false);
+    }
 
     const iconSize = 25;
 
     return (
         <div className='profile-main'>
-            <div className='profile-info' onClick={()=>navigate('./profile')}>
-                <img className='pic' src="https://imgs.search.brave.com/dfllJJpXVV-lm16dI5Uco-HqoZssP1PWLkghlZIMMNQ/rs:fit:500:0:0/g:ce/aHR0cHM6Ly93d3cu/bWVyY3VyeW5ld3Mu/Y29tL3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDE5LzA2L0dldHR5/SW1hZ2VzLTExNTg4/NjEyNjIuanBnP3c9/NjIw" alt="profile cover" />
+            <div className='profile-info'>
+                <img onClick={openFileDialog} className='pic' src={(userProfile?.profile_photo)?userProfile?.profile_photo:"https://imgs.search.brave.com/dfllJJpXVV-lm16dI5Uco-HqoZssP1PWLkghlZIMMNQ/rs:fit:500:0:0/g:ce/aHR0cHM6Ly93d3cu/bWVyY3VyeW5ld3Mu/Y29tL3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDE5LzA2L0dldHR5/SW1hZ2VzLTExNTg4/NjEyNjIuanBnP3c9/NjIw"} alt="profile cover" />
+                <input onChange={updateProfilePhoto} ref={fileInputRef} style={{ display: 'none' }} size={5 * 1024 * 1024} accept='image/*' type="file" name="" id="" />
                 <div>
                     <article>{userProfile?.username}</article>
                     <article>{userProfile?.email}</article>
@@ -68,23 +121,32 @@ const Profile = () => {
                     <strong style={{display:'flex', gap:'1rem'}}>Bio
                         {
                             userProfile?.bio &&
-                            <MdModeEdit style={{cursor:'pointer'}} size={20}/>
+                            (                                
+                                <MdModeEdit onClick={toggleEditBio} style={{cursor:'pointer'}} size={20}/>
+                            )
                         }
                     </strong>
                     {
-                        userProfile?.bio?
-                        <article>
-                            {userProfile?.bio}
-                        </article>:
-                        <article style={{color:'orange', display:'flex', gap:'1rem'}}>Set your bio
-                        {
-                            <MdAdd style={{cursor:'pointer'}} size={iconSize}/>
-                        }
-                        </article>                        
+                        editBio ?
+                        <textarea name="" id="" rows="4" value={editedBio} onChange={(e)=>setEditedBio(e.target.value)}/>:
+                        (
+                            userProfile?.bio?
+                            <article>
+                                {userProfile?.bio}
+                            </article>
+                            :
+                            <article style={{color:'orange', display:'flex', gap:'1rem'}}>Set your bio
+                            {
+                                <MdAdd onClick={toggleEditBio} style={{cursor:'pointer'}} size={iconSize}/>
+                            }
+                            </article>  
+                        )                      
                     }
                 </div>
             </div>
-            <button>Save</button>
+            <button onClick={submitEditedProfile} style={{
+
+            }}>Save</button>
         </div>
     );
 }
