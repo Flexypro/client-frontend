@@ -2,7 +2,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.5rem 1rem 2rem 1rem;
+    /* padding: 0.5rem 1rem 2rem 1rem; */
+    padding: 1rem;
+    color: gray;
 }
 
 .search-nav {
@@ -13,12 +15,11 @@
 .search-nav input {
     position: relative;    
     width: 100%;
-    padding: 0.6rem 0.8rem;
+    padding: 0.7rem 0.8rem;
     border-radius: 2rem;
     border: solid 1px gray;
     font-size: var(--fontsize-normal);
-    outline: none;
-    color: gray;
+    outline-color: var(--secondary-color);
 }
 
 .suggestions {
@@ -48,12 +49,25 @@
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
+    transition: color 0.3s;
+}
+
+.add-task:hover {
+    color: var(--secondary-color);
+}
+
+.help {
+    color: var(--secondary-color);
 }
 
 .notif-bell {
     position: relative;
     padding: 0.3rem;
     transition: transform 0.5 ease-in-out;
+}
+
+.notif-icon {
+    color: var(--secondary-color);
 }
 
 .notif-bell:hover {
@@ -63,12 +77,12 @@
 .notif-bell div {
     position: absolute;
     display: flex;
-    top: 0rem;    
+    top: 4%;    
     left: 1.1rem;    
     background-color: red;    
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     align-items: center;
     justify-content: center;
 }
@@ -80,6 +94,7 @@
 
 .settings {
     transition: transform 0.5 ease-in-out;
+    color: var(--secondary-color);
 }
 
 .settings:hover {
@@ -95,11 +110,25 @@
 
 .logout {
     cursor: pointer;
+    border: solid 1px #fff;
+    padding: 0.3rem 0.5rem;
+    border-radius: 4px;
+    transition: color 0.3s;
+    /* border: solid 1px var(--secondary-color); */
+    color: var(--secondary-color);
+    background-color: var(--background);
+    border: solid 1px var(--background);
+}
+
+.logout:hover {
+    border: solid 1px var(--secondary-color);
+    color: var(--secondary-color);
 }
 
 .profile div {
     display: flex;
     align-items: center;
+    font-weight: bold;
 }
 
 .profile div img {
@@ -108,7 +137,7 @@
     object-fit: cover;
     border-radius: 50%;
     padding: 1px;
-    border: solid 1px;
+    border: solid 1px gray;
 }
 
 .profile-info {

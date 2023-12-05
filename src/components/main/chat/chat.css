@@ -1,5 +1,5 @@
 .chat {
-    background-color: aliceblue;
+    background-color: var(--background);
     width: 25%;
     border-radius: 4px;
     padding: 0.5rem;
