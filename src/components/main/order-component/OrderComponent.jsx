@@ -29,7 +29,7 @@ const OrderComponent = ({ content }) => {
                     <div className='fx-end'>
                         <article className='deadline' style={{
                             color: deadlinePased?`red`:'',
-                            backgroundColor: deadlinePased?`white`:''
+                            backgroundColor: deadlinePased?`#f7fafc`:''
                         }}>
                             {deadline}
                         </article>

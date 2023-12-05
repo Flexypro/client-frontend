@@ -11,10 +11,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useCallback } from 'react';
 import { useRef } from 'react';
+import { VscFile } from "react-icons/vsc";
 
 const OrderView = () => {
-
-    const navigate = useNavigate();
 
     const [refresh, setRefresh] = useState(false);
 
@@ -77,10 +76,10 @@ const OrderView = () => {
     }
 
     const openFileDialog = () => {
-        console.log("Open")
-        if(fileInputRef.current){
+        console.log("Opening file dialog");
+        // if(fileInputRef.current){
             fileInputRef.current.click();
-        }
+        // }
     }
 
 
@@ -109,12 +108,11 @@ const OrderView = () => {
         link.download = (order?.solution.solution)
             .substring(order?.solution.solution.lastIndexOf('/')+1);
         link.click();
-    }
+    }    
 
     useEffect(()=>{
-        const order = getOrder(orderId);
-        setOrder(order);      
-    }, [refresh])
+        setOrder(getOrder(orderId));
+    },[getOrder])
 
     return (
         <div className='order-view' key={refresh}>
@@ -144,7 +142,7 @@ const OrderView = () => {
                                             }
                                         </a>
                                         <article>{order?.solution._type}</article>
-                                        <IoMdDownload onClick={downloadFile} style={{cursor:'pointer'}} size={iconSize}/>
+                                        <IoMdDownload className='download-icon' onClick={downloadFile} style={{cursor:'pointer'}} size={iconSize}/>
                                         <article className=''>{uploadedAt}</article>
                                     </div>
                                 }                        
@@ -167,8 +165,8 @@ const OrderView = () => {
                         order?.status === 'In Progress' &&  
                         (
                             editInstructions &&(order?.instructions != editedInstructions)?
-                            <button onClick={updateNewInstructions}>Submit</button>:
-                            <MdModeEdit style={{cursor:'pointer'}} size={iconSize} onClick={toggleInstructionMode}/>
+                            <button className='submit-instructions' onClick={updateNewInstructions}>Submit</button>:
+                            <MdModeEdit className='edit-icon' style={{cursor:'pointer'}} size={iconSize} onClick={toggleInstructionMode}/>
                         )
                         }
                     </strong>
@@ -183,7 +181,7 @@ const OrderView = () => {
                                         outline:'none', 
                                         border:'none'
                                     }}  
-                                    rows="10" readOnly={false}  
+                                    rows="5" readOnly={false}  
                                     onChange={handleInstructionChange}                                  
                                 />                                
                             </div>:                            
@@ -198,26 +196,43 @@ const OrderView = () => {
                         )
                     }
                 </div>
-                <div className='attachments'>
-                    <strong>
+                {
+                    order?.status ==='Completed' && !order?.attachment?null:
+                    <div className='attachments'>
                         {
-                            order?.attachment?'Attachments':'Attachments'
-                        }
-                        {order?.status ==='In Progress' && <MdAdd onClick={openFileDialog} style={{cursor:'pointer'}} size={20}/>}
-                        <input onChange={uploadAttachmentFile} ref={fileInputRef} style={{ display: 'none' }} size={20 * 1024 * 1024} type="file" name="" id="" />
-                    </strong>
-                    {
-                        order?.attachment &&
-                        <div>
-                            <a href={order?.attachment} target='_blank'>
+                            order?.attachment &&
+                            <strong>
                                 {
-                                    (order?.attachment)
-                                    .substring(order?.attachment.lastIndexOf('/')+1)  
-                                }  
-                            </a>                          
-                        </div>
-                    }
-                </div>
+                                    order?.attachment?'Attachments':'Attachments'
+                                }
+                                {order?.status ==='In Progress' && <MdAdd onClick={openFileDialog} style={{cursor:'pointer'}} size={20}/>}
+                                <input onChange={uploadAttachmentFile} ref={fileInputRef} style={{ display: 'none' }} size={20 * 1024 * 1024} type="file" name="" id="" />
+                            </strong>
+                        }
+                        {
+                            !order?.attachment &&
+                            order?.status ==='In Progress' &&
+                            <div className='upload-div'>
+                                <article onClick={openFileDialog}>
+                                    <VscFile className='file-icon' size={iconSize}/>                                
+                                    Upload an attachment
+                                    <input onChange={uploadAttachmentFile} ref={fileInputRef} style={{ display: 'none' }} size={20 * 1024 * 1024} type="file" name="" id="" />
+                                    </article>
+                            </div>
+                        }
+                        {
+                            order?.attachment &&
+                            <div>
+                                <a href={order?.attachment} target='_blank'>
+                                    {
+                                        (order?.attachment)
+                                        .substring(order?.attachment.lastIndexOf('/')+1)  
+                                    }  
+                                </a>                          
+                            </div>
+                        }
+                    </div>
+                }
             </div>
             <Chat />
         </div>

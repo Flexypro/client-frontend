@@ -74,35 +74,35 @@ const Profile = () => {
                 <img onClick={openFileDialog} className='pic' src={(userProfile?.profile_photo)?userProfile?.profile_photo:"https://imgs.search.brave.com/dfllJJpXVV-lm16dI5Uco-HqoZssP1PWLkghlZIMMNQ/rs:fit:500:0:0/g:ce/aHR0cHM6Ly93d3cu/bWVyY3VyeW5ld3Mu/Y29tL3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDE5LzA2L0dldHR5/SW1hZ2VzLTExNTg4/NjEyNjIuanBnP3c9/NjIw"} alt="profile cover" />
                 <input onChange={updateProfilePhoto} ref={fileInputRef} style={{ display: 'none' }} size={5 * 1024 * 1024} accept='image/*' type="file" name="" id="" />
                 <div>
-                    <article>{userProfile?.username}</article>
-                    <article>{userProfile?.email}</article>
+                    <article style={{fontWeight:'bold'}}>{userProfile?.username}</article>
+                    <article>{userProfile?.email}flexy@gmail.com</article>
                 </div>
             </div>
             <div className='prof-summary'>
                 <div>
                     <div>
-                        <MdTaskAlt size={iconSize}/>
+                        <MdTaskAlt className='react-icon' size={iconSize}/>
                         <article>Total Tasks</article>
                     </div>
                     <span>{userProfile?.orders_count}</span>
                 </div>
                 <div>
                     <div>
-                        <MdPendingActions size={iconSize} />
+                        <MdPendingActions className='react-icon' size={iconSize} />
                         <article>Pending Tasks</article>
                     </div>
                     <span>{ordersInProgress.length}</span>                   
                 </div>
                 <div>
                     <div>
-                        <MdOutlineAddTask  size={iconSize}/>
+                        <MdOutlineAddTask className='react-icon' size={iconSize}/>
                         <article>Completed Tasks</article>
                     </div>
                     <span>{ordersCompleted?.length}</span>
                 </div>
                 <div>
                     <div>
-                        <MdAccessTime size={iconSize}/>
+                        <MdAccessTime className='react-icon' size={iconSize}/>
                         <article>Last Login</article>
                     </div>
                     <article className='last-login'>{timeAgo(userProfile?.last_login)}</article>
@@ -144,7 +144,7 @@ const Profile = () => {
                     }
                 </div>
             </div>
-            <button onClick={submitEditedProfile} style={{
+            <button className='save' onClick={submitEditedProfile} style={{
 
             }}>Save</button>
         </div>

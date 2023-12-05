@@ -68,16 +68,16 @@ const Sidenav = () => {
                         Logout
                     </article> 
                     <div className="help">
-                        <MdHelpOutline size={iconSize}/>
+                        <MdHelpOutline className='' size={iconSize}/>
                     </div>
                     <div className='notif-bell' style={{cursor:'pointer'}} onClick={()=>navigate('./notifications')} >
-                        <IoMdNotificationsOutline  size={iconSize}/>
+                        <IoMdNotificationsOutline className='notif-icon'  size={iconSize}/>
                         {
-                            userProfile?.unread_notifications.length > 0 &&
+                            userProfile?.unread_notifications > 0 &&
                             <div>
                                 <article>{userProfile?.unread_notifications}</article>
                             </div>
-                            }
+                        }
                     </div>                    
                     <div className='settings'>
                         <IoMdSettings onClick={()=>navigate('./settings')} style={{cursor:'pointer'}} size={iconSize}/>
