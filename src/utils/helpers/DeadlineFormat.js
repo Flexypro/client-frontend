@@ -30,9 +30,9 @@ export function formatDeadline(deadlineString) {
     if (timeDifference < 0) {
         // setDeadlinePassed(true)
         if (seconds < 60) {
-        return `${seconds} second${seconds !== 1 ? 's' : ''}`;
+        return `${seconds} sec${seconds !== 1 ? 's' : ''}`;
         } else if (minutes < 60) {
-        return `${minutes} minute${minutes !== 1 ? 's' : ''}`;
+        return `${minutes} min${minutes !== 1 ? 's' : ''}`;
         } else if (hours < 24) {
         return `${hours} hour${hours !== 1 ? 's' : ''}`;
         } else if (days < 31) {
@@ -43,9 +43,9 @@ export function formatDeadline(deadlineString) {
     } else {
         // setDeadlinePassed(false)
         if (seconds < 60) {
-        return `${seconds} second${seconds !== 1 ? 's' : ''}`;
+        return `${seconds} sec${seconds !== 1 ? 's' : ''}`;
         } else if (minutes < 60) {
-        return `${minutes} minute${minutes !== 1 ? 's' : ''}`;
+        return `${minutes} min${minutes !== 1 ? 's' : ''}`;
         } else if (hours < 24) {
         return `${hours} hour${hours !== 1 ? 's' : ''}`;
         } else if (days < 31) {
