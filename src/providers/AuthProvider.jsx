@@ -9,10 +9,12 @@ export const AuthContext = createContext();
 
 export const AuthProvider = props => {
 
+    const [loading, setLoading] = useState(false);
+
     const profileUrl = `${import.meta.env.VITE_API_URL}/profile`;
 
     const navigate = useNavigate();
-    const [userToken, setUserToken] = useState();
+    const [userToken, setUserToken] = useState(getAccessToken());
     const [userProfile, setuserProfile] = useState();
 
     
@@ -21,7 +23,6 @@ export const AuthProvider = props => {
         'Authorization':`Bearer ${userToken}`
     }
     
-
     const getUserProfile =  async (userToken) => {
         const getProfile = await fetch(profileUrl, {
             method:'get',
@@ -39,6 +40,7 @@ export const AuthProvider = props => {
     }
 
     const handleLogin = async (e) => {
+        setLoading(true);
         e.preventDefault()
         const username = e.target.username.value;
         const password = e.target.password.value;
@@ -59,16 +61,18 @@ export const AuthProvider = props => {
             const status = getToken.status;
 
             if (status===200){
-                const token = await getToken.json()
+                const token = await getToken.json();
     
                 const accessToken = token.access;
-                setAccessToken(accessToken)
-                getUserToken();                
+                setAccessToken(accessToken);
+                getUserToken();  
+                setLoading(false);              
                 // const refreshToken = token.refresh
-            }    
-    
+            } 
+            setLoading(false);        
         } catch(error) {
-            console.log(error)            
+            console.log(error);
+            setLoading(false);             
         }                
     }
 
@@ -119,7 +123,9 @@ export const AuthProvider = props => {
             submitNewBio, 
             uploadProfilePhoto, 
             userToken, 
-            userProfile}
+            userProfile,
+            loading
+        }
         }>
             {props.children}
         </AuthContext.Provider>

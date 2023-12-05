@@ -15,7 +15,15 @@ export const OrderProvider = (props) => {
     const [ordersInProgress, setOrdersInProgress] = useState([]);
     const [ordersCompleted, setOrdersCompleted] = useState([]);
 
+    const [loading, setLoading] = useState(true);
+
+    const headersContent = {
+        'Content-Type':'application/json',
+        'Authorization':`Bearer ${userToken}`                
+    }
+
     const getAllOrders = async() => {
+        setLoading(true);
         const ordersUrl = `${import.meta.env.VITE_API_URL}/orders`
         const getOrders = await fetch(ordersUrl, {
             headers: {
@@ -31,15 +39,11 @@ export const OrderProvider = (props) => {
         setOrdersInProgress(inProgress);
         setOrdersCompleted(completed);
         setOrders(orders);
+        setLoading(false)
 
         return orders
     }
-
-    const headersContent = {
-        'Content-Type':'application/json',
-        'Authorization':`Bearer ${userToken}`                
-    }
-
+    
     const createOrder = async(e) => {
         e.preventDefault();
         const title = e.target.title.value;
@@ -148,6 +152,7 @@ export const OrderProvider = (props) => {
         orders, 
         ordersInProgress, 
         ordersCompleted, 
+        loading,
         getOrder,
         createOrder,
         updateInstructions,
