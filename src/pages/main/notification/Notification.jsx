@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { timeAgo } from '../../../utils/helpers/TimeAgo';
 import{ useNavigate } from 'react-router-dom';
+import { MdNotificationAdd } from "react-icons/md";
 
 const Notification = () => {
 
@@ -68,7 +69,8 @@ const Notification = () => {
     return (
         <div className='notifications'>
             {
-                notifications.map((notification, index)=>{
+                notifications.length > 0 ?
+                notifications?.map((notification, index)=>{
                     return (
                         <div style={{backgroundColor:notification?.read_status?'#eeeeee':''}} onClick={()=>navigateToOrder(notification.order_id, notification.id)} className='notif-box' key={index}>
                             <IoMdNotificationsOutline size={30}/>
@@ -79,8 +81,7 @@ const Notification = () => {
                                 <article>{timeAgo(notification.created_at)}</article>        
                                 {
                                     !notification?.read_status &&
-                                    <div style={{
-                                    backgroundColor:'green',
+                                    <div className='notif-circle' style={{
                                     width:'10px',
                                     height:'10px',
                                     borderRadius:'50%'
@@ -89,8 +90,15 @@ const Notification = () => {
                             </div>
                         </div>
                         )
-                })
-            }                        
+                }):
+                <div className='no-notif'>
+                    <div className='notif-child-box'>
+                        <article>New notifications will appear here, hang on!</article>
+                        <MdNotificationAdd size={120} className='placeholder-icon' />
+                    </div>
+                </div>
+
+            }                                
         </div>
     );
 }
