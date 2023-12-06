@@ -9,7 +9,9 @@ import { useOrderContext } from '../../../providers/OrderProvider';
 
 const Sidenav = () => {
 
-    const { userProfile, handleLogOut } = useAuthContext();
+    const { loadingUserProfile, loadedUserProfile, handleLogOut } = useAuthContext();
+
+    const [userProfile, setUserProfile] = useState(loadedUserProfile);
 
     const { orders } = useOrderContext();
 
@@ -83,8 +85,17 @@ const Sidenav = () => {
                         <IoMdSettings onClick={()=>navigate('./settings')} style={{cursor:'pointer'}} size={iconSize}/>
                     </div>
                     <div className='profile-info' onClick={()=>navigate('./profile')}>
-                        <article>{userProfile?.username}</article>
-                        <img src="https://imgs.search.brave.com/dfllJJpXVV-lm16dI5Uco-HqoZssP1PWLkghlZIMMNQ/rs:fit:500:0:0/g:ce/aHR0cHM6Ly93d3cu/bWVyY3VyeW5ld3Mu/Y29tL3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDE5LzA2L0dldHR5/SW1hZ2VzLTExNTg4/NjEyNjIuanBnP3c9/NjIw" alt="profile cover" />
+                        <article className={loadingUserProfile?'username-skeleton':''} style={{width: loadingUserProfile?'3rem':''}}>{userProfile?.username}</article>
+                        {
+                            userProfile?.profile_photo?
+                            <img style={{
+                                animation: loadingUserProfile?`skeleton-loading 1s linear infinite alternate`:''
+                            }} src={userProfile?.profile_photo} alt="profile cover" />:
+                            <article style={{
+                                animation: loadingUserProfile?`skeleton-loading 1s linear infinite alternate`:''
+
+                            }} className='img-placeholder' >{userProfile && `${(userProfile?.username?.charAt(0)?.toUpperCase() + userProfile?.username.slice(1).slice(0,1))}`}</article>
+                        }
                     </div>
                 </div>
             </div>        

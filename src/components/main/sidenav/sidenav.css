@@ -131,7 +131,7 @@
     font-weight: bold;
 }
 
-.profile div img {
+.profile div img, .img-placeholder {
     width: 2.5rem;
     aspect-ratio: 1;
     object-fit: cover;
@@ -140,7 +140,27 @@
     border: solid 1px gray;
 }
 
+.img-placeholder{
+    font-size: 1.4rem;
+    background-color: var(--secondary-color);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    font-weight:  normal;
+}
+
 .profile-info {
     gap: 0.5rem;
     cursor: pointer;
+}
+
+/* Skeleton Anim */
+
+.username-skeleton {
+    animation: skeleton-loading 1s linear infinite alternate;  
+    height: 0.9rem;
+    width: 6rem;
+    border-radius: 4px;
 }
