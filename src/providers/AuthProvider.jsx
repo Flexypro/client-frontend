@@ -15,7 +15,8 @@ export const AuthProvider = props => {
 
     const navigate = useNavigate();
     const [userToken, setUserToken] = useState(getAccessToken());
-    const [userProfile, setuserProfile] = useState();
+    const [loadedUserProfile, setuserProfile] = useState();
+    const [loadingUserProfile, setLoadingUserProfile] = useState(false);
 
     
     const headers = {
@@ -23,14 +24,22 @@ export const AuthProvider = props => {
         'Authorization':`Bearer ${userToken}`
     }
     
-    const getUserProfile =  async (userToken) => {
-        const getProfile = await fetch(profileUrl, {
-            method:'get',
-            headers
-        });
-
-        const profile = await getProfile.json();
-        setuserProfile(profile[0]);
+    const getUserProfile =  async () => {
+        setLoadingUserProfile(true);
+        try {
+            const getProfile = await fetch(`${profileUrl}`, {
+                method:'get',
+                headers
+            });
+    
+            const profile = await getProfile.json();
+            // console.log(profile);
+            setuserProfile(profile[0]);
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setLoadingUserProfile(false);
+        }
     }
 
     const handleLogOut = () => {
@@ -72,49 +81,63 @@ export const AuthProvider = props => {
             setLoading(false);        
         } catch(error) {
             console.log(error);
-            setLoading(false);             
-        }                
+        } finally {
+            setLoading(false);
+        }             
     }
 
     const uploadProfilePhoto = async(photo, id) => {
         const data = new FormData();
         data.append('profile_photo', photo);
-        const response = await fetch(`${profileUrl}/${id}/`, {
-            method:'put',
-            headers:{
-                'Authorization':`Bearer ${userToken}`
-            },
-            body:data
-        })
 
-        const status = response.status;
+        try {            
+            const response = await fetch(`${profileUrl}/${id}/`, {
+                method:'put',
+                headers:{
+                    'Authorization':`Bearer ${userToken}`
+                },
+                body:data
+            })
 
-        return status;
+            const res = response.json();
+            return res;
+
+        } catch (error) {
+            console.error(error);
+        } finally{
+            
+        }
     }
 
     const submitNewBio = async(newBio, id) => {
-        const response = await fetch(`${profileUrl}/${id}/`, {
-            method:'put',
-            headers:headers,
-            body:JSON.stringify({
-                "bio":newBio
+        try {
+            const response = await fetch(`${profileUrl}/${id}/`, {
+                method:'put',
+                headers:headers,
+                body:JSON.stringify({
+                    "bio":newBio
+                })
             })
-        })
-    }
 
-    // const 
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.log(error);
+        } finally {}
+    }
 
     const getUserToken = () => {
-        const token = getAccessToken()
-        setUserToken(token)
+        const token = getAccessToken();
+        setUserToken(token);
     }
 
     useEffect(()=>{
-        getUserToken();
-    },[userToken])
-
-    useEffect(()=>{
-        userToken && getUserProfile(userToken);
+        if (!userToken){
+            getAccessToken();
+        } 
+        userToken && getUserProfile();
+        
+        
     }, [userToken])
     return (
         <AuthContext.Provider value={{
@@ -123,7 +146,8 @@ export const AuthProvider = props => {
             submitNewBio, 
             uploadProfilePhoto, 
             userToken, 
-            userProfile,
+            loadedUserProfile,
+            loadingUserProfile,
             loading
         }
         }>

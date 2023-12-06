@@ -3,10 +3,13 @@ import { createContext } from "react";
 import { useAuthContext } from "./AuthProvider";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 
 export const OrderContext = createContext();
 
 export const OrderProvider = (props) => {
+
+    const navigate = useNavigate();
 
     const ordersUrl = `${import.meta.env.VITE_API_URL}/orders/`
 
@@ -15,7 +18,9 @@ export const OrderProvider = (props) => {
     const [ordersInProgress, setOrdersInProgress] = useState([]);
     const [ordersCompleted, setOrdersCompleted] = useState([]);
 
+    const [loadingAttachemnt, setLoadingAttachment] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [submitLoading, setSubmitLoading] = useState(false);
 
     const headersContent = {
         'Content-Type':'application/json',
@@ -23,142 +28,196 @@ export const OrderProvider = (props) => {
     }
 
     const getAllOrders = async() => {
-        setLoading(true);
         const ordersUrl = `${import.meta.env.VITE_API_URL}/orders`
-        const getOrders = await fetch(ordersUrl, {
-            headers: {
-                'Content-Type':'application/json',
-                'Authorization': `Bearer ${userToken}`
-            }
-        })
+        console.log("Getting orders...")
+        try {
+            const getOrders = await fetch(ordersUrl, {
+                headers: {
+                    'Content-Type':'application/json',
+                    'Authorization': `Bearer ${userToken}`
+                }
+            })
 
-        const orders = await getOrders.json();
-        const inProgress = orders.filter(order=>order.status==='In Progress');
-        const completed = orders.filter(order=>order.status==='Completed');
+            const orders = await getOrders.json();
+            const inProgress = orders.filter(order=>order.status==='In Progress');
+            const completed = orders.filter(order=>order.status==='Completed');
 
-        setOrdersInProgress(inProgress);
-        setOrdersCompleted(completed);
-        setOrders(orders);
-        setLoading(false)
+            setOrdersInProgress(inProgress);
+            setOrdersCompleted(completed);
+            setOrders(orders);
 
-        return orders
+            return orders
+        } catch (errors) {
+            console.error(errors);
+        } finally {
+            setLoading(false);
+        }        
     }
     
     const createOrder = async(e) => {
-        e.preventDefault();
-        const title = e.target.title.value;
-        const category = e.target.category.value;
-        const deadline = new Date(e.target.deadline.value);
-        const instructions = e.target.instructions.value;
-        const amount = e.target.amount.value;
+        try {
+            setSubmitLoading(true);
+            e.preventDefault();
+            const title = e.target.title.value;
+            const category = e.target.category.value;
+            const deadline = new Date(e.target.deadline.value);
+            const instructions = e.target.instructions.value;
+            const amount = e.target.amount.value;
 
-        const headers = {            
-            'Authorization': `Bearer ${userToken}`,                                        
-        }
-
-        let bodyData;
-
-        if (e.target.attachment.files.length > 0) {
-            const attachment = e.target.attachment.files[0];
-            const data = new FormData();
-            data.append('title', title);
-            data.append('category', category);
-            data.append('attachment', attachment);
-            data.append('deadline', deadline.toISOString());
-            data.append('instructions', instructions);
-            data.append('amount', amount);
-
-            bodyData = data;
-        } else {
-            const jsonPayload = {
-                title,
-                category,
-                deadline: deadline.toISOString(),
-                instructions,
-                amount
+            const headers = {            
+                'Authorization': `Bearer ${userToken}`,                                        
             }
 
-            bodyData = JSON.stringify(jsonPayload);
-            headers['Content-Type'] = 'application/json'
+            let bodyData;
+
+            if (e.target.attachment.files.length > 0) {
+                const attachment = e.target.attachment.files[0];
+                const data = new FormData();
+                data.append('title', title);
+                data.append('category', category);
+                data.append('attachment', attachment);
+                data.append('deadline', deadline.toISOString());
+                data.append('instructions', instructions);
+                data.append('amount', amount);
+
+                bodyData = data;
+            } else {
+                const jsonPayload = {
+                    title,
+                    category,
+                    deadline: deadline.toISOString(),
+                    instructions,
+                    amount
+                }
+
+                bodyData = JSON.stringify(jsonPayload);
+                headers['Content-Type'] = 'application/json'
+            }
+
+            const createOrder = await fetch(ordersUrl, {
+                method:'post',
+                headers,
+                body: bodyData
+            })
+
+            const status = createOrder.status;
+
+            console.log(status)
+            
+            if (status===201){
+                console.log('navigation')
+                getAllOrders()
+                .then(()=>{
+                    navigate('./app')
+                })            
+                setSubmitLoading(false)
+            }
+        } catch(error){
+            console.error(error);
+        } finally {
+            setSubmitLoading(false);
         }
-
-        const createOrder = await fetch(ordersUrl, {
-            method:'post',
-            headers,
-            body: bodyData
-        })
-
-        const status = createOrder.status;
-        
-        if (status===200){
-            // navigate('/app')
-        }
-    }
-
-    const getOrder = (orderId) => {        
-        const order = orders.find(order => order.id === orderId);
-        return order             
     }
 
     const updateInstructions = async(instructions, orderId) => {
-        const updateOrder = await fetch(`${ordersUrl}${orderId}/`, {
-            method:'put',
-            headers:headersContent,
-            body: JSON.stringify({
-                "instructions":instructions
+        try {
+            const updateOrder = await fetch(`${ordersUrl}${orderId}/`, {
+                method:'put',
+                headers:headersContent,
+                body: JSON.stringify({
+                    "instructions":instructions
+                })
             })
-        })
-
-        const status = updateOrder.status;        
-
-        return status;
+    
+            const data = updateOrder.json();        
+    
+            return data;
+        } catch (error) {
+            console.log(error);
+        } finally {}
     }
 
     const uploadAttachment = async(file, orderId) => {
-        const data = new FormData();
-        data.append('attachment', file);
-        const response = await fetch(`${ordersUrl}${orderId}/`, {
-            method:'put',
-            headers:{
-                'Authorization':`Bearer ${userToken}`
-            },
-            body:data
-        })
+        setLoadingAttachment(true);
+        try {
+            const data = new FormData();
+            data.append('attachment', file);
+            const response = await fetch(`${ordersUrl}${orderId}/`, {
+                method:'put',
+                headers:{
+                    'Authorization':`Bearer ${userToken}`
+                },
+                body:data
+            })
 
-        const status = response.status;
+            const status = response.status;
 
-        return status
+            const dataRes = await response.json();
+
+            return (dataRes)
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoadingAttachment(false);
+        }
     }
 
     const completeOrder = async(orderId) => {
-        const completeOrderStatus = await fetch(`${ordersUrl}${orderId}/`, {
-            method:'put',
-            headers:headersContent,
-            body: JSON.stringify({
-                "status":'Completed'
+        try {
+            const completeOrderStatus = await fetch(`${ordersUrl}${orderId}/`, {
+                method:'put',
+                headers:headersContent,
+                body: JSON.stringify({
+                    "status":'Completed'
+                })
             })
-        })
+    
+            const status = completeOrderStatus.status;
+    
+            return status;
+        } catch (error) {
+            console.log(error)
+        } finally {}
+    }
 
-        const status = completeOrderStatus.status;
+    const [order, setOrder] = useState();
 
-        return status;
+    const getOrder = async(orderId) => {  
+        try {
+            const getOrderById = await fetch(`${ordersUrl}${orderId}`, {
+                method:'get',
+                headers:headersContent,            
+            })
+
+            const orderDetails = await getOrderById.json();
+            setOrder(orderDetails);
+            return orderDetails;
+
+        } catch (error){
+            
+        } finally {
+            setLoading(false);     
+        }
     }
 
     useEffect(()=>{
-        userToken && getAllOrders()
-    },[userToken])
+        userToken && getAllOrders();
+    },[userToken]);
 
     return <OrderContext.Provider value={{
         orders, 
         ordersInProgress, 
         ordersCompleted, 
         loading,
+        submitLoading,
+        order,
+        loadingAttachemnt,
         getOrder,
         createOrder,
         updateInstructions,
         completeOrder,
         getAllOrders,
-        uploadAttachment
+        uploadAttachment,      
     }}>
         {props.children}
     </OrderContext.Provider>
