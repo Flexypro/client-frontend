@@ -6,7 +6,7 @@ import { FiUser } from "react-icons/fi";
 import { MdLock } from "react-icons/md";
 import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
-import { useState, CSSProperties } from 'react';
+import { useState } from 'react';
 import PulseLoader from "react-spinners/PulseLoader";
 
 // import { IoMdEye } from "react-icons/md";

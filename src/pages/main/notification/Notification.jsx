@@ -7,6 +7,8 @@ import { useState } from 'react';
 import { timeAgo } from '../../../utils/helpers/TimeAgo';
 import{ useNavigate } from 'react-router-dom';
 import { MdNotificationAdd } from "react-icons/md";
+import { getAccessToken } from '../../../utils/auth/AuthService';
+import { useOrderContext } from '../../../providers/OrderProvider';
 
 const Notification = () => {
 
@@ -14,23 +16,37 @@ const Notification = () => {
 
     const { userToken } = useAuthContext();
 
+    // const userToken = getAccessToken();
+
+
     const [notifications, setNotifications] = useState([]);
+
+    const [loading, setLoading] = useState(true);
 
     const notifUrl = `${import.meta.env.VITE_API_URL}/notifications`;
     
-    const getNotifications = async(token) =>{
+    const getNotifications = async() =>{
 
-        const getNotif = await fetch(notifUrl, {
-            method:'get',
-            headers:{
-                'content-Type':'application/json',
-                'Authorization':`Bearer ${token}`
-            }
-        })
+        try {
+            const getNotif = await fetch(notifUrl, {
+                method:'get',
+                headers:{
+                    'content-Type':'application/json',
+                    'Authorization':`Bearer ${userToken}`
+                }
+            })
+    
+            const notifications = await getNotif.json();
+            setNotifications(notifications);
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
 
-        const notifications = await getNotif.json();
-        setNotifications(notifications);
+        
     }
+    
 
     const navigateToOrder = (orderId, notifId) => {
         navigate(`../order/${orderId}`);
@@ -46,30 +62,70 @@ const Notification = () => {
     }
 
     const markNotificationRead  = async(notifId) => {
-        const readNotification = await fetch(`${notifUrl}/${notifId}/`, {
-            method:'put',
-            headers:{
-                'Content-Type':'application/json',
-                'Authorization':`Bearer ${userToken}`
-            },
-            body:JSON.stringify({
-                'read_status':true
+        const notification = notifications.find(item=>item.id===notifId);
+
+        if (!notification?.read_status) {
+            const readNotification = await fetch(`${notifUrl}/${notifId}/`, {
+                method:'put',
+                headers:{
+                    'Content-Type':'application/json',
+                    'Authorization':`Bearer ${userToken}`
+                },
+                body:JSON.stringify({
+                    'read_status':true
+                })
             })
-        })
-
-        const status = readNotification.status;
-
-        return status;
+    
+            const status = readNotification.status;
+    
+            return status;
+        }
     }
 
     useEffect(()=>{
-        getNotifications(userToken);
-    },[userToken])
+        getNotifications();
+    },[])
 
     return (
         <div className='notifications'>
             {
-                notifications.length > 0 ?
+               loading ?
+               <div className='notif-skeleton'>
+                    <div className='notif-skeleton-content'>
+                        <div className='notif-sk-circle'></div>
+                        <div className='notif-sk-box'>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <div className='notif-skeleton-content'>
+                        <div className='notif-sk-circle'></div>
+                        <div className='notif-sk-box'>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <div className='notif-skeleton-content'>
+                        <div className='notif-sk-circle'></div>
+                        <div className='notif-sk-box'>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <div className='notif-skeleton-content'>
+                        <div className='notif-sk-circle'></div>
+                        <div className='notif-sk-box'>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+               </div>                    
+               :
+               notifications.length > 0 ?
                 notifications?.map((notification, index)=>{
                     return (
                         <div style={{backgroundColor:notification?.read_status?'#eeeeee':''}} onClick={()=>navigateToOrder(notification.order_id, notification.id)} className='notif-box' key={index}>
@@ -96,8 +152,7 @@ const Notification = () => {
                         <article>New notifications will appear here, hang on!</article>
                         <MdNotificationAdd size={120} className='placeholder-icon' />
                     </div>
-                </div>
-
+                </div>                
             }                                
         </div>
     );

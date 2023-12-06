@@ -9,30 +9,31 @@ import { timeAgo } from '../../../../utils/helpers/TimeAgo';
 import { MdAdd } from "react-icons/md";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 import { useRef } from 'react';
 import { VscFile } from "react-icons/vsc";
+import OrderSkeletonLoading from '../../loading/OrderSkeletonLoading';
+import PulseLoader from "react-spinners/PulseLoader";
 
 const OrderView = () => {
-
-    const [refresh, setRefresh] = useState(false);
 
     const fileInputRef = useRef(null);
     
     const iconSize = 17;
 
     const {orderId} = useParams();
-    const { getOrder, updateInstructions, completeOrder, getAllOrders, uploadAttachment } = useOrderContext();
-    const [order, setOrder] = useState();
-    // const order = orders.find(order => order.id === orderId);    
 
-    const uploadedAt = timeAgo(order?.solution?.created);
+    const { order, getOrder, loadingAttachemnt, loading, updateInstructions, completeOrder, getAllOrders, uploadAttachment } = useOrderContext();
+
+    const [orderContent, setOrderContent] = useState(order);
+      
+    const uploadedAt = timeAgo(orderContent?.solution?.created);
 
     const [editInstructions, setEditInstructions] = useState(false);
-    const [editedInstructions, setEditedInstructions] = useState(order?.instructions);
+    const [editedInstructions, setEditedInstructions] = useState(orderContent?.instructions);
 
     const toggleInstructionMode =  () => {
-        setEditedInstructions(order?.instructions);
+        setEditedInstructions(orderContent?.instructions);
         setEditInstructions(!editInstructions);
     }
 
@@ -42,18 +43,15 @@ const OrderView = () => {
 
     const updateNewInstructions = () => {        
         updateInstructions(editedInstructions, orderId)        
-        .then((status)=>{
-            if (status===200){
-                order.instructions = editedInstructions
-                console.log("Updated order instructions")
-            }
+        .then((data)=>{
+            const updatedOrder = {
+                ...orderContent,
+                instructions:data.instructions
+            };    
+            updatedOrder.instructions = data.instructions;            
+            setOrderContent(updatedOrder);
+            
         })
-
-        getAllOrders()
-        .then(res=>{
-            setRefresh(!refresh)
-        })
-
         setEditInstructions(false);
         // setOrder(getOrder(orderId)); 
         
@@ -68,20 +66,15 @@ const OrderView = () => {
             if (status===200){
                 console.log("Order completed")
             }
-        })
-        getAllOrders()
-        .then(res=>{
-            setRefresh(!refresh)
-        })
+        })        
     }
 
     const openFileDialog = () => {
         console.log("Opening file dialog");
-        // if(fileInputRef.current){
+        if(fileInputRef.current){
             fileInputRef.current.click();
-        // }
+        }
     }
-
 
     const uploadAttachmentFile = (e) => {
         const attachment = e.target.files[0];
@@ -89,10 +82,17 @@ const OrderView = () => {
         if (attachment) {
             if (attachment.size <= 20 *1024 *1024){
                 uploadAttachment(attachment, orderId)
-                .then((status)=>{
-                    if (status===200){
-                        console.log("Attachment updated");
+                .then((res)=>{
+                    const attachmentUrl = res?.attachment;
+
+                    const updatedOrder = {
+                        ...orderContent, attachment: attachmentUrl
                     }
+
+                    orderContent.attachment = attachmentUrl;
+
+                    setOrderContent(updatedOrder);
+
                 })
             }
             else {
@@ -105,136 +105,149 @@ const OrderView = () => {
 
     const downloadFile = () => {
         const link = document.getElementById('solution-file');
-        link.download = (order?.solution.solution)
-            .substring(order?.solution.solution.lastIndexOf('/')+1);
+        link.download = (orderContent?.solution.solution)
+            .substring(orderContent?.solution.solution.lastIndexOf('/')+1);
         link.click();
-    }    
+    } 
 
     useEffect(()=>{
-        setOrder(getOrder(orderId));
-    },[getOrder])
+        orderId && getOrder(orderId);
+        // console.log(orderContent)
+        // orderId && getOrder(orderId)
+        // .then(res=>{
+        //     setOrderContent(res)
+        // })
+    }, [orderId]);
 
-    return (
-        <div className='order-view' key={refresh}>
-            <div className='order-details'>
-                <strong>{order?.title}</strong>            
-                <div className='order-elements'>
-                    <article>{order?.category}</article>
-                    <strong>${order?.amount}</strong>
-                    <article className='status'>{order?.status}</article>
-                    {
-                        order?.status === 'In Progress' && 
-                        <button onClick={changeOrderStatus} className='complete-order'>Complete Order</button>
-                    }                    
-                </div>                                                  
-                    <div  className='order-soln'>
+    return (                
+        <div className='order-view'>
+            {
+                loading ?
+                <OrderSkeletonLoading />                
+                :
+                <div className='order-details'>
+                    <strong style={{fontWeight:'bold'}}>{orderContent?.title}</strong>            
+                    <div className='order-elements'>
+                        <article>{orderContent?.category}</article>
+                        <strong>{!loading && ('$'+orderContent?.amount)}</strong>
+                        <article className='status'>{orderContent?.status}</article>
                         {
-                        order?.solution?
-                        <>
-                            <strong>Uploaded Work</strong>
-                            <div className='solutions'>
-                                {                            
-                                    <div>
-                                        <a href={`${order?.solution?.solution}`} id='solution-file' >
-                                            {
-                                                (order?.solution.solution)
-                                                .substring(order?.solution.solution.lastIndexOf('/')+1)                                            
-                                            }
-                                        </a>
-                                        <article>{order?.solution._type}</article>
-                                        <IoMdDownload className='download-icon' onClick={downloadFile} style={{cursor:'pointer'}} size={iconSize}/>
-                                        <article className=''>{uploadedAt}</article>
-                                    </div>
-                                }                        
-                            </div>
-                        </>:
-                            <strong style={{color:'orange'}}>Solution will be uploaded soon</strong>            
-                        }
-                    </div>                
-                {/* <div className='summary'>
-                    <strong>Summary</strong>
-                </div> */}
-                <div className="instructions">
-                    <strong>
-                        {
-                            order?.status ==='In Progress'?
-                            (order?.instructions ? 'Instructions':  ('Add Instructions')):
-                            order?.status ==='Completed' && 'Instructions'
-                        } 
-                        {                        
-                        order?.status === 'In Progress' &&  
-                        (
-                            editInstructions &&(order?.instructions != editedInstructions)?
-                            <button className='submit-instructions' onClick={updateNewInstructions}>Submit</button>:
-                            <MdModeEdit className='edit-icon' style={{cursor:'pointer'}} size={iconSize} onClick={toggleInstructionMode}/>
-                        )
-                        }
-                    </strong>
-                    {                                                
-                        (
-                            editInstructions?
-                            <div style={{width:'100%'}}>
-                                <textarea name="instructions" id="instructions" value={editedInstructions} 
-                                    style={{
-                                        width:'inherit',
-                                        padding:'0.5rem 0', 
-                                        outline:'none', 
-                                        border:'none'
-                                    }}  
-                                    rows="5" readOnly={false}  
-                                    onChange={handleInstructionChange}                                  
-                                />                                
-                            </div>:                            
-                            (
-                                order?.instructions &&
-                                <div>                            
-                                    <article>                                    
-                                        {order?.instructions}
-                                    </article>                                                        
+                            orderContent?.status === 'In Progress' && 
+                            <button onClick={changeOrderStatus} className='complete-order'>Complete Order</button>
+                        }                    
+                    </div>                                                  
+                        <div  className='order-soln'>
+                            {
+                            orderContent?.solution?
+                            <>
+                                <strong>Uploaded Work</strong>
+                                <div className='solutions'>
+                                    {                            
+                                        <div>
+                                            <a href={`${orderContent?.solution?.solution}`} id='solution-file' >
+                                                {
+                                                    (orderContent?.solution.solution)
+                                                    .substring(orderContent?.solution.solution.lastIndexOf('/')+1)                                            
+                                                }
+                                            </a>
+                                            <article>{orderContent?.solution._type}</article>
+                                            <IoMdDownload className='download-icon' onClick={downloadFile} style={{cursor:'pointer'}} size={iconSize}/>
+                                            <article className=''>{uploadedAt}</article>
+                                        </div>
+                                    }                        
                                 </div>
+                            </>:
+                                <strong style={{color:'orange'}}>Solution will be uploaded soon</strong>            
+                            }
+                        </div>                                    
+                    <div className="instructions">
+                        <strong>
+                            {
+                                orderContent?.status ==='In Progress'?
+                                (orderContent?.instructions ? 'Instructions':  ('Add Instructions')):
+                                orderContent?.status ==='Completed' && 'Instructions'
+                            } 
+                            {                        
+                            orderContent?.status === 'In Progress' &&  
+                            (
+                                editInstructions &&(orderContent?.instructions != editedInstructions)?
+                                <button className='submit-instructions' onClick={updateNewInstructions}>Submit</button>:
+                                <MdModeEdit className='edit-icon' style={{cursor:'pointer'}} size={iconSize} onClick={toggleInstructionMode}/>
                             )
-                        )
-                    }
-                </div>
-                {
-                    order?.status ==='Completed' && !order?.attachment?null:
-                    <div className='attachments'>
-                        {
-                            order?.attachment &&
-                            <strong>
-                                {
-                                    order?.attachment?'Attachments':'Attachments'
-                                }
-                                {order?.status ==='In Progress' && <MdAdd onClick={openFileDialog} style={{cursor:'pointer'}} size={20}/>}
-                                <input onChange={uploadAttachmentFile} ref={fileInputRef} style={{ display: 'none' }} size={20 * 1024 * 1024} type="file" name="" id="" />
-                            </strong>
-                        }
-                        {
-                            !order?.attachment &&
-                            order?.status ==='In Progress' &&
-                            <div className='upload-div'>
-                                <article onClick={openFileDialog}>
-                                    <VscFile className='file-icon' size={iconSize}/>                                
-                                    Upload an attachment
-                                    <input onChange={uploadAttachmentFile} ref={fileInputRef} style={{ display: 'none' }} size={20 * 1024 * 1024} type="file" name="" id="" />
-                                    </article>
-                            </div>
-                        }
-                        {
-                            order?.attachment &&
-                            <div>
-                                <a href={order?.attachment} target='_blank'>
-                                    {
-                                        (order?.attachment)
-                                        .substring(order?.attachment.lastIndexOf('/')+1)  
-                                    }  
-                                </a>                          
-                            </div>
+                            }
+                        </strong>
+                        {                                                
+                            (
+                                editInstructions?
+                                <div style={{width:'100%'}}>
+                                    <textarea name="instructions" id="instructions" value={editedInstructions} 
+                                        style={{
+                                            width:'inherit',
+                                            padding:'0.5rem 0', 
+                                            outline:'none', 
+                                            border:'none'
+                                        }}  
+                                        rows="5" readOnly={false}  
+                                        onChange={handleInstructionChange}                                  
+                                    />                                
+                                </div>:                            
+                                (
+                                    orderContent?.instructions &&
+                                    <div>                            
+                                        <article>                                    
+                                            {orderContent?.instructions}
+                                        </article>                                                        
+                                    </div>
+                                )
+                            )
                         }
                     </div>
-                }
-            </div>
-            <Chat />
+                    {
+                        orderContent?.status ==='Completed' && !orderContent?.attachment?null:
+                        <div className='attachments'>
+                            {
+                                orderContent?.attachment &&
+                                loadingAttachemnt ? 
+                                <div style={{height:'1.5rem'}}>
+                                    <PulseLoader size={10}  color='#7fc2f5' />
+                                </div>:
+                                <strong style={{height:'1.5rem'}}>
+                                    {
+                                        orderContent?.attachment?'Attachments':'Attachments'
+                                    }
+                                    {orderContent?.status ==='In Progress' && <MdAdd onClick={openFileDialog} style={{cursor:'pointer'}} size={20}/>}
+                                    <input onChange={uploadAttachmentFile} ref={fileInputRef} style={{ display: 'none' }} size={20 * 1024 * 1024} type="file" name="" id="" />
+                                </strong>
+                            }
+                            {
+                                !orderContent?.attachment &&
+                                orderContent?.status ==='In Progress' &&
+                                <div className='upload-div'>
+                                    <article onClick={openFileDialog}>
+                                        <VscFile className='file-icon' size={iconSize}/>                                
+                                        Upload an attachment
+                                        <input onChange={uploadAttachmentFile} ref={fileInputRef} style={{ display: 'none' }} size={20 * 1024 * 1024} type="file" name="" id="" />
+                                        </article>
+                                </div>
+                            }
+                            {
+                                orderContent?.attachment &&
+                                <div>
+                                    <a href={orderContent?.attachment} target='_blank'>
+                                        {
+                                            (orderContent?.attachment)
+                                            .substring(orderContent?.attachment.lastIndexOf('/')+1)  
+                                        }  
+                                    </a>                          
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+            {
+                !loading && <Chat />
+            }
         </div>
     );
 }

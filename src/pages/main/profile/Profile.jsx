@@ -12,7 +12,9 @@ import { useState } from 'react';
 import { useRef } from 'react';
 
 const Profile = () => {
-    const { userProfile, submitNewBio, uploadProfilePhoto } = useAuthContext();
+    const { loadingUserProfile, loadedUserProfile, submitNewBio, uploadProfilePhoto } = useAuthContext();
+
+    const [userProfile, setUserProfile] = useState(loadedUserProfile);
 
     const fileInputRef = useRef(null);
 
@@ -40,10 +42,14 @@ const Profile = () => {
         if (profilePhoto) {
             if (profilePhoto.size <= 5 *1024 *1024){
                 uploadProfilePhoto(profilePhoto, userProfile?.id)
-                .then((status)=>{
-                    if (status===200){
-                        console.log("Profile photo updated");
+                .then((json)=>{
+                    const updateProfile = {
+                        ...userProfile,
+                        profile_photo: json.profile_photo
                     }
+
+                    userProfile.profile_photo = json.profile_photo;
+                    setUserProfile(updateProfile)
                 })
             }
             else {
@@ -57,13 +63,22 @@ const Profile = () => {
     const submitEditedProfile = () => {
         if(userProfile.bio != editedBio){
             submitNewBio(editedBio, (userProfile?.id))
-            .then((status)=>{
-                if (status === 200){
-                    console.log("Profile edited")
+            .then((response)=>{
+                const updatedProfile = {
+                    ...userProfile,
+                    bio: response.bio
                 }
+                userProfile.bio = response.bio;
+                setUserProfile(updatedProfile);
             })
         }
         setEditBio(false);
+    }
+
+    const [initials, setInitials] = useState('')
+
+    const getTwoChars = () => {
+        
     }
 
     const iconSize = 25;
@@ -71,11 +86,21 @@ const Profile = () => {
     return (
         <div className='profile-main'>
             <div className='profile-info'>
-                <img onClick={openFileDialog} className='pic' src={(userProfile?.profile_photo)?userProfile?.profile_photo:"https://imgs.search.brave.com/dfllJJpXVV-lm16dI5Uco-HqoZssP1PWLkghlZIMMNQ/rs:fit:500:0:0/g:ce/aHR0cHM6Ly93d3cu/bWVyY3VyeW5ld3Mu/Y29tL3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDE5LzA2L0dldHR5/SW1hZ2VzLTExNTg4/NjEyNjIuanBnP3c9/NjIw"} alt="profile cover" />
-                <input onChange={updateProfilePhoto} ref={fileInputRef} style={{ display: 'none' }} size={5 * 1024 * 1024} accept='image/*' type="file" name="" id="" />
-                <div>
-                    <article style={{fontWeight:'bold'}}>{userProfile?.username}</article>
-                    <article>{userProfile?.email}flexy@gmail.com</article>
+                {                    
+                    userProfile?.profile_photo?
+                    <img style={{
+                        animation: loadingUserProfile?`skeleton-loading 1s linear infinite alternate`:''
+                    }} onClick={openFileDialog} className='pic' src={userProfile?.profile_photo} alt="profile cover" />:
+                    <label style={{
+                        animation: loadingUserProfile?`skeleton-loading 1s linear infinite alternate`:''
+                    }} htmlFor='upload-profile' className='img-placeholder-profile'>{ userProfile &&`${(userProfile?.username?.charAt(0)?.toUpperCase() + userProfile?.username.slice(1).slice(0,1))}`}</label>
+                }
+                <input id='upload-profile' onChange={updateProfilePhoto} ref={fileInputRef} style={{ display: 'none' }} size={5 * 1024 * 1024} accept='image/*' type="file" />
+                <div className='email-username'>
+                    <article className={loadingUserProfile?'username-skeleton':''} style={{fontWeight:'bold'}}>{userProfile?.username}</article>
+                    <article style={{
+                        animation: loadingUserProfile?`skeleton-loading 1s linear infinite alternate`:''
+                    }}>{userProfile?.email}</article>
                 </div>
             </div>
             <div className='prof-summary'>
@@ -105,7 +130,7 @@ const Profile = () => {
                         <MdAccessTime className='react-icon' size={iconSize}/>
                         <article>Last Login</article>
                     </div>
-                    <article className='last-login'>{timeAgo(userProfile?.last_login)}</article>
+                    <article className='last-login'>{userProfile ? timeAgo(userProfile?.last_login):'---'}</article>
                 </div>
             </div>
             <div className='profile-view'>                
