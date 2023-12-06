@@ -35,3 +35,17 @@ h1 {
   margin: 0;
   padding: 0;
 }
+
+
+/* Skeleton animation */
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: hsl(202, 16%, 86%);
+  }
+
+  100% {
+    background-color: hsl(200, 20%, 95%);
+  }
+  
+}
