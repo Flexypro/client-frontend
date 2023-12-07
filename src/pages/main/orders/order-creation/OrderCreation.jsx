@@ -4,10 +4,23 @@ import { IoMdArrowForward } from "react-icons/io";
 import { categories } from '../../../../utils/helpers/OrderCategories';
 import { useOrderContext } from '../../../../providers/OrderProvider';
 import PulseLoader from "react-spinners/PulseLoader";
+import { useRef, useState } from 'react';
 
 const OrderCreation = () => {
 
-    const { createOrder, submitLoading } = useOrderContext();    
+    const { createOrder, submitLoading } = useOrderContext();  
+    const [titleLimit, setTitleLimit] = useState(false);
+    const maxChars = 80;
+    const titleRef = useRef('');
+
+    const getTitleLength = () => {
+        const title = titleRef.current.value;
+        if (title.length === maxChars) {
+            setTitleLimit(true);
+            return
+        }
+        setTitleLimit(false);
+    }
 
     // const formatDate = (date) => {
     //     const year = date.getFullYear();
@@ -33,7 +46,6 @@ const OrderCreation = () => {
     
     // console.log(minDate, maxDate);
 
-
     return (
         <div className='order-creation'>
             <strong>Create a new order</strong>
@@ -43,7 +55,16 @@ const OrderCreation = () => {
                         {/* <div> */}
                             <label htmlFor="title">Title</label>
                         {/* </div> */}
-                        <input required id='title' type="text" placeholder='Enter the title' />
+                        <input style={{
+                            outlineColor:titleLimit && 'orange',
+                            borderColor:titleLimit && 'orange'
+                        }}
+                         required ref={titleRef} onChange={getTitleLength} maxLength={maxChars}  id='title' type="text" placeholder='Enter the title' 
+                        />
+                        {
+                            titleLimit && <span className='text-limit-helper'>Reached title limit</span>
+                        }
+
                     </div>
                     <div>
                         {/* <div> */}
