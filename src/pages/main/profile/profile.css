@@ -11,6 +11,16 @@
     padding: 1rem 0;
 }
 
+.profile-info .img-placeholder-profile{
+    font-size: 2rem;
+    background-color: var(--secondary-color);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+}
+
 .prof-summary {
     display: flex;
     flex-direction: column;
@@ -63,7 +73,7 @@
     position: inherit;
 }
 
-.profile-info .pic {
+.profile-info .pic, .profile-info .img-placeholder-profile {
     width: 4rem;
     aspect-ratio: 1;
     object-fit: cover;
@@ -108,4 +118,10 @@
     background-color: var(--secondary-color);
     border: solid 1px var(--secondary-color);
     color: #fff;
+}
+
+.email-username {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
