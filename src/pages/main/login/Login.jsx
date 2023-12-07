@@ -8,6 +8,8 @@ import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
 import { useState } from 'react';
 import PulseLoader from "react-spinners/PulseLoader";
+import { useEffect } from 'react';
+import { useRef } from 'react';
 
 // import { IoMdEye } from "react-icons/md";
 // import { IoMdEyeOff } from "react-icons/md";
@@ -15,14 +17,21 @@ import PulseLoader from "react-spinners/PulseLoader";
 
 const Login = () => {
     const iconSize = 30;
-    const { handleLogin, loading } = useAuthContext();
+    const { loginError, handleLogin, loading } = useAuthContext();
     const [visible, setVisible] = useState(false);
-    const style = {
-        height:'1rem'
-    }
+    const passwordRef = useRef();
+    const [password, setPassword] = useState('');
+    
     const togglePassword = ()=> {
         setVisible(!visible);
     }
+
+    useEffect(()=>{
+        if (loginError.error){
+            setPassword('');
+            console.log('Error')
+        }
+    },[loginError]);
 
     return (
         <div className='login'>
@@ -30,14 +39,19 @@ const Login = () => {
                 <IoLogoIonic size={120}/>
                 <h1>Flexypro</h1>
                 <article>Welcome back!</article>
-                <form onSubmit={handleLogin} className='login-form'>                    
+                <form onSubmit={handleLogin} className='login-form'>   
+                    {
+                        loginError.error && <span style={{
+                            color:'orange'
+                        }}>{loginError.error}</span>
+                    }                 
                     <div className='login-content'>
                         <FiUser className='username-icon' size={iconSize}/>
                         <input required id='username' type="text" placeholder='Username' />                    
                     </div>
                     <div className='login-content'>
                         <MdLock className='password-icon' size={iconSize}/>
-                        <input required id='password' type={visible?"text":"password" } placeholder='Password' />  
+                        <input required id='password' ref={passwordRef} value={password} onChange={(e)=>setPassword(e.target.value)} type={visible?"text":"password" } placeholder='Password' />  
                         {
                             visible?
                             <IoEye onClick={togglePassword} className='password-icon-eye' size={20} />:

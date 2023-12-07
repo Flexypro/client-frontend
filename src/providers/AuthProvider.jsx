@@ -17,6 +17,7 @@ export const AuthProvider = props => {
     const [userToken, setUserToken] = useState(getAccessToken());
     const [loadedUserProfile, setuserProfile] = useState();
     const [loadingUserProfile, setLoadingUserProfile] = useState(false);
+    const [loginError, setLoginError] = useState({});
 
     
     const headers = {
@@ -50,12 +51,15 @@ export const AuthProvider = props => {
 
     const handleLogin = async (e) => {
         setLoading(true);
-        e.preventDefault()
+        e.preventDefault();
+        setLoginError({});
         const username = e.target.username.value;
         const password = e.target.password.value;
         const loginUrl = `${import.meta.env.VITE_API_URL}/token/`;
 
         try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(()=>controller.abort(),10000);
             const getToken = await fetch(loginUrl, {
                 method: 'POST',
                 headers: {
@@ -64,10 +68,12 @@ export const AuthProvider = props => {
                 body: JSON.stringify({
                     'username':username,
                     'password':password
-                })            
+                }),
+                signal:controller.signal           
             })
     
             const status = getToken.status;
+            clearTimeout(timeoutId);
 
             if (status===200){
                 const token = await getToken.json();
@@ -75,12 +81,35 @@ export const AuthProvider = props => {
                 const accessToken = token.access;
                 setAccessToken(accessToken);
                 getUserToken();  
-                setLoading(false);              
+                setLoading(false); 
                 // const refreshToken = token.refresh
-            } 
+            } else if (status===401) {
+                setLoginError(
+                    {
+                        "error":'Invalid credentials!'
+                    }
+                )
+            } else {
+                setLoginError(
+                    {
+                        "error":'Error during login! Try again'
+                    }
+                )
+            }
             setLoading(false);        
         } catch(error) {
-            console.log(error);
+            console.log(error.name);
+            if (error.name === "AbortError"){
+                setLoginError({
+                    'error':'Request too long!'
+                });
+            } else{
+                setLoginError({
+                        "error":'Error during login! Try again'
+                    }
+                )
+            }
+            
         } finally {
             setLoading(false);
         }             
@@ -148,7 +177,8 @@ export const AuthProvider = props => {
             userToken, 
             loadedUserProfile,
             loadingUserProfile,
-            loading
+            loading,
+            loginError
         }
         }>
             {props.children}
