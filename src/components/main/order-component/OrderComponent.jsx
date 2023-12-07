@@ -11,10 +11,17 @@ const OrderComponent = ({ content }) => {
 
     const status = content.status;
 
+    const maxCharsToDisplay = 70;
+
     return (
         <div className='order-content' onClick={()=>navigate(`./order/${orderId}`)}>
             <div className='title-box'>
-                <article>{content.title}</article>
+                <article>
+                    {
+                        (content.title.length > maxCharsToDisplay)?`${(content.title).slice(0,60)}...`:
+                        content.title
+                    }
+                </article>
             </div>
             <div className='bottom-box'>
                 <div className='fx-start'>
