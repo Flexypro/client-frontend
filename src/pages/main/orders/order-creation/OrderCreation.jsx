@@ -22,22 +22,22 @@ const OrderCreation = () => {
         setTitleLimit(false);
     }
 
-    // const formatDate = (date) => {
-    //     const year = date.getFullYear();
-    //     const month = String(date.getMonth() + 1).padStart(2, '0');
-    //     const day = String(date.getDate()).padStart(2, '0');
-    //     const hours = String(date.getHours()).padStart(2, '0');
-    //     const minutes = String(date.getMinutes()).padStart(2, '0');
+    const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
     
-    //     return `${year}-${month}-${day}T${hours}:${minutes}:00`;
-    // };
+        return `${year}-${month}-${day}T${hours}:${minutes}:00`;
+    };
     
-    // const currentDate = new Date();
+    const currentDate = new Date();
     
-    // // Add 3 hours to the current date
-    // const modifiedDate1 = new Date(currentDate.getTime());
-    // modifiedDate1.setHours(currentDate.getHours() + 3);
-    // const minDate = formatDate(modifiedDate1);
+    // Add 3 hours to the current date
+    const modifiedDate1 = new Date(currentDate.getTime());
+    modifiedDate1.setHours(currentDate.getHours() + 3);
+    const minDate = formatDate(modifiedDate1);
     
     // // Add 3 months to the current date
     // const modifiedDate2 = new Date(currentDate.getTime());
@@ -88,7 +88,7 @@ const OrderCreation = () => {
                         {/* <div> */}
                             <label htmlFor="deadline">Deadline</label>
                         {/* </div> */}
-                        <input required type="datetime-local" id='deadline' />
+                        <input required type="datetime-local" id='deadline' min={minDate}/>
                     </div>
                 </div>                
                 <div className='instructions-box'>
