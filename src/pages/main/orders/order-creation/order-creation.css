@@ -57,3 +57,11 @@
     align-items: center;
     gap: 1rem;
 }
+
+.text-limit-helper {
+    color: orange;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: small;
+}
