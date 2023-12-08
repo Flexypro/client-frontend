@@ -172,33 +172,16 @@ export const OrderProvider = (props) => {
                 })
             })
     
-            const status = completeOrderStatus.status;
+            // const status = completeOrderStatus.status;
     
-            return status;
+            const data = await completeOrderStatus.json();
+            return data;
         } catch (error) {
             console.log(error)
         } finally {}
     }
 
-    const [order, setOrder] = useState();
-
-    const getOrder = async(orderId) => {  
-        try {
-            const getOrderById = await fetch(`${ordersUrl}${orderId}`, {
-                method:'get',
-                headers:headersContent,            
-            })
-
-            const orderDetails = await getOrderById.json();
-            setOrder(orderDetails);
-            return orderDetails;
-
-        } catch (error){
-            
-        } finally {
-            setLoading(false);     
-        }
-    }
+    // const [orderDetails, setOrderDetails] = useState();
 
     useEffect(()=>{
         userToken && getAllOrders();
@@ -210,9 +193,8 @@ export const OrderProvider = (props) => {
         ordersCompleted, 
         loading,
         submitLoading,
-        order,
         loadingAttachemnt,
-        getOrder,
+        // getOrder,
         createOrder,
         updateInstructions,
         completeOrder,

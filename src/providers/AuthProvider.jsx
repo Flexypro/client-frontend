@@ -84,14 +84,12 @@ export const AuthProvider = props => {
                 setLoading(false); 
                 // const refreshToken = token.refresh
             } else if (status===401) {
-                setLoginError(
-                    {
+                setLoginError({
                         "error":'Invalid credentials!'
                     }
                 )
             } else {
-                setLoginError(
-                    {
+                setLoginError({
                         "error":'Error during login! Try again'
                     }
                 )
