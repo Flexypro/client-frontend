@@ -3,13 +3,15 @@ import { createContext } from "react";
 import { getAccessToken, removeAccessToken, setAccessToken } from "../utils/auth/AuthService";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import { isExpired } from 'react-jwt';
+import { useNavigate, useLocation } from 'react-router-dom';
+
 export const AuthContext = createContext();
 
 export const AuthProvider = props => {
 
     const [loading, setLoading] = useState(false);
+
+    const location = useLocation();
 
     const profileUrl = `${import.meta.env.VITE_API_URL}/profile`;
 
@@ -61,6 +63,8 @@ export const AuthProvider = props => {
     }
 
     const handleLogin = async (e) => {
+        const orderId = new URLSearchParams(location.search).get('order');
+        const redirect = new URLSearchParams(location.search).get('redirect');
         setLoading(true);
         e.preventDefault();
         setLoginError({});
@@ -91,9 +95,14 @@ export const AuthProvider = props => {
     
                 const accessToken = token.access;
                 setAccessToken(accessToken);
-                console.log("Set user token");
-                getUserToken();  
+                getUserToken();                  
                 setLoading(false); 
+                if (orderId) {
+                    navigate(`/app/order/${orderId}`);
+                }
+                if (redirect) {
+                    navigate(`/app/${redirect}`);
+                }
                 // const refreshToken = token.refresh
             } else if (status===401) {
                 setLoginError({

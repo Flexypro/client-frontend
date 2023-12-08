@@ -100,9 +100,7 @@ export const OrderProvider = (props) => {
                 body: bodyData
             })
 
-            const status = createOrder.status;
-
-            console.log(status)
+            const status = createOrder.status;    
             
             if (status===201){
                 console.log('navigation')
@@ -111,6 +109,8 @@ export const OrderProvider = (props) => {
                     navigate('./app')
                 })            
                 setSubmitLoading(false)
+            } else if (status===401){
+                navigate('/login?redirect=create-task');                
             }
         } catch(error){
             console.error(error);
@@ -129,9 +129,15 @@ export const OrderProvider = (props) => {
                 })
             })
     
-            const data = updateOrder.json();        
-    
-            return data;
+            if (updateOrder.ok) {            
+                const data = updateOrder.json();        
+                return data;
+            } else {
+                const status = updateOrder.status;
+                if (status===401){
+                    navigate(`../login?order=${orderId}`);
+                }
+            }
         } catch (error) {
             console.log(error);
         } finally {}
@@ -150,11 +156,16 @@ export const OrderProvider = (props) => {
                 body:data
             })
 
-            const status = response.status;
-
-            const dataRes = await response.json();
-
-            return (dataRes)
+            if (data.ok) {
+                const dataRes = await response.json();
+                return (dataRes)
+            } else {
+                const status = response.status;
+                if (status===401){
+                    console.log("NOT ALLOWED")
+                    navigate(`../login?order=${orderId}`);
+                }
+            }
         } catch (error) {
             console.error(error);
         } finally {
@@ -172,10 +183,15 @@ export const OrderProvider = (props) => {
                 })
             })
     
-            // const status = completeOrderStatus.status;
-    
-            const data = await completeOrderStatus.json();
-            return data;
+            if (completeOrderStatus.ok) {
+                const data = await completeOrderStatus.json();
+                return data;
+            } else {
+                const status = completeOrderStatus.status;
+                if (status===401){
+                    navigate(`../login?order=${orderId}`);
+                }
+            }            
         } catch (error) {
             console.log(error)
         } finally {}
