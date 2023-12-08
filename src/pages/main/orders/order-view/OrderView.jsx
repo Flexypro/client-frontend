@@ -8,7 +8,7 @@ import { useOrderContext } from '../../../../providers/OrderProvider';
 import { timeAgo } from '../../../../utils/helpers/TimeAgo';
 import { MdAdd } from "react-icons/md";
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import { VscFile } from "react-icons/vsc";
@@ -21,6 +21,9 @@ const OrderView = () => {
     const ordersUrl = `${import.meta.env.VITE_API_URL}/orders/`
 
     const { userToken } = useAuthContext();
+
+    const navigate = useNavigate();
+
 
     const fileInputRef = useRef(null);
     
@@ -51,12 +54,14 @@ const OrderView = () => {
     const updateNewInstructions = () => {        
         updateInstructions(editedInstructions, orderId)        
         .then((data)=>{
-            const updatedOrder = {
-                ...orderContent,
-                instructions:data.instructions
-            };    
-            updatedOrder.instructions = data.instructions;            
-            setOrderContent(updatedOrder);
+            if (data) {
+                const updatedOrder = {
+                    ...orderContent,
+                    instructions:data.instructions
+                };    
+                updatedOrder.instructions = data.instructions;            
+                setOrderContent(updatedOrder);
+            }
             
         })
         setEditInstructions(false);
@@ -122,7 +127,6 @@ const OrderView = () => {
     } 
 
     const getOrder = async(orderId) => {  
-        console.log("Fetching an order");
         try {
             const getOrderById = await fetch(`${ordersUrl}${orderId}`, {
                 method:'get',
@@ -132,13 +136,19 @@ const OrderView = () => {
                 },            
             })
 
-            const orderDetails = await getOrderById.json();
-            setOrderContent(orderDetails);
-            console.log(orderDetails);
+            if (getOrderById.ok){
+                const orderDetails = await getOrderById.json();
+                setOrderContent(orderDetails);                
+            } else {
+                const status = getOrderById.status;
+                if (status===401){
+                    navigate(`/login?order=${orderId}`);                    
+                }
+            }
             // return orderDetails;
 
         } catch (error){
-            console.error(error);
+            console.log(error);
             
         } finally {
             setLoading(false);     
@@ -146,11 +156,13 @@ const OrderView = () => {
     }    
 
     useEffect(()=>{
+        console.log("Getting order.....")
         // getOrder(orderId).then((data)=>{
         //     setOrderContent(data);
         // })
+        // orderId && navigate(`./orders/${orderId}`)
         getOrder(orderId);
-    }, []);
+    }, [orderId,]);
 
     return (                
         <div className='order-view'>
@@ -216,7 +228,7 @@ const OrderView = () => {
                                 (
                                     editInstructions?
                                     <div style={{width:'100%'}}>
-                                        <textarea name="instructions" id="instructions" value={editedInstructions} 
+                                        <textarea placeholder='Tell us about your order!' name="instructions" id="instructions" value={editedInstructions} 
                                             style={{
                                                 width:'inherit',
                                                 padding:'0.5rem 0', 

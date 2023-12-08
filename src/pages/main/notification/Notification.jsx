@@ -36,30 +36,20 @@ const Notification = () => {
                 }
             })
     
-            const notifications = await getNotif.json();
-            setNotifications(notifications);
+            if (getNotif.ok) {
+                const notifications = await getNotif.json();
+                setNotifications(notifications);
+            } else {
+                const status = getNotif.status;
+                if (status===401){
+                    navigate('/login?redirect=notifications');
+                }
+            }
         } catch (error) {
             console.log(error)
         } finally {
             setLoading(false)
-        }
-
-        
-    }
-    
-
-    const navigateToOrder = (orderId, notifId) => {
-        navigate(`../order/${orderId}`);
-        markNotificationRead(notifId)
-        .then((status)=>{
-            if (status===200){
-                console.log("Notification read");
-            }
-        })
-        .catch((error)=>{
-            console.error(error);
-        })
-        updateNotificationIconProfile();        
+        }        
     }
 
     const markNotificationRead  = async(notifId) => {
@@ -81,7 +71,21 @@ const Notification = () => {
     
             return status;
         }
-    }
+    }    
+
+    const navigateToOrder = (orderId, notifId) => {
+        navigate(`../order/${orderId}`);
+        markNotificationRead(notifId)
+        .then((status)=>{
+            if (status===200){
+                console.log("Notification read");
+            }
+        })
+        .catch((error)=>{
+            console.error(error);
+        })
+        updateNotificationIconProfile();        
+    }    
 
     useEffect(()=>{
         getNotifications();
