@@ -4,7 +4,7 @@ import { getAccessToken, removeAccessToken, setAccessToken } from "../utils/auth
 import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-
+import { isExpired } from 'react-jwt';
 export const AuthContext = createContext();
 
 export const AuthProvider = props => {
@@ -40,6 +40,17 @@ export const AuthProvider = props => {
             console.error(error)
         } finally {
             setLoadingUserProfile(false);
+        }
+    }
+
+    const updateNotificationIconProfile = async() => {
+        try {
+            getUserProfile()
+            
+        } catch {
+
+        } finally {
+
         }
     }
 
@@ -80,6 +91,7 @@ export const AuthProvider = props => {
     
                 const accessToken = token.access;
                 setAccessToken(accessToken);
+                console.log("Set user token");
                 getUserToken();  
                 setLoading(false); 
                 // const refreshToken = token.refresh
@@ -153,18 +165,25 @@ export const AuthProvider = props => {
         } finally {}
     }
 
+
     const getUserToken = () => {
+        console.log("Getting token");
         const token = getAccessToken();
-        setUserToken(token);
+
+        if (token) {
+            setUserToken(token);
+        } else {
+            setUserToken();
+        }
     }
 
     useEffect(()=>{
         if (!userToken){
             getAccessToken();
         } 
+
         userToken && getUserProfile();
-        
-        
+           
     }, [userToken])
     return (
         <AuthContext.Provider value={{

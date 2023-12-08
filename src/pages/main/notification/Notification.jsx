@@ -59,6 +59,7 @@ const Notification = () => {
         .catch((error)=>{
             console.error(error);
         })
+        updateNotificationIconProfile();        
     }
 
     const markNotificationRead  = async(notifId) => {
