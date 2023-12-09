@@ -36,6 +36,7 @@ const InProgress = () => {
                 </div>:
                 (ordersInProgress.length > 0)?
                 ordersInProgress.map((order, index)=>{
+                    // console.log("Rendering again...", order)
                     return (
                         // <div className='in-progress'>
                             <OrderComponent key={index} content={order}/>
