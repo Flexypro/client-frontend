@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 
 export const OrderContext = createContext();
 
+const socket = new WebSocket('ws://127.0.0.1:8000/ws/order/mucia/');
+
 export const OrderProvider = (props) => {
 
     const navigate = useNavigate();
@@ -197,10 +199,27 @@ export const OrderProvider = (props) => {
         } finally {}
     }
 
+    socket.onmessage = (event) => {
+        const receivedData = JSON.parse(event.data);
+        const newOrder = (receivedData.message.order);
+        console.log("Received ", receivedData);
+        setOrders(prev=>{
+            const updatedOrders = [newOrder, ...prev];
+            const inProgress = updatedOrders.filter(order=>order.status==='In Progress');
+            setOrdersInProgress(inProgress);
+            return updatedOrders;
+        });
+    }
+
     // const [orderDetails, setOrderDetails] = useState();
 
     useEffect(()=>{
         userToken && getAllOrders();
+        socket.onopen = () => {
+            console.log("Connection established");
+        }
+        
+
     },[userToken]);
 
     return <OrderContext.Provider value={{
