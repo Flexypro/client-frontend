@@ -85,6 +85,7 @@
     height: 15px;
     align-items: center;
     justify-content: center;
+    padding: 1px;
 }
 
 .notif-bell div article {

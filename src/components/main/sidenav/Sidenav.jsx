@@ -77,7 +77,13 @@ const Sidenav = () => {
                         {
                             userProfile?.unread_notifications > 0 &&
                             <div>
-                                <article>{userProfile?.unread_notifications}</article>
+                                <article>
+                                    {
+                                        userProfile?.unread_notifications > 9?
+                                        '9+':
+                                        userProfile?.unread_notifications
+                                    }
+                                </article>
                             </div>
                         }
                     </div>                    
