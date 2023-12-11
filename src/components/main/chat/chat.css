@@ -1,6 +1,110 @@
 .chat {
+    position: relative;
     background-color: var(--background);
-    width: 25%;
-    border-radius: 4px;
+    width: 30%;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.chat-header {
+    background-color: var(--secondary-color);
+    color: #fff;
+    display: flex;
+    height: 3rem;
     padding: 0.5rem;
+}
+
+.receiver-profile {
+    display: flex;
+    align-items: center;
+    
+}
+
+.messages-box {
+    margin-top: 0.5rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+    height: 65vh;
+    overflow-y: auto;
+}
+
+
+.empty-inbox {
+    position: relative;
+    height: 65vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--secondary-color);
+    gap: 1rem;
+}
+
+.chat-icon {
+    color: var(--secondary-color);
+}
+
+.send-message, .received-message {
+    position: inherit;
+    min-width: 30%;
+    padding: 0.5rem;
+    max-width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.send-message {
+    background-color: rgb(230, 230, 230);    
+    border-radius: 0.5rem 0 0.5rem 0.5rem;
+    color: rgb(146, 146, 146);
+    align-self: flex-end;
+}
+
+.received-message {
+    background-color: var(--secondary-color);
+    border-radius: 0 0.5rem 0.5rem 0.5rem;
+    color: #fff;
+    align-self: flex-start;
+}
+
+.time {
+    align-self: flex-end;
+    display: flex;
+    gap: 4px;
+}
+
+.message-reply-box {
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    z-index: 1;
+    background-color: var(--background);
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.message-reply-box input {
+    padding: 0.9rem 0.5rem;
+    width: 80%;
+    border: solid 1px var(--secondary-color);
+    border-radius: 8px;
+    outline-color: var(--secondary-color);
+    /* font-size: var(--fontsize-normal); */
+    font-size: var(--fontsize-normal);
+    color: gray;
+}
+
+.submit-message.active {
+    color: var(--secondary-color);
+    cursor: pointer;
+}
+
+.submit-message.inactive {
+    cursor: not-allowed;
+    color: gray;
 }
