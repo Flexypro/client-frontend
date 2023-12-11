@@ -42,8 +42,7 @@ const Chat = ({orderId}) => {
         e.preventDefault();
         sendChat(msg, orderId)
         .then(()=>{
-            setMsg('');
-                                   
+            setMsg('');                                   
         })
     }    
 
