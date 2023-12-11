@@ -4,10 +4,8 @@ import { useAuthContext } from "./AuthProvider";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-
+import { useJwt } from 'react-jwt';
 export const OrderContext = createContext();
-
-const socket = new WebSocket('ws://127.0.0.1:8000/ws/order/mucia/');
 
 export const OrderProvider = (props) => {
 
@@ -16,6 +14,8 @@ export const OrderProvider = (props) => {
     const ordersUrl = `${import.meta.env.VITE_API_URL}/orders/`
 
     const { userToken } = useAuthContext();
+    const { decodedToken } = useJwt(userToken);
+
     const [orders, setOrders] = useState([]);
     const [ordersInProgress, setOrdersInProgress] = useState([]);
     const [ordersCompleted, setOrdersCompleted] = useState([]);
@@ -24,6 +24,9 @@ export const OrderProvider = (props) => {
     const [loading, setLoading] = useState(true);
     const [submitLoading, setSubmitLoading] = useState(false);
 
+    const [user, setUser] = useState();
+    const [socket, setSocket] = useState(null);
+
     const headersContent = {
         'Content-Type':'application/json',
         'Authorization':`Bearer ${userToken}`                
@@ -31,7 +34,6 @@ export const OrderProvider = (props) => {
 
     const getAllOrders = async() => {
         const ordersUrl = `${import.meta.env.VITE_API_URL}/orders`
-        console.log("Getting orders...")
         try {
             const getOrders = await fetch(ordersUrl, {
                 headers: {
@@ -199,25 +201,58 @@ export const OrderProvider = (props) => {
         } finally {}
     }
 
-    socket.onmessage = (event) => {
-        const receivedData = JSON.parse(event.data);
-        const newOrder = (receivedData.message.order);
-        console.log("Received ", receivedData);
-        setOrders(prev=>{
-            const updatedOrders = [newOrder, ...prev];
-            const inProgress = updatedOrders.filter(order=>order.status==='In Progress');
-            setOrdersInProgress(inProgress);
-            return updatedOrders;
-        });
-    }
+    // useEffect(()=>{
+
+    // },[])
+
+
+    // socket.onmessage = (event) => {
+    //     const receivedData = JSON.parse(event.data);
+    //     const newOrder = (receivedData.message.order);
+    //     console.log("Received ", receivedData);
+    //     setOrders(prev=>{
+    //         const updatedOrders = [newOrder, ...prev];
+    //         const inProgress = updatedOrders.filter(order=>order.status==='In Progress');
+    //         setOrdersInProgress(inProgress);
+    //         return updatedOrders;
+    //     });
+    // }    
+
+    useEffect(()=>{
+
+        setUser(decodedToken?.user_id)
+        if (user) {
+            const newSocket = new WebSocket(`ws://127.0.0.1:8000/ws/order/${user}/`);        
+            setSocket(newSocket);
+            newSocket.onmessage = (event) => {
+                const receivedData = JSON.parse(event.data);
+                const newOrder = (receivedData.message.order);
+                console.log("Received ", receivedData);
+                setOrders(prev=>{
+                    const updatedOrders = [newOrder, ...prev];
+                    const inProgress = updatedOrders.filter(order=>order.status==='In Progress');
+                    setOrdersInProgress(inProgress);
+                    return updatedOrders;
+                });   
+            }
+            setSocket(newSocket);            
+        }
+
+        return () => {
+            if (socket){
+                socket.close();
+            }
+        }
+
+    }, [decodedToken, user])
 
     // const [orderDetails, setOrderDetails] = useState();
 
     useEffect(()=>{
         userToken && getAllOrders();
-        socket.onopen = () => {
-            console.log("Connection established");
-        }
+        // socket.onopen = () => {
+        //     console.log("Connection established");
+        // }
         
 
     },[userToken]);
