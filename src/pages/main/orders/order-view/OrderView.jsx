@@ -292,7 +292,7 @@ const OrderView = () => {
                             </div>
                         }
                     </div>
-                    <Chat orderId={orderId}/>
+                    <Chat orderId={orderId} client={orderContent.client} freelancer={orderContent.freelancer} />
                 </>                
                 )
                 
