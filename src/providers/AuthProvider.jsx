@@ -4,6 +4,7 @@ import { getAccessToken, removeAccessToken, setAccessToken } from "../utils/auth
 import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useChatContext } from "./ChatProvider";
 
 export const AuthContext = createContext();
 

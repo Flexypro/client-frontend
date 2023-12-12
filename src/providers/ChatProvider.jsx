@@ -4,6 +4,7 @@ import { createContext } from "react";
 import { useJwt } from 'react-jwt';
 import { useAuthContext } from "./AuthProvider";
 import { useState } from "react";
+import  newMessageTone from '../assets/sounds/newMessageTone.wav';
 
 export const ChatContext = createContext();
 
@@ -21,15 +22,14 @@ export const ChatProvider = (props) => {
 
     const [loadingChats, setLoadingChats] = useState(true);
     
-    const [typing, setTyping] = useState(false);
-    let typingTimer;
-
+    const [typingData, setTypingData] = useState(false);
 
     const headers = {
         'Authorization':`Bearer ${userToken}`,
         'Content-Type':'application/json'
     }
 
+    let typingTimer;
 
     const sendChat = async(msg, orderId) => {
         const chatsUrl = `${import.meta.env.VITE_API_URL}/orders/${orderId}/chats/`
@@ -81,8 +81,13 @@ export const ChatProvider = (props) => {
         } finally {
             setLoadingChats(false);
         }
-
     }
+
+    // useEffect(()=>{
+    //     if (!userToken){
+    //         socket.close();
+    //     }
+    // }, [userToken])
 
     useEffect(()=>{
         setUser(decodedToken?.user_id)
@@ -98,14 +103,17 @@ export const ChatProvider = (props) => {
                         const updatedChats = [...prev, newChat]
                         setChats(updatedChats);
                         return updatedChats;
-                    })
-                } else if (receivedData.type==='typing_status'){
-                    setTyping(receivedData.typing);
-                    clearTimeout(typingTimer);
+                    });
+                    const sound = new Audio(newMessageTone);
+                    sound.play();
+                    console.log("Received new message")
 
+                } else if (receivedData.type==='typing_status'){
+                    setTypingData(receivedData.message);      
+                    clearTimeout(typingTimer);
                     typingTimer = setTimeout(()=>{
-                        setTyping(false);
-                    }, 2000)
+                        setTypingData(null);
+                    }, 2000)                
                 }
             }
             setSocket(newSocket);            
@@ -119,7 +127,7 @@ export const ChatProvider = (props) => {
     }, [user, decodedToken])
 
     return (
-        <ChatContext.Provider value={{loadingChats, chats, socket, typing, getChats, sendChat}}>
+        <ChatContext.Provider value={{loadingChats, chats, socket, typingData, getChats, sendChat}}>
             {props.children}
         </ChatContext.Provider>
     )
