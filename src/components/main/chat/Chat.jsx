@@ -10,22 +10,33 @@ import { useRef } from 'react';
 import { useState } from 'react';
 import { useLayoutEffect } from 'react';
 
-const Chat = ({orderId}) => {
+const Chat = ({orderId, client, freelancer}) => {
 
     const { loadedUserProfile } = useAuthContext();
-    const { loadingChats, chats, getChats, sendChat, socket, typing } = useChatContext();
+    const { loadingChats, chats, getChats, sendChat, socket, typingData } = useChatContext();
 
+    const [typing, setTyping] = useState(false);
 
     const messageRef = useRef();     
     const [msg, setMsg] = useState();
 
     const chatBoxRef = useRef();
 
+    const getReceiver = () => {
+        if  (loadedUserProfile.username === client.user.username) {
+            return freelancer.user.username
+        } else if (loadedUserProfile.username === freelancer.user.username) {
+            return client.user.username
+        }
+    }
+
     const checkMsg = () =>{
         setMsg(messageRef.current.value);
+
         const data = JSON.stringify({
             'message':'typing',
-            'receiver': chats[0].sender.username === loadedUserProfile.username ? chats[0].receiver.username:chats[0].sender.username
+            'orderId': orderId,
+            'receiver': getReceiver()
         });
         if (socket.OPEN){
             socket.send(data);
@@ -44,7 +55,17 @@ const Chat = ({orderId}) => {
         .then(()=>{
             setMsg('');                                   
         })
-    }    
+    }   
+    
+    useEffect(()=>{
+        if (typingData?.order_id === orderId) {
+            setTyping(typingData.typing);               
+        } else {
+            setTyping(false);
+        }
+        
+    }, [typingData, orderId]);
+
 
     useEffect(()=>{
         orderId && getChats(orderId)
