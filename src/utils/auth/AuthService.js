@@ -9,7 +9,6 @@ export const setAccessToken = (accessToken) => {
     )
 }
 
-
 export const removeAccessToken = () => {
     localStorage.removeItem(
         accessTokenKey
@@ -21,7 +20,7 @@ export const checkToken = (token) => {
         const tokenExpired = isExpired(token);
         if (tokenExpired) {
             removeAccessToken();
-            return
+            return null
         } else {
             return localStorage.getItem(
                 accessTokenKey
