@@ -7,89 +7,25 @@ import { useState } from 'react';
 import { timeAgo } from '../../../utils/helpers/TimeAgo';
 import{ useNavigate } from 'react-router-dom';
 import { MdNotificationAdd } from "react-icons/md";
-import { getAccessToken } from '../../../utils/auth/AuthService';
-import { useOrderContext } from '../../../providers/OrderProvider';
+import { useNotificationContext } from '../../../providers/NotificationProvider';
 
 const Notification = () => {
 
     const navigate = useNavigate();
-
-    const { userToken } = useAuthContext();
-
-    // const userToken = getAccessToken();
-
-
-    const [notifications, setNotifications] = useState([]);
-
-    const [loading, setLoading] = useState(true);
-
-    const notifUrl = `${import.meta.env.VITE_API_URL}/notifications`;
     
-    const getNotifications = async() =>{
-
-        try {
-            const getNotif = await fetch(notifUrl, {
-                method:'get',
-                headers:{
-                    'content-Type':'application/json',
-                    'Authorization':`Bearer ${userToken}`
-                }
-            })
-    
-            if (getNotif.ok) {
-                const notifications = await getNotif.json();
-                setNotifications(notifications);
-            } else {
-                const status = getNotif.status;
-                if (status===401){
-                    navigate('/login?redirect=notifications');
-                }
-            }
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setLoading(false)
-        }        
-    }
-
-    const markNotificationRead  = async(notifId) => {
-        const notification = notifications.find(item=>item.id===notifId);
-
-        if (!notification?.read_status) {
-            const readNotification = await fetch(`${notifUrl}/${notifId}/`, {
-                method:'put',
-                headers:{
-                    'Content-Type':'application/json',
-                    'Authorization':`Bearer ${userToken}`
-                },
-                body:JSON.stringify({
-                    'read_status':true
-                })
-            })
-    
-            const status = readNotification.status;
-    
-            return status;
-        }
-    }    
+    const { notifications, loading, markNotificationRead } = useNotificationContext();            
 
     const navigateToOrder = (orderId, notifId) => {
         navigate(`../order/${orderId}`);
         markNotificationRead(notifId)
-        .then((status)=>{
-            if (status===200){
-                console.log("Notification read");
-            }
-        })
-        .catch((error)=>{
-            console.error(error);
-        })
-        updateNotificationIconProfile();        
-    }    
-
-    useEffect(()=>{
-        getNotifications();
-    },[])
+        // .then((status)=>{
+        //     if (status===200){
+        //     }
+        // })
+        // .catch((error)=>{
+        //     console.error(error);
+        // })
+    }      
 
     return (
         <div className='notifications'>

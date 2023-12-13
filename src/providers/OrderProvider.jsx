@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useJwt } from 'react-jwt';
+
 export const OrderContext = createContext();
 
 export const OrderProvider = (props) => {
@@ -227,7 +228,6 @@ export const OrderProvider = (props) => {
             newSocket.onmessage = (event) => {
                 const receivedData = JSON.parse(event.data);
                 const newOrder = (receivedData.message.order);
-                console.log("Received ", receivedData);
                 setOrders(prev=>{
                     const updatedOrders = [newOrder, ...prev];
                     const inProgress = updatedOrders.filter(order=>order.status==='In Progress');
@@ -236,6 +236,8 @@ export const OrderProvider = (props) => {
                 });   
             }
             setSocket(newSocket);            
+        } else {
+            socket?.close();
         }
 
         return () => {

@@ -6,15 +6,18 @@ import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './providers/AuthProvider.jsx'
 import { OrderProvider } from './providers/OrderProvider.jsx'
 import { ChatProvider } from './providers/ChatProvider.jsx'
+import { NotificationProvider } from './providers/NotificationProvider.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-  <AuthProvider>
-  <OrderProvider>
-  <ChatProvider>
-    <App />
-  </ChatProvider>
-  </OrderProvider>
-  </AuthProvider>
+    <AuthProvider>
+      <OrderProvider>
+        <ChatProvider>
+          <NotificationProvider>
+            <App />
+          </NotificationProvider>
+        </ChatProvider>
+      </OrderProvider>
+    </AuthProvider>
   </BrowserRouter>
 )

@@ -12,6 +12,7 @@ import Settings from './pages/main/settings/Settings';
 import OrderView from './pages/main/orders/order-view/OrderView';
 import Login from './pages/main/login/Login';
 import { useAuthContext } from './providers/AuthProvider';
+import NotificationFloat from './components/main/notification/NotificationFloat';
 
 function App() {
   const { userToken } = useAuthContext();
@@ -30,7 +31,7 @@ function App() {
 
     return (
       <>
-        <Sidenav />  
+        <Sidenav />          
         <Routes>
           <Route path='/' element={<Dashboard />}/>  
           <Route path='notifications' element={<Notification/>}/>
@@ -38,7 +39,8 @@ function App() {
           <Route path='profile' element={<Profile/>}/>       
           <Route path='settings' element={<Settings/>}/> 
           <Route path='order/:orderId' element={<OrderView/>}/>
-        </Routes>          
+        </Routes>    
+        <NotificationFloat />
       </>
     )
   }

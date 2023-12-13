@@ -6,12 +6,15 @@ import { useNavigate } from "react-router-dom";
 import { useAuthContext } from '../../../providers/AuthProvider';
 import { useState } from 'react';
 import { useOrderContext } from '../../../providers/OrderProvider';
+import { useNotificationContext } from '../../../providers/NotificationProvider';
 
 const Sidenav = () => {
 
     const { loadingUserProfile, loadedUserProfile, handleLogOut } = useAuthContext();
 
     const [userProfile, setUserProfile] = useState(loadedUserProfile);
+
+    const { unreadNotif } = useNotificationContext();
 
     const { orders } = useOrderContext();
 
@@ -75,13 +78,13 @@ const Sidenav = () => {
                     <div className='notif-bell' style={{cursor:'pointer'}} onClick={()=>navigate('./notifications')} >
                         <IoMdNotificationsOutline className='notif-icon'  size={iconSize}/>
                         {
-                            userProfile?.unread_notifications > 0 &&
+                            unreadNotif.length > 0 &&
                             <div>
                                 <article>
                                     {
-                                        userProfile?.unread_notifications > 9?
+                                        unreadNotif.length > 9?
                                         '9+':
-                                        userProfile?.unread_notifications
+                                        unreadNotif.length
                                     }
                                 </article>
                             </div>

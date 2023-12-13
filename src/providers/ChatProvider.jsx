@@ -18,7 +18,7 @@ export const ChatProvider = (props) => {
 
     const [socket, setSocket] = useState(null);
 
-    const [chats, setChats] = useState();
+    const [chats, setChats] = useState([]);
 
     const [loadingChats, setLoadingChats] = useState(true);
     
@@ -83,12 +83,6 @@ export const ChatProvider = (props) => {
         }
     }
 
-    // useEffect(()=>{
-    //     if (!userToken){
-    //         socket.close();
-    //     }
-    // }, [userToken])
-
     useEffect(()=>{
         setUser(decodedToken?.user_id)
         if (user) {
@@ -106,8 +100,6 @@ export const ChatProvider = (props) => {
                     });
                     const sound = new Audio(newMessageTone);
                     sound.play();
-                    console.log("Received new message")
-
                 } else if (receivedData.type==='typing_status'){
                     setTypingData(receivedData.message);      
                     clearTimeout(typingTimer);
@@ -117,6 +109,8 @@ export const ChatProvider = (props) => {
                 }
             }
             setSocket(newSocket);            
+        } else {
+            socket?.close();
         }
 
         return () => {

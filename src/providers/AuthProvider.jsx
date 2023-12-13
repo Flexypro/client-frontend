@@ -174,7 +174,6 @@ export const AuthProvider = props => {
         } finally {}
     }
 
-
     const getUserToken = () => {
         console.log("Getting token");
         const token = getAccessToken();
@@ -182,7 +181,7 @@ export const AuthProvider = props => {
         if (token) {
             setUserToken(token);
         } else {
-            setUserToken();
+            setUserToken(null);
         }
     }
 
