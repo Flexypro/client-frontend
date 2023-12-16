@@ -10,7 +10,8 @@ import { useState } from 'react';
 import PulseLoader from "react-spinners/PulseLoader";
 import { useEffect } from 'react';
 import { useRef } from 'react';
-
+import { Link } from 'react-router-dom';
+import gigitise from '../../../../public/gigitise.svg';
 // import { IoMdEye } from "react-icons/md";
 // import { IoMdEyeOff } from "react-icons/md";
 
@@ -36,8 +37,8 @@ const Login = () => {
     return (
         <div className='login'>
             <div className='login-box'>
-                <IoLogoIonic size={120}/>
-                <h1>Flexypro</h1>
+                <img src={gigitise} style={{width:'8rem'}} alt="logo" />
+                <h1 className='heading'>Gigitise</h1>
                 <article>Welcome back!</article>
                 <form onSubmit={handleLogin} className='login-form'>   
                     {
@@ -63,13 +64,20 @@ const Login = () => {
                             {
                                 loading?
                                 <PulseLoader color='#fff' size={10}  />:
-                                'ENTER'
+                                'E N T E R'
                             }
                             
                         </button>
                     </div>
                     <div className='register-prompt'>
-                        <article>Do not have an account? <span>Register</span></article>
+                        <article>Do not have an account? 
+                            <span>
+                                <Link to='/register'> Register</Link>
+                            </span>
+                        </article>
+                        <article className='reset-password'>
+                            <Link to='/reset-password'>Forgot password</Link>
+                        </article>
                     </div>
                 </form>
             </div>            

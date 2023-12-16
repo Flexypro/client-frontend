@@ -7,6 +7,13 @@
     color: gray;
 }
 
+.heading-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
 .search-nav {
     position: inherit;
     width: 30%;

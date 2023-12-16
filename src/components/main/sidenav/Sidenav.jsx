@@ -7,7 +7,7 @@ import { useAuthContext } from '../../../providers/AuthProvider';
 import { useState } from 'react';
 import { useOrderContext } from '../../../providers/OrderProvider';
 import { useNotificationContext } from '../../../providers/NotificationProvider';
-
+import gigitise from '../../../../public/gigitise.svg';
 const Sidenav = () => {
 
     const { loadingUserProfile, loadedUserProfile, handleLogOut } = useAuthContext();
@@ -46,7 +46,9 @@ const Sidenav = () => {
     return (
         <div>
             <div className='top-nav'>
-                <h1 style={{cursor:'pointer'}}  onClick={()=>navigate('./')}>Flexypro</h1>
+                <h1 style={{cursor:'pointer'}} className='heading-logo'  onClick={()=>navigate('./')}>
+                    <img src={gigitise} style={{width:'30rem'}} alt="" />
+                    Gigitise</h1>
                 <div className='search-nav'>
                     <input value={searchQuery} onChange={(e)=>searchOrdersFromQuery(e.target.value)} type="text" placeholder='Search my orders' />
                     {

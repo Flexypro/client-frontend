@@ -21,7 +21,8 @@ export const AuthProvider = props => {
     const [loadedUserProfile, setuserProfile] = useState();
     const [loadingUserProfile, setLoadingUserProfile] = useState(false);
     const [loginError, setLoginError] = useState({});
-
+    const [loadingReg, setLoadingReg] = useState(false);
+    const [registerError, setRegisterError] = useState(null);
     
     const headers = {
         'content-Type':'application/json',
@@ -45,21 +46,53 @@ export const AuthProvider = props => {
         }
     }
 
-    const updateNotificationIconProfile = async() => {
-        try {
-            getUserProfile()
-            
-        } catch {
-
-        } finally {
-
-        }
-    }
-
     const handleLogOut = () => {
         removeAccessToken();
         setUserToken(null);
         navigate('/');
+    }
+
+    const handleRegister = async(e)=> {
+        setLoadingReg(true);
+        e.preventDefault();
+        const registerUrl = `${import.meta.env.VITE_API_URL}/auth/client/register/`
+        const username = e.target.username.value;
+        const email = e.target.email.value;
+        const password1 = e.target.password1.value;
+        const password2 = e.target.password2.value;
+        
+        try {
+            const registerClient = await fetch(registerUrl, {
+                method:'post',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    'username':username,
+                    'email':email,
+                    'password_1':password1,
+                    'password_2':password2
+                })
+            });
+
+            if (registerClient.ok){                
+                navigate('/app');                
+            } else {
+                const res = await registerClient.json();
+                const status = registerClient.status;
+                if (status===400){
+                    const errors = Object.values(res);
+                    setRegisterError(errors);
+                    console.log(errors);
+                }
+            }
+
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoadingReg(false);
+        }
+
     }
 
     const handleLogin = async (e) => {
@@ -70,7 +103,7 @@ export const AuthProvider = props => {
         setLoginError({});
         const username = e.target.username.value;
         const password = e.target.password.value;
-        const loginUrl = `${import.meta.env.VITE_API_URL}/token/`;
+        const loginUrl = `${import.meta.env.VITE_API_URL}/token/c/`;
 
         try {
             const controller = new AbortController();
@@ -199,6 +232,9 @@ export const AuthProvider = props => {
             handleLogOut, 
             submitNewBio, 
             uploadProfilePhoto, 
+            handleRegister,
+            registerError,
+            loadingReg,
             userToken, 
             loadedUserProfile,
             loadingUserProfile,

@@ -13,6 +13,7 @@ import OrderView from './pages/main/orders/order-view/OrderView';
 import Login from './pages/main/login/Login';
 import { useAuthContext } from './providers/AuthProvider';
 import NotificationFloat from './components/main/notification/NotificationFloat';
+import Register from './pages/main/register/Register';
 
 function App() {
   const { userToken } = useAuthContext();
@@ -49,6 +50,7 @@ function App() {
     <>
       <Routes>
         <Route path='login' element={<Login/>}/>
+        <Route path='register' element={<Register/> }/>
         <Route exact path='/' element={<BodyContent/>}/>
         <Route path='/app/*' element={userToken?<Main/>:<Login/>}/>
       </Routes>
