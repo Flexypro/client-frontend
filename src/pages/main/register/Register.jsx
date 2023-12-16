@@ -9,13 +9,13 @@ import { IoEyeOff } from "react-icons/io5";
 import { MdOutlineMail } from "react-icons/md";
 import { useAuthContext } from '../../../providers/AuthProvider';
 import PulseLoader from "react-spinners/PulseLoader";
-
+// import
 const Register = () => {
     const iconSize = 30;
     const passwordRef1 = useRef();
     const passwordRef2 = useRef();
 
-    const { loadingReg, handleRegister, registerError} = useAuthContext();
+    const { loadingReg, handleRegister, successRegister, registerError} = useAuthContext();
 
     const [password1, setPassword1] = useState('');
     const [password2, setPassword2] = useState('');
@@ -76,9 +76,9 @@ const Register = () => {
                                 'R E G I S T E R'
                              }                            
                         </button>
-                        <button>
+                        {/* <button>
                             G O O G L E
-                        </button>
+                        </button> */}
                     </div>
                     <div className='register-prompt'>
                         <article>Already have an account? 

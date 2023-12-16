@@ -23,6 +23,7 @@ export const AuthProvider = props => {
     const [loginError, setLoginError] = useState({});
     const [loadingReg, setLoadingReg] = useState(false);
     const [registerError, setRegisterError] = useState(null);
+    const [successRegister, setSuccessRegister] = useState(false);
     
     const headers = {
         'content-Type':'application/json',
@@ -75,7 +76,9 @@ export const AuthProvider = props => {
                 })
             });
 
-            if (registerClient.ok){                
+            if (registerClient.ok){
+                console.log("Registration success");
+                setSuccessRegister(true);
                 navigate('/app');                
             } else {
                 const res = await registerClient.json();
@@ -133,8 +136,10 @@ export const AuthProvider = props => {
                 if (orderId) {
                     navigate(`/app/order/${orderId}`);
                 }
-                if (redirect) {
+                else if (redirect) {
                     navigate(`/app/${redirect}`);
+                } else {
+                    navigate('/app')
                 }
                 // const refreshToken = token.refresh
             } else if (status===401) {
@@ -239,7 +244,8 @@ export const AuthProvider = props => {
             loadedUserProfile,
             loadingUserProfile,
             loading,
-            loginError
+            loginError,
+            successRegister,
         }
         }>
             {props.children}
