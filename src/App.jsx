@@ -38,7 +38,6 @@ function App() {
       <Routes>
         <Route path='login' element={<Login/>}/>
         <Route path='register' element={<Register/> }/>
-        <Route exact path='/' element={<BodyContent/>}/>
         <Route path='/app/*' element={userToken?<Main/>:<Login/>}/>
       </Routes>
     </>
