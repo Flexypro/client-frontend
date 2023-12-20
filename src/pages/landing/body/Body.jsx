@@ -1,4 +1,3 @@
-import React from 'react';  
 import './body.css';
 import Steps from '../../../components/steps/Steps';
 import Faq from '../../../components/faq/Faq';

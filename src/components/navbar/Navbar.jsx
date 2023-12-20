@@ -1,4 +1,3 @@
-import React from 'react';
 import './navbar.css';
 
 const Navbar = () => {
@@ -8,9 +7,9 @@ const Navbar = () => {
                 <h1>Flexypro</h1>
             </div>
             <div className='nav-content'>
-                <li>Solved Essays</li>
-                <li>Create your Own</li>
-                {/* <li></li> */}
+                <p>
+                    Welcome to Flexypro, your ultimate solution hub for assignments across diverse fields like essays, programming, engineering, accounting, dissertations, and more.
+                </p>
             </div>    
             <div className='nav-actions'>
                 <button>Sign Up</button>

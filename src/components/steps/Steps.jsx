@@ -1,4 +1,4 @@
-import React from 'react';
+/* eslint-disable react/no-unescaped-entities */
 import './steps.css';
 
 const Steps = () => {
@@ -19,7 +19,7 @@ const Steps = () => {
             <div>
                 <strong>Pay when you are happy</strong>
                 <article>
-                    Release your payment when the work is completed and you're satisfied
+                    Release your payment when the work is completed and you'resatisfied
                 </article>
             </div>            
         </div>
