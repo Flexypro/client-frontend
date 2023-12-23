@@ -8,11 +8,14 @@ const ExpiredToken = () => {
     return (
         <div className='expired-token'>
             <div className='token-box'>
-                <h1>Expired Link</h1>
-                <img className='logo-token' src={gigitise} alt="" />              
+                <img className='logo-token' src={gigitise} alt="" /> 
                 <article>
-                    The link you provided has been used
-                </article>
+                    Gigitise
+                </article>     
+                <h1>Expired Link</h1>
+                <article>
+                    The link you provided to reset your password has been used
+                </article>                
                 <button className='regenerate-link' onClick={()=>navigate('/reset-password')}>
                     Generate a new link
                 </button>

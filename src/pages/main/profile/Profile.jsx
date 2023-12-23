@@ -10,6 +10,7 @@ import { useOrderContext } from '../../../providers/OrderProvider';
 import { MdAdd } from "react-icons/md";
 import { useState } from 'react';
 import { useRef } from 'react';
+import { MdVerified } from "react-icons/md";
 
 const Profile = () => {
     const { loadingUserProfile, loadedUserProfile, submitNewBio, uploadProfilePhoto } = useAuthContext();
@@ -75,12 +76,6 @@ const Profile = () => {
         setEditBio(false);
     }
 
-    const [initials, setInitials] = useState('')
-
-    const getTwoChars = () => {
-        
-    }
-
     const iconSize = 25;
 
     return (
@@ -97,41 +92,55 @@ const Profile = () => {
                 }
                 <input id='upload-profile' onChange={updateProfilePhoto} ref={fileInputRef} style={{ display: 'none' }} size={5 * 1024 * 1024} accept='image/*' type="file" />
                 <div className='email-username'>
-                    <article className={loadingUserProfile?'username-skeleton':''} style={{fontWeight:'bold'}}>{userProfile?.username}</article>
+                    <article className={loadingUserProfile?'username-skeleton':''} style={{fontWeight:'bold', display:'flex', gap:'1rem', alignItems:'center'}}>
+                        {userProfile?.username} 
+                        {
+                            (userProfile?.is_verified === 'True') && <MdVerified className='react-icon' size={iconSize}/>
+                        }
+                    </article>
                     <article style={{
                         animation: loadingUserProfile?`skeleton-loading 1s linear infinite alternate`:''
                     }}>{userProfile?.email}</article>
                 </div>
             </div>
             <div className='prof-summary'>
-                <div>
+                <div className='prof-element'>
                     <div>
                         <MdTaskAlt className='react-icon' size={iconSize}/>
                         <article>Total Tasks</article>
                     </div>
                     <span>{userProfile?.orders_count}</span>
                 </div>
-                <div>
+                <div className='prof-element'>
                     <div>
                         <MdPendingActions className='react-icon' size={iconSize} />
                         <article>Pending Tasks</article>
                     </div>
                     <span>{ordersInProgress.length}</span>                   
                 </div>
-                <div>
+                <div className='prof-element'>
                     <div>
                         <MdOutlineAddTask className='react-icon' size={iconSize}/>
                         <article>Completed Tasks</article>
                     </div>
                     <span>{ordersCompleted?.length}</span>
                 </div>
-                <div>
+                <div className='prof-element'>
                     <div>
                         <MdAccessTime className='react-icon' size={iconSize}/>
                         <article>Last Login</article>
                     </div>
                     <article className='last-login'>{userProfile ? timeAgo(userProfile?.last_login):'---'}</article>
                 </div>
+                {
+                    (userProfile?.is_verified === true) &&                
+                    <div className='prof-element'>
+                        <div>
+                            <MdVerified className='react-icon' size={iconSize}/>
+                            <article>Verified</article>
+                        </div>
+                    </div>
+                }                
             </div>
             <div className='profile-view'>                
                 <div className='helper-info'>

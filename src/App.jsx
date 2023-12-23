@@ -15,9 +15,11 @@ import PasswordReset from './pages/main/reset-password/PasswordReset';
 import SetPassword from './components/main/modal/set-password/SetPassword';
 import BadToken from './pages/main/bad-token/BadToken';
 import ExpiredToken from './pages/main/expired-token/ExpiredToken';
+import ActivateAccount from './components/main/modal/set-password/activate-account/ActivateAccount';
+import { useState } from 'react';
 
 function App() {
-  const { userToken } = useAuthContext();
+  const { userToken, loadedUserProfile } = useAuthContext();
 
   const Main = ()  => {
 
@@ -32,7 +34,10 @@ function App() {
           <Route path='settings' element={<Settings/>}/> 
           <Route path='order/:orderId' element={<OrderView/>}/>
         </Routes>    
-        <NotificationFloat />
+        <NotificationFloat />        
+        {
+          loadedUserProfile?.is_verified === 'False' && <ActivateAccount token={userToken} email={loadedUserProfile?.email}/>
+        }
       </>
     )
   }

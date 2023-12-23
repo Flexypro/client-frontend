@@ -238,6 +238,7 @@ export const AuthProvider = props => {
             submitNewBio, 
             uploadProfilePhoto, 
             handleRegister,
+            getUserProfile,
             registerError,
             loadingReg,
             userToken, 

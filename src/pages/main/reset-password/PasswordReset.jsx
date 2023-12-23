@@ -18,63 +18,7 @@ const PasswordReset = () => {
     console.log(emailSession);
     const emailRef = useRef();
     const [email, setEmail] = useState('');
-
-    // const [otp, setOTP] = useState();
-    const otpRef = useRef();
-
-    const submitOTP = async(otp, email) => {
-        setSubmitingOTP(true);
-        setRes();
-        const otpURL = `${import.meta.env.VITE_API_URL}/password-reset-confirm/?`+ new URLSearchParams({
-            'email':email
-        })
-        try {
-            const otpSubmit = await fetch(otpURL, {
-                method:'post',
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body: JSON.stringify({
-                    'otp':otp
-                })
-            }) 
-    
-            if (otpSubmit.ok){
-
-                const res = await otpSubmit.json();
-                console.log(res);
-                if (!sessionStorage.getItem('complete-session-reset')){
-                    sessionStorage.setItem('complete-password-reset', true);
-                }
-                // Navigate to setting new password
-            } else {
-                // const status = otpSubmit.status;
-                const res = await otpSubmit.json();
-                setRes(res.error);                
-                console.log(res)
-            }
-        } catch(error) {
-            console.log(error)
-            if (error) {
-                setRes('Error occured')
-            }
-        } finally {
-            setSubmitingOTP(false);
-        }
-    }
-
-    const listenOTP = () => {
-        const otp = otpRef.current.value;
-        setRes();
-        if (otp.length === 6) {
-            submitOTP(otp, sessionStorage.getItem('email-session'));
-        }
-    }  
-
-    const listenEmail = () => {
-        setEmail(emailRef.current.value);
-    }
-    
+        
     const sendResendEmail = async(email) => {
         console.log("sending email...");
         try {
@@ -94,9 +38,10 @@ const PasswordReset = () => {
                 const msg = await resetPasswordLink.json();
                 console.log(msg);
                 setRes();
-                if ( emailRef.current.value != sessionStorage.getItem('email-session')){
-                setEmailSession(sessionStorage.setItem('email-session',email));
-                }
+                // if ( emailRef.current.value != sessionStorage.getItem('email-session')){
+                setEmailSession(email);
+                sessionStorage.setItem('email-session', email)
+                // }
 
             } else {
                 const status = resetPasswordLink.status;
@@ -126,24 +71,31 @@ const PasswordReset = () => {
                 <h1>Reset your Gigitise password</h1>
                 <article>
                     We {emailSession?'sent':'will send'} a reset link to 
-                    <span style={{color:'#7fc2f5'}}> {sessionStorage.getItem('email-session')} </span>
-                    to reset your password <br />
+                    {
+                        emailSession ?
+                        <>
+                            <span style={{color:'#7fc2f5'}}> {sessionStorage.getItem('email-session')} </span>
+                            <br />
+                            <span>Use the link in your inbox to reset your password</span>
+                        </>:
+                        <span> your email</span>
+                    } 
                 </article>  
                 {                    
                     <form className='reset-form' onSubmit={resetPassword}>
                         <div>
                             <MdOutlineMail className='username-icon' color='#7fc2f5' size={25}/>
-                            <input required defaultValue={emailSession&&sessionStorage.getItem('email-session')} readOnly={false} type="email" id='email' placeholder='Email to reset password' ref={emailRef}/>                           
+                            <input required defaultValue={emailSession&&sessionStorage.getItem('email-session')} readOnly={false} type="email" id='email' placeholder='Registered email to receive link' ref={emailRef}/>                           
                         </div>
                         <div className='submit-items-reset'>
                         {
                             sendingEmail ? 
                             <PulseLoader size={10} color='#7fc2f5'/>:
                             emailSession ?                                
-                            <button onClick={()=>resetPassword}>
+                            <button className='regenerate-link' onClick={()=>resetPassword}>
                                 Resend Link
                             </button>:
-                            <button onClick={()=>resetPassword}>
+                            <button className='regenerate-link' onClick={()=>resetPassword}>
                                 Send Link
                             </button>
                         }

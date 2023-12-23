@@ -7,8 +7,9 @@ const BadToken = () => {
     return (
         <div className='bad-token'>
             <div className='token-box'>
-                <h1>Bad Link</h1>  
                 <img className='logo-token' src={gigitise} alt="" />              
+                <article>Gigitise</article>
+                <h1>Bad Link</h1>  
                 <article>
                     The link you provided does not work
                 </article>
