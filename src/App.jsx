@@ -13,6 +13,8 @@ import NotificationFloat from './components/main/notification/NotificationFloat'
 import Register from './pages/main/register/Register';
 import PasswordReset from './pages/main/reset-password/PasswordReset';
 import SetPassword from './components/main/modal/set-password/SetPassword';
+import BadToken from './pages/main/bad-token/BadToken';
+import ExpiredToken from './pages/main/expired-token/ExpiredToken';
 
 function App() {
   const { userToken } = useAuthContext();
@@ -40,7 +42,8 @@ function App() {
       <Routes>
         <Route path='login' element={<Login/>}/>
         <Route path='reset-password' element={<PasswordReset/>}/>
-        
+        <Route path='/used-token/:uidb64/:token/' element={<ExpiredToken/>} />
+        <Route path='/bad-token/:uidb64/:token/' element={<BadToken/>} />            
         <Route path='/set-new-password/:uidb64/:token/' element={<SetPassword/>}/>
         <Route path='register' element={<Register/> }/>
         <Route path='/app/*' element={userToken?<Main/>:<Login/>}/>
