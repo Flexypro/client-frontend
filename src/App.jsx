@@ -11,6 +11,8 @@ import Login from './pages/main/login/Login';
 import { useAuthContext } from './providers/AuthProvider';
 import NotificationFloat from './components/main/notification/NotificationFloat';
 import Register from './pages/main/register/Register';
+import PasswordReset from './pages/main/reset-password/PasswordReset';
+import SetPassword from './components/main/modal/set-password/SetPassword';
 
 function App() {
   const { userToken } = useAuthContext();
@@ -37,6 +39,9 @@ function App() {
     <>
       <Routes>
         <Route path='login' element={<Login/>}/>
+        <Route path='reset-password' element={<PasswordReset/>}/>
+        
+        <Route path='/set-new-password/:uidb64/:token/' element={<SetPassword/>}/>
         <Route path='register' element={<Register/> }/>
         <Route path='/app/*' element={userToken?<Main/>:<Login/>}/>
       </Routes>

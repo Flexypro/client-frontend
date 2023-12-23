@@ -1,7 +1,6 @@
 import React  from 'react';
 import './login.css';
 import { useAuthContext } from '../../../providers/AuthProvider';
-import { IoLogoIonic } from "react-icons/io";
 import { FiUser } from "react-icons/fi";
 import { MdLock } from "react-icons/md";
 import { IoEye } from "react-icons/io5";
@@ -25,7 +24,7 @@ const Login = () => {
     
     const togglePassword = ()=> {
         setVisible(!visible);
-    }
+    }    
 
     useEffect(()=>{
         if (loginError.error){
@@ -56,7 +55,7 @@ const Login = () => {
                         {
                             visible?
                             <IoEye onClick={togglePassword} className='password-icon-eye' size={20} />:
-                            <IoEyeOff onClick={togglePassword} className='password-icon-eye' size={20} />                                              
+                            <IoEyeOff onClick={togglePassword}  className='password-icon-eye' size={20} />                                              
                         }
                     </div>
                     <div className='submit-credentials'>                        
