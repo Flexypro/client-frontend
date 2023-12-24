@@ -16,8 +16,8 @@ const Notification = () => {
     const { notifications, loading, markNotificationRead } = useNotificationContext();            
 
     const navigateToOrder = (orderId, notifId) => {
-        navigate(`../order/${orderId}`);
-        markNotificationRead(notifId)
+        orderId && navigate(`../order/${orderId}`);
+        markNotificationRead(notifId);
         // .then((status)=>{
         //     if (status===200){
         //     }
