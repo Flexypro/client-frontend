@@ -1,9 +1,11 @@
 .chat {
-    position: relative;
+    position: fixed;
     background-color: var(--background);
     width: 30%;
     border-radius: 8px;
     overflow: hidden;
+    bottom: 2%;
+    right: 1%;
 }
 
 .chat-header {
