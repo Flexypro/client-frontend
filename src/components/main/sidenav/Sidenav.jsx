@@ -67,7 +67,7 @@ const Sidenav = () => {
                     }
                 </div>                
                 <div className='add-task' onClick={()=>navigate('./create-task')}>
-                    <MdAdd size={iconSize}/>
+                    <MdAdd className='add-icon' size={iconSize}/>
                     <article>Create a new task</article>
                 </div>                               
                 <div className='profile'>
