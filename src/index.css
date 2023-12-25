@@ -63,3 +63,18 @@ h1 {
   opacity: 0.6;
   z-index: 8;
 }
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(187, 187, 187); /* color of the scrollbar handle */
+  border-radius: 6px; /* roundness of the scrollbar handle */
+}
+
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px; 
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* color of the scrollbar track */
+}

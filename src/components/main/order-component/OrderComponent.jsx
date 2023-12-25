@@ -14,7 +14,7 @@ const OrderComponent = ({ content }) => {
     const maxCharsToDisplay = 70;
 
     return (
-        <div className='order-content' onClick={()=>navigate(`./order/${orderId}`)}>
+        <div className='order-content' onClick={()=>navigate(`../order/${orderId}`)}>
             <div className='title-box'>
                 <article>
                     {

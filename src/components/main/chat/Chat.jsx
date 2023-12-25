@@ -112,7 +112,7 @@ const Chat = ({orderId, client, freelancer}) => {
                 </div>
             }            
             <form className='message-reply-box' onSubmit={submitMessage}>
-                <input required type="text" value={msg} ref={messageRef} onChange={checkMsg} placeholder='Type your message' />                
+                <textarea required type="text" value={msg} ref={messageRef} onChange={checkMsg} placeholder='Type your message' />                
                 <IoSend size={25} type='submit' className={ msg?'submit-message active':'submit-message inactive' }/>
             </form>
         </div>

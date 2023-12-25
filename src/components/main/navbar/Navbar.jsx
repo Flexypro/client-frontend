@@ -1,14 +1,16 @@
 import React from 'react';
-import './sidenav.css';
+import './navbar.css';
 import { IoMdNotificationsOutline, IoMdSettings } from "react-icons/io";
-import { MdAdd, MdHelpOutline } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { MdHelpOutline } from "react-icons/md";
 import { useAuthContext } from '../../../providers/AuthProvider';
 import { useState } from 'react';
 import { useOrderContext } from '../../../providers/OrderProvider';
 import { useNotificationContext } from '../../../providers/NotificationProvider';
-import gigitise from '../../../../public/gigitise.svg';
-const Sidenav = () => {
+import { useNavigate } from "react-router-dom";
+
+const Navbar = () => {
+
+    const navigate = useNavigate();
 
     const { loadingUserProfile, loadedUserProfile, handleLogOut } = useAuthContext();
 
@@ -19,8 +21,6 @@ const Sidenav = () => {
     const { orders } = useOrderContext();
 
     const iconSize = 25;
-
-    const navigate = useNavigate();
 
     const [searchQuery, setSearchQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
@@ -44,10 +44,7 @@ const Sidenav = () => {
     }
 
     return (
-        <div className='top-nav'>
-            <h1 style={{cursor:'pointer'}} className='heading-logo'  onClick={()=>navigate('./')}>
-                <img src={gigitise} style={{width:'3rem'}} alt="" />
-                Gigitise</h1>
+        <div className='top-nav'>            
             <div className='search-nav'>
                 <input value={searchQuery} onChange={(e)=>searchOrdersFromQuery(e.target.value)} type="text" placeholder='Search my orders' />
                 {
@@ -64,11 +61,7 @@ const Sidenav = () => {
                         }
                     </div>
                 }
-            </div>                
-            <div className='add-task' onClick={()=>navigate('./create-task')}>
-                <MdAdd className='add-icon' size={iconSize}/>
-                <article>Create a new task</article>
-            </div>                               
+            </div>                                                           
             <div className='profile'>
                 <article className='logout' onClick={()=>handleLogOut()}>
                     Logout
@@ -112,4 +105,4 @@ const Sidenav = () => {
     );
 }
 
-export default Sidenav;
+export default Navbar;

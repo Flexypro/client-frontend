@@ -14,26 +14,8 @@ const InProgress = () => {
     return (
         loading?
         <LoadingSkeletonOrder />:
-        <div className='main-in-progress' style={{
-            gridTemplateColumns: (!(ordersInProgress?.length > 0))?'repeat(1, 100%)':''
-        }}>             
-            {
-                loading ?
-                
-                <div className="anim-box">
-                    <div className="skeleton-box">
-                        <div className="skeleton-article"></div>
-                        <div className="skeleton-article"></div>
-                        <div className="skeleton-article"></div>
-                        <div className="skeleton-article"></div>                        
-                    </div>                    
-                    <div className="skeleton-box">
-                        <div className="skeleton-article"></div>
-                        <div className="skeleton-article"></div>
-                        <div className="skeleton-article"></div>
-                        <div className="skeleton-article"></div>                        
-                    </div>                      
-                </div>:
+        <div className='main-in-progress'>             
+            {                
                 (ordersInProgress.length > 0)?
                 ordersInProgress.map((order, index)=>{
                     // console.log("Rendering again...", order)

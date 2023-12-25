@@ -1,6 +1,5 @@
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
-import Sidenav from './components/main/sidenav/Sidenav';
 import Dashboard from './pages/main/dashboard/Dashboard';
 import Notification from './pages/main/notification/Notification';
 import OrderCreation from './pages/main/orders/order-creation/OrderCreation';
@@ -17,6 +16,10 @@ import BadToken from './pages/main/bad-token/BadToken';
 import ExpiredToken from './pages/main/expired-token/ExpiredToken';
 import ActivateAccount from './components/main/modal/set-password/activate-account/ActivateAccount';
 import { useState } from 'react';
+import Navbar from './components/main/navbar/Navbar';
+import SideNav from './components/main/sidenav/SideNav';
+import Completed from './pages/main/orders/completed/Completed';
+import InProgress from './pages/main/orders/in-progress/InProgress';
 
 function App() {
   const { userToken, loadedUserProfile } = useAuthContext();
@@ -25,19 +28,28 @@ function App() {
 
     return (
       <>
-        <Sidenav />          
-        <Routes>
-          <Route path='/' element={<Dashboard />}/>  
-          <Route path='notifications' element={<Notification/>}/>
-          <Route path='create-task' element={<OrderCreation/>}/>        
-          <Route path='profile' element={<Profile/>}/>       
-          <Route path='settings' element={<Settings/>}/> 
-          <Route path='order/:orderId' element={<OrderView/>}/>
-        </Routes>    
-        <NotificationFloat />        
+        <main className="app">
+          <SideNav />
+          <div className='app-main-content'>
+            <Navbar />
+            <div className='routes'>
+              <Routes>
+                <Route path='/' element={<Dashboard />}/> 
+                <Route path='/in-progress' element={<InProgress/>}/> 
+                <Route path='/completed'element={<Completed/>}/>
+                <Route path='notifications' element={<Notification/>}/>
+                <Route path='create-task' element={<OrderCreation/>}/>        
+                <Route path='profile' element={<Profile/>}/>       
+                <Route path='settings' element={<Settings/>}/> 
+                <Route path='/order/:orderId' element={<OrderView/>}/>
+              </Routes> 
+            </div>   
+            <NotificationFloat />
+          </div>                  
+        </main> 
         {
           loadedUserProfile?.is_verified === 'False' && <ActivateAccount token={userToken} email={loadedUserProfile?.email}/>
-        }
+        }       
       </>
     )
   }

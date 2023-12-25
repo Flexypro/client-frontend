@@ -1,4 +1,4 @@
-.notification-float-box {
+/* .notification-float-box {
     position: absolute;
     bottom: 5%;
     left: 1%;
@@ -13,7 +13,6 @@
 }
 
 .notification-float-box article {
-    /* position: inherit; */
     max-width: 95%;
 }
 
@@ -28,4 +27,19 @@
     background-color: inherit;
     z-index: 1;
     cursor: pointer;
+} */
+
+.app {
+    display: flex;
+    width: 100%;
+    position: relative;
+}
+
+.app-main-content {
+    position: inherit;
+    width: 80%;
+}
+
+.routes {
+    padding: 1rem 0;
 }

@@ -6,6 +6,7 @@
     overflow: hidden;
     bottom: 2%;
     right: 1%;
+    z-index: 1;
 }
 
 .chat-header {
@@ -29,14 +30,14 @@
     flex-direction: column;
     gap: 0.5rem;
     position: relative;
-    height: 65vh;
+    /* height: 50vh; */
     overflow-y: auto;
 }
 
 
 .empty-inbox {
     position: relative;
-    height: 65vh;
+    height: 70vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -79,18 +80,18 @@
 }
 
 .message-reply-box {
-    position: relative;
+    position: absolute;
     width: 100%;
     bottom: 0;
     z-index: 1;
     background-color: var(--background);
-    padding: 0.5rem;
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
-.message-reply-box input {
+.message-reply-box textarea {
     padding: 0.9rem 0.5rem;
     width: 80%;
     border: solid 1px var(--secondary-color);
@@ -99,6 +100,11 @@
     /* font-size: var(--fontsize-normal); */
     font-size: var(--fontsize-normal);
     color: gray;
+    resize: none;
+    overflow-y: auto;
+    height: 2rem;
+    /* min-height: 2.5rem;    */
+    /* max-height: 4rem; */
 }
 
 .submit-message.active {

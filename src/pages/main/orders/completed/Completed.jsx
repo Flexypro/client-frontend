@@ -3,6 +3,7 @@ import './completed.css';
 import OrderComponent from '../../../../components/main/order-component/OrderComponent';
 import { useOrderContext } from '../../../../providers/OrderProvider';
 import { HiMiniClipboardDocumentList } from "react-icons/hi2";
+import LoadingSkeletonOrder from '../../loading/Loading';
 
 const Completed = () => {
 
@@ -10,23 +11,8 @@ const Completed = () => {
 
     return (
         loading ?
-        <div className="anim-box">
-            <div className="skeleton-box">
-                <div className="skeleton-article"></div>
-                <div className="skeleton-article"></div>
-                <div className="skeleton-article"></div>
-                <div className="skeleton-article"></div>                        
-            </div>                    
-            <div className="skeleton-box">
-                <div className="skeleton-article"></div>
-                <div className="skeleton-article"></div>
-                <div className="skeleton-article"></div>
-                <div className="skeleton-article"></div>                        
-            </div>                      
-        </div>:
-        <div className='completed' style={{
-            gridTemplateColumns: (!ordersCompleted.length > 0)?'repeat(1, 100%)':''
-        }}>
+        <LoadingSkeletonOrder/>:       
+        <div className='completed'>
             {
                 ordersCompleted.length > 0 ?
                 ordersCompleted.map((order, index)=>{
