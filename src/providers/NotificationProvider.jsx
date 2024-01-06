@@ -3,6 +3,8 @@ import { createContext } from "react";
 import { useJwt } from 'react-jwt';
 import { useAuthContext } from "./AuthProvider";
 import { useState, useEffect } from "react";
+import { toast } from 'react-toastify';
+import { timeFormater } from "../utils/helpers/TimeFormater";
 
 export const NotificationContext = createContext();
 
@@ -26,12 +28,6 @@ export const NotificationProvider = (props) =>{
 
     const toggleShow = () => {
         setShowNotification(false);
-    }
-
-    const hideNotification = () => {
-        setTimeout(()=>{
-            setShowNotification(false);
-        },3000)
     }
 
     const getUnread = (notifications) => {
@@ -93,6 +89,21 @@ export const NotificationProvider = (props) =>{
         getNotifications();
     },[userToken])
 
+    const CustomToast = ({newNotification}) => {
+        return (
+            <div style={{
+                display:'flex'
+            }}>
+                <article>{newNotification?.message}</article>
+                <small style={{
+                    position:'absolute',
+                    right:'4%',
+                    bottom:'4%'
+                }}>{timeFormater(newNotification.created_at)}</small>
+            </div>
+        )
+    }
+
     useEffect(()=>{
         setUser(decodedToken?.user_id);
 
@@ -107,14 +118,20 @@ export const NotificationProvider = (props) =>{
                 if (receivedData.type==='new_notification'){
                     const newNotification = (receivedData.message.notification);
                     setNewNotification(newNotification);
-                    setShowNotification(true);
-                    hideNotification();
+                    toast.success(                                                                        
+                        <CustomToast newNotification={newNotification} />,                     
+                        {
+                            position:'bottom-left',
+                            html:true,                           
+                        },
+                    )
                     setNotifications(prev=>{
                         const updatedNotif = [newNotification, ...prev];  
                         getUnread(updatedNotif);
                         setNotifications(updatedNotif);
                         return updatedNotif;
                     });
+                    receivedData.type = null
                 } 
             }
             setSocket(newSocket);            

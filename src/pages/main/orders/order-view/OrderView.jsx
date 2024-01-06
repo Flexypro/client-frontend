@@ -15,6 +15,10 @@ import { VscFile } from "react-icons/vsc";
 import OrderSkeletonLoading from '../../loading/OrderSkeletonLoading';
 import PulseLoader from "react-spinners/PulseLoader";
 import { useAuthContext } from '../../../../providers/AuthProvider';
+import { formatDeadline } from '../../../../utils/helpers/DeadlineFormat';
+import { checkDeadline } from '../../../../utils/helpers/DeadlineFormat';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const OrderView = () => {
 
@@ -38,6 +42,10 @@ const OrderView = () => {
     const [loading, setLoading] = useState(true);
       
     const uploadedAt = timeAgo(orderContent?.solution?.created);
+
+    const deadline = formatDeadline(orderContent?.deadline);
+
+    const deadlinePassed = checkDeadline(orderContent?.deadline);  
 
     const [editInstructions, setEditInstructions] = useState(false);
     const [editedInstructions, setEditedInstructions] = useState(orderContent?.instructions);
@@ -73,16 +81,21 @@ const OrderView = () => {
     }
 
     const changeOrderStatus = () => {
-        completeOrder(orderId)
-        .then((data)=>{
-            const updatedOrder = {
-                ...orderContent, 
-                status:data.status
-            }
-            orderContent.status = data.status;
-            setOrderContent(updatedOrder);            
-        })
-        getAllOrders();
+        if(orderContent?.solution){
+            completeOrder(orderId)
+            .then((data)=>{
+                const updatedOrder = {
+                    ...orderContent, 
+                    status:data.status
+                }
+                orderContent.status = data.status;
+                setOrderContent(updatedOrder);            
+            })
+            getAllOrders();       
+        } else {
+            toast.error("The order has no solution",
+            );                      
+        }
     }
 
     const openFileDialog = () => {
@@ -180,34 +193,59 @@ const OrderView = () => {
                             <strong>{!loading && ('$'+orderContent?.amount)}</strong>
                             <article className='status'>{orderContent?.status}</article>
                             {
-                                orderContent?.status === 'In Progress' && 
-                                <button onClick={changeOrderStatus} className='complete-order'>Complete Order</button>
-                            }                    
-                        </div>                                                  
-                            <div  className='order-soln'>
-                                {
-                                orderContent?.solution?
-                                <>
-                                    <strong>Uploaded Work</strong>
-                                    <div className='solutions'>
-                                        {                            
-                                            <div>
-                                                <a href={`${orderContent?.solution?.solution}`} id='solution-file' >
-                                                    {
-                                                        (orderContent?.solution.solution)
-                                                        .substring(orderContent?.solution.solution.lastIndexOf('/')+1)                                            
-                                                    }
-                                                </a>
-                                                <article>{orderContent?.solution._type}</article>
-                                                <IoMdDownload className='download-icon' onClick={downloadFile} style={{cursor:'pointer'}} size={iconSize}/>
-                                                <article className=''>{uploadedAt}</article>
-                                            </div>
-                                        }                        
-                                    </div>
-                                </>:
-                                    <strong style={{color:'orange'}}>Solution will be uploaded soon</strong>            
-                                }
-                            </div>                                    
+                                orderContent?.status === 'In Progress' &&                                 
+                                <button style={{
+                                        cursor:!orderContent?.solution && 'not-allowed'
+                                    }} 
+                                    title={!orderContent?.solution && 'Cannot complete order without solution'}  
+                                    onClick={changeOrderStatus} 
+                                    className='complete-order'>
+                                        Complete Order
+                                </button>
+                            }                                                
+                        </div>
+                        {
+                            (orderContent?.status != 'Completed') &&
+                            <div>
+                                {deadlinePassed && (
+                                <article style={{
+                                    color: 'red',
+                                }}>
+                                    {deadline}
+                                    <span className='ml-2'> overdue</span>
+                                </article>
+                                )}
+                                {!deadlinePassed && (
+                                    <article style={{color:'green'}}>
+                                        {deadline} Remain
+                                    </article>
+                                )}
+                            </div>
+                        }                                                  
+                        <div  className='order-soln'>
+                            {
+                            orderContent?.solution?
+                            <>
+                                <strong>Uploaded Work</strong>
+                                <div className='solutions'>
+                                    {                            
+                                        <div>
+                                            <a href={`${orderContent?.solution?.solution}`} id='solution-file' >
+                                                {
+                                                    (orderContent?.solution.solution)
+                                                    .substring(orderContent?.solution.solution.lastIndexOf('/')+1)                                            
+                                                }
+                                            </a>
+                                            <article>{orderContent?.solution._type}</article>
+                                            <IoMdDownload className='download-icon' onClick={downloadFile} style={{cursor:'pointer'}} size={iconSize}/>
+                                            <article className=''>{uploadedAt}</article>
+                                        </div>
+                                    }                        
+                                </div>
+                            </>:
+                                <strong style={{color:'orange'}}>Solution will be uploaded soon</strong>            
+                            }
+                        </div>                                    
                         <div className="instructions">
                             <strong>
                                 {

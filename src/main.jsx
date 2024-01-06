@@ -7,6 +7,7 @@ import { AuthProvider } from './providers/AuthProvider.jsx'
 import { OrderProvider } from './providers/OrderProvider.jsx'
 import { ChatProvider } from './providers/ChatProvider.jsx'
 import { NotificationProvider } from './providers/NotificationProvider.jsx'
+import Toast from './components/main/toast/Toaster.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -14,6 +15,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <OrderProvider>
         <ChatProvider>
           <NotificationProvider>
+            <Toast />
             <App />
           </NotificationProvider>
         </ChatProvider>

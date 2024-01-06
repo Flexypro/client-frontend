@@ -8,7 +8,6 @@ import Settings from './pages/main/settings/Settings';
 import OrderView from './pages/main/orders/order-view/OrderView';
 import Login from './pages/main/login/Login';
 import { useAuthContext } from './providers/AuthProvider';
-import NotificationFloat from './components/main/notification/NotificationFloat';
 import Register from './pages/main/register/Register';
 import PasswordReset from './pages/main/reset-password/PasswordReset';
 import SetPassword from './components/main/modal/set-password/SetPassword';
@@ -44,7 +43,6 @@ function App() {
                 <Route path='/order/:orderId' element={<OrderView/>}/>
               </Routes> 
             </div>   
-            <NotificationFloat />
           </div>                  
         </main> 
         {
