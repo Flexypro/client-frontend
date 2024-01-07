@@ -51,11 +51,6 @@
     border: none;
     border-radius: 4px;
     color: #f5f5f5;  
-    transition: transform 0.3s;  
-}
-
-.complete-order:hover {
-    transform: scale(1.03);
 }
 
 .order-soln div div{
