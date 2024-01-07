@@ -254,26 +254,30 @@ const OrderView = () => {
                                     orderContent?.status ==='Completed' && 'Instructions'
                                 } 
                                 {                        
-                                orderContent?.status === 'In Progress' &&  
-                                (
-                                    editInstructions &&(orderContent?.instructions != editedInstructions)?
-                                    <button className='submit-instructions' onClick={updateNewInstructions}>Submit</button>:
-                                    <MdModeEdit className='edit-icon' style={{cursor:'pointer'}} size={iconSize} onClick={toggleInstructionMode}/>
-                                )
+                                    orderContent?.status === 'In Progress' &&  
+                                    (
+                                        editInstructions &&(orderContent?.instructions != editedInstructions)?
+                                        <button className='submit-instructions' onClick={updateNewInstructions}>Submit</button>:
+                                        <MdModeEdit className='edit-icon' style={{cursor:'pointer'}} size={iconSize} onClick={toggleInstructionMode}/>
+                                    )
                                 }
                             </strong>
                             {                                                
                                 (
                                     editInstructions?
-                                    <div style={{width:'100%'}}>
+                                    <div style={{width:'100%', }}>
                                         <textarea placeholder='Tell us about your order!' name="instructions" id="instructions" value={editedInstructions} 
                                             style={{
-                                                width:'inherit',
+                                                width:'100%',                                                
                                                 padding:'0.5rem 0', 
                                                 outline:'none', 
-                                                border:'none'
-                                            }}  
-                                            rows="5" readOnly={false}  
+                                                border:'none',
+                                                resize:'none',
+                                                borderRadius:'4px',
+                                                padding:'0 4px'
+                                            }}
+                                            rows={5}
+                                            readOnly={false}  
                                             onChange={handleInstructionChange}                                  
                                         />                                
                                     </div>:                            

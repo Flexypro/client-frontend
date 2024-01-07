@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 import gigitise from '../../../../public/gigitise.svg';
 // import { IoMdEye } from "react-icons/md";
 // import { IoMdEyeOff } from "react-icons/md";
-
+import { toast } from 'react-toastify';
 
 const Login = () => {
     const iconSize = 30;
@@ -30,9 +30,13 @@ const Login = () => {
         if (loginError.error){
             setPassword('');
             console.log('Error')
+            toast.error(
+                loginError.error
+            );
+            
         }
     },[loginError]);
-
+    
     return (
         <div className='login'>
             <div className='login-box'>
