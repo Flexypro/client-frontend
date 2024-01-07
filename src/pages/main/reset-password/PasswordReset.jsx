@@ -6,6 +6,7 @@ import PulseLoader from "react-spinners/PulseLoader";
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MdOutlineMail } from "react-icons/md";
+import { toast } from 'react-toastify';
 
 const PasswordReset = () => {
 
@@ -20,7 +21,6 @@ const PasswordReset = () => {
     const [email, setEmail] = useState('');
         
     const sendResendEmail = async(email) => {
-        console.log("sending email...");
         try {
             setSendingEmail(true);
             const passwordResetUrl = `${import.meta.env.VITE_API_URL}/reset-password/`
@@ -35,6 +35,7 @@ const PasswordReset = () => {
             })
 
             if (resetPasswordLink.ok) {
+                toast.success('Reset link sent to your email');
                 const msg = await resetPasswordLink.json();
                 console.log(msg);
                 setRes();
@@ -45,15 +46,16 @@ const PasswordReset = () => {
 
             } else {
                 const status = resetPasswordLink.status;
-                console.log(status)
+                console.log(status);
                 if (status === 404) {
                     setRes('No user with the provided email')
                 } else {
-                    setRes('Error sending OTP')
+                    setRes('Error sending reset link')
                 }
+                toast.error(res);
             }
         } catch (error) {
-
+            toast.error('Error resetting password')
         } finally {
             setSendingEmail(false);
         }
