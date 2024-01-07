@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import './activate-account.css';
 import PulseLoader from "react-spinners/PulseLoader";
 import { useAuthContext } from '../../../../../providers/AuthProvider';
-
+import { toast } from 'react-toastify';
 
 const ActivateAccount = ({token, email}) => {
 
@@ -31,8 +31,8 @@ const ActivateAccount = ({token, email}) => {
             }) 
     
             if (otpSubmit.ok){
+                toast.success('Account activated successfully')
                 const res = await otpSubmit.json();
-
                 getUserProfile();
                 
             } else {
@@ -65,12 +65,14 @@ const ActivateAccount = ({token, email}) => {
 
             if (resendOTP.ok) {
                 setOk('OTP Resend successful')
+                toast.success('OTP resend successfully');
             } else {
                 const res = await resendOTP.json();
                 setError(res);
+                toast.error('Error sending OTP')
             }
         } catch (error) {
-
+            toast.error('Error sending OTP')            
         } finally {
             setLoading(false);
         }

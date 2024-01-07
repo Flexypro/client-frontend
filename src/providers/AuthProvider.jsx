@@ -4,7 +4,7 @@ import { getAccessToken, removeAccessToken, setAccessToken } from "../utils/auth
 import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useChatContext } from "./ChatProvider";
+import { toast } from 'react-toastify';
 
 export const AuthContext = createContext();
 
@@ -77,6 +77,12 @@ export const AuthProvider = props => {
             });
 
             if (registerClient.ok){
+                toast.success(
+                    'Registration success. Proceed to login',
+                    {
+                        autoClose:2000
+                    }
+                )
                 console.log("Registration success");
                 setSuccessRegister(true);
                 navigate('/app');                
@@ -92,6 +98,7 @@ export const AuthProvider = props => {
 
         } catch (error) {
             console.log(error);
+            toast.error('Error during registration')
         } finally {
             setLoadingReg(false);
         }
@@ -127,6 +134,9 @@ export const AuthProvider = props => {
             clearTimeout(timeoutId);
 
             if (status===200){
+                toast.success(
+                    'Login successful'
+                )
                 const token = await getToken.json();
     
                 const accessToken = token.access;

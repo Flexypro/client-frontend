@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import PulseLoader from "react-spinners/PulseLoader";
+import { toast } from 'react-toastify';
 
 const SetPassword = () => {
 
@@ -46,8 +47,8 @@ const SetPassword = () => {
             }) 
             
             if (resetPassword.ok){
+                toast.success('Password reset successfully')
                 setResErr();
-                console.log('Password reset successful');
                 sessionStorage.removeItem('email-session');
                 navigate('/app');
             } else {
@@ -58,6 +59,7 @@ const SetPassword = () => {
             }
 
         } catch(error) {
+            toast.error('Error resetting your password')
             // console.error(error);
         } finally {
             setLoading(false);
