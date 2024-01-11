@@ -19,6 +19,7 @@ import { formatDeadline } from '../../../../utils/helpers/DeadlineFormat';
 import { checkDeadline } from '../../../../utils/helpers/DeadlineFormat';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Payment from '../../payment/Payment';
 
 const OrderView = () => {
 
@@ -35,7 +36,7 @@ const OrderView = () => {
 
     const {orderId} = useParams();
 
-    const {loadingAttachemnt, updateInstructions, completeOrder, getAllOrders, uploadAttachment } = useOrderContext();
+    const {loadingAttachemnt, updateInstructions, getAllOrders, completeOrder, uploadAttachment } = useOrderContext();
 
     const [orderContent, setOrderContent] = useState();
 
@@ -49,6 +50,8 @@ const OrderView = () => {
 
     const [editInstructions, setEditInstructions] = useState(false);
     const [editedInstructions, setEditedInstructions] = useState(orderContent?.instructions);
+
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
 
     const toggleInstructionMode =  () => {
         setEditedInstructions(orderContent?.instructions);
@@ -81,17 +84,23 @@ const OrderView = () => {
     }
 
     const changeOrderStatus = () => {
+        const showPaymentModal = true;
         if(orderContent?.solution){
-            completeOrder(orderId)
-            .then((data)=>{
-                const updatedOrder = {
-                    ...orderContent, 
-                    status:data.status
-                }
-                orderContent.status = data.status;
-                setOrderContent(updatedOrder);            
-            })
-            getAllOrders();       
+            // check not paid
+            if (!orderContent.paid){
+                setShowPaymentModal(true);
+            } else if (orderContent.paid) {
+                completeOrder(orderId)
+                .then((data)=>{
+                    const updatedOrder = {
+                        ...orderContent, 
+                        status:data.status
+                    }
+                    orderContent.status = data.status;
+                    setOrderContent(updatedOrder);            
+                })
+                getAllOrders();
+            }                   
         } else {
             toast.error("The order has no solution",
             );                      
@@ -169,16 +178,11 @@ const OrderView = () => {
     }    
 
     useEffect(()=>{
-        console.log("Getting order.....")
-        // getOrder(orderId).then((data)=>{
-        //     setOrderContent(data);
-        // })
-        // orderId && navigate(`./orders/${orderId}`)
-        getOrder(orderId);
+        orderId && getOrder(orderId);
     }, [orderId,]);
 
     return (                
-        <div className='order-view'>
+        <div className='order-view'>            
             {
                 loading ?
                 <OrderSkeletonLoading />                
@@ -202,7 +206,7 @@ const OrderView = () => {
                                     className='complete-order'>
                                         Complete Order
                                 </button>
-                            }                                                
+                            }
                         </div>
                         {
                             (orderContent?.status != 'Completed') &&
@@ -226,7 +230,16 @@ const OrderView = () => {
                             {
                             orderContent?.solution?
                             <>
-                                <strong>Uploaded Work</strong>
+                                {
+                                    showPaymentModal && 
+                                    <>
+                                        <Payment show={setShowPaymentModal} orderId={orderId}/>
+                                        <hr style={{
+                                            width:'100%',
+                                        }} />
+                                    </>
+                                }                                
+                                <strong>Uploaded solution</strong>
                                 <div className='solutions'>
                                     {                            
                                         <div>

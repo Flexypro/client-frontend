@@ -5,6 +5,15 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@paypal/react-paypal-js':
+    specifier: ^8.1.3
+    version: 8.1.3(react-dom@18.2.0)(react@18.2.0)
+  '@stripe/react-stripe-js':
+    specifier: ^2.4.0
+    version: 2.4.0(@stripe/stripe-js@2.3.0)(react-dom@18.2.0)(react@18.2.0)
+  '@stripe/stripe-js':
+    specifier: ^2.3.0
+    version: 2.3.0
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -590,9 +599,50 @@ packages:
       fastq: 1.15.0
     dev: true
 
+  /@paypal/paypal-js@7.1.1:
+    resolution: {integrity: sha512-fVpExBrHINGHsyODYKBXSMinxrgPKzmVW7ZCaCqUaMl7kTSR1ZsVi2IhgLvsPpXF4LWSAMkPTP/J6aetQ6ZlNA==}
+    dependencies:
+      promise-polyfill: 8.3.0
+    dev: false
+
+  /@paypal/react-paypal-js@8.1.3(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-hEm27iYP/UHS3XPBhDdiK2U4PH1FxrOD5O3f9tstAVLJd82l/laCjq751HiESSm63PVOoFeKE41Fe1mYGab+oA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@paypal/paypal-js': 7.1.1
+      '@paypal/sdk-constants': 1.0.136
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@paypal/sdk-constants@1.0.136:
+    resolution: {integrity: sha512-nDYZ4RUqHeT12LH3xK1be0156abo/0yO51u+7wModqck6VNG6MYxhgPZyzQSYXOwA7vrSue2Juosht4WPtb/Nw==}
+    dependencies:
+      hi-base32: 0.5.1
+    dev: false
+
   /@remix-run/router@1.11.0:
     resolution: {integrity: sha512-BHdhcWgeiudl91HvVa2wxqZjSHbheSgIiDvxrF1VjFzBzpTtuDPkOdOi3Iqvc08kXtFkLjhbS+ML9aM8mJS+wQ==}
     engines: {node: '>=14.0.0'}
+    dev: false
+
+  /@stripe/react-stripe-js@2.4.0(@stripe/stripe-js@2.3.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-1jVQEL3OuhuzNlf4OdfqovHt+MkWh8Uh8xpLxx/xUFUDdF+7/kDOrGKy+xJO3WLCfZUL7NAy+/ypwXbbYZi0tg==}
+    peerDependencies:
+      '@stripe/stripe-js': ^1.44.1 || ^2.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@stripe/stripe-js': 2.3.0
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@stripe/stripe-js@2.3.0:
+    resolution: {integrity: sha512-iTwzjw1ORUR+1pH21+C/M05w+Jh5hAuE4QUei7Gnku65N7QpEaHtyVszYMYDBs6iNyLrD1tfQTSrjD6NkOA/ww==}
     dev: false
 
   /@types/prop-types@15.7.10:
@@ -1340,6 +1390,10 @@ packages:
       function-bind: 1.1.2
     dev: true
 
+  /hi-base32@0.5.1:
+    resolution: {integrity: sha512-EmBBpvdYh/4XxsnUybsPag6VikPYnN30td+vQk+GI3qpahVEG9+gTkG0aXVxTjBqQ5T6ijbWIu77O+C5WFWsnA==}
+    dev: false
+
   /ignore@5.2.4:
     resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}
     engines: {node: '>= 4'}
@@ -1604,7 +1658,6 @@ packages:
   /object-assign@4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
     engines: {node: '>=0.10.0'}
-    dev: true
 
   /object-inspect@1.13.1:
     resolution: {integrity: sha512-5qoj1RUiKOMsCCNLV1CBiPYE10sziTsnmNxkAI/rZhiD63CF7IqdFGC/XzjWjpSgLf0LxXX3bDFIh0E18f6UhQ==}
@@ -1735,13 +1788,16 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
+  /promise-polyfill@8.3.0:
+    resolution: {integrity: sha512-H5oELycFml5yto/atYqmjyigJoAo3+OXwolYiH7OfQuYlAqhxNvTfiNMbV9hsC6Yp83yE5r2KTVmtrG6R9i6Pg==}
+    dev: false
+
   /prop-types@15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       react-is: 16.13.1
-    dev: true
 
   /punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
@@ -1772,7 +1828,6 @@ packages:
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
-    dev: true
 
   /react-jwt@1.2.0(react@18.2.0):
     resolution: {integrity: sha512-HmEaS63CaqxHPIWoLh68KpGacXX7tAiWS2YIREVDosc2m4hTYoMp23Oz1lRM3MivT8DGibwTFIg5k4HNLfMv1w==}
