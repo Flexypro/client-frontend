@@ -84,7 +84,6 @@ const OrderView = () => {
     }
 
     const changeOrderStatus = () => {
-        const showPaymentModal = true;
         if(orderContent?.solution){
             // check not paid
             if (!orderContent.paid){
@@ -233,7 +232,11 @@ const OrderView = () => {
                                 {
                                     showPaymentModal && 
                                     <>
-                                        <Payment show={setShowPaymentModal} orderId={orderId}/>
+                                        <Payment 
+                                            show={setShowPaymentModal} 
+                                            orderId={orderId}
+                                            getOrder={getOrder}
+                                        />
                                         <hr style={{
                                             width:'100%',
                                         }} />
