@@ -1,0 +1,6 @@
+.close-pay {
+  position: absolute;
+  top: 1%;
+  right: 1%;
+  cursor: pointer;
+}
