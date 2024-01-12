@@ -1,14 +1,10 @@
-import { useEffect } from 'react';
 import './payment.css';
 import { FiAlertOctagon } from "react-icons/fi";
 import { IoIosClose } from "react-icons/io";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { toast } from 'react-toastify';
-import { useOrderContext } from '../../../providers/OrderProvider';
 
-const Payment = ({show, orderId}) => {
-
-  const completeOrder = useOrderContext();
+const Payment = ({show, orderId, getOrder}) => {
 
   const createOrder = async() => {
     console.log("Creating order checkout...")
@@ -53,8 +49,8 @@ const Payment = ({show, orderId}) => {
           autoClose:2000,
           position:'top-right'
         });
-        completeOrder(orderId)       
-        getAllOrders();
+        show(false);
+        getOrder(orderId);
       });
     } catch (error){
       toast.error('Transaction error, please try again',{
@@ -64,7 +60,8 @@ const Payment = ({show, orderId}) => {
   }
 
   const paypalOptions = {
-    "client-id":"AXTNDnVO8iNy8GgqF6gRHGHLptXoDhMIWAyCQZK-jytA5gmPBGBlk_cUsA9n38Go06bvwkKGCGI7gKpe",
+    "client-id": `AXTNDnVO8iNy8GgqF6gRHGHLptXoDhMIWAyCQZK-jytA5gmPBGBlk_cUsA9n38Go06bvwkKGCGI7gKpe`,
+    // "client-id":`${import.meta.env.CLIENT_ID_PAYPAL}`,
     currency:'USD',
     intent:"capture"
   }
