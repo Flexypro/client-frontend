@@ -42,11 +42,9 @@
     gap: 1rem;
     cursor: pointer;
     transition: background-color 0.3s;
-}
-
-.nav-item {
     text-decoration: none;   
-    color: #fff;
+    background-color: var(--secondary-color);
+    color: white;
 }
 
 .nav-item:hover {
@@ -56,7 +54,9 @@
     background-color: #374151;
 }
 
-.nav-item {
+.active-link {
     background-color: var(--secondary-color);
-    color: white;
+    color: #fff;
+    display: flex;
+    background-color: #374151;
 }

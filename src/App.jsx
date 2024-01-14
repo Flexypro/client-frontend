@@ -19,6 +19,7 @@ import Navbar from './components/main/navbar/Navbar';
 import SideNav from './components/main/sidenav/SideNav';
 import Completed from './pages/main/orders/completed/Completed';
 import InProgress from './pages/main/orders/in-progress/InProgress';
+import Available from './pages/main/orders/available/Available';
 
 function App() {
   const { userToken, loadedUserProfile } = useAuthContext();
@@ -34,12 +35,13 @@ function App() {
             <div className='routes'>
               <Routes>
                 <Route path='/' element={<Dashboard />}/> 
+                <Route path='/available' element={<Available/>} />
                 <Route path='/in-progress' element={<InProgress/>}/> 
                 <Route path='/completed'element={<Completed/>}/>
-                <Route path='notifications' element={<Notification/>}/>
-                <Route path='create-task' element={<OrderCreation/>}/>        
-                <Route path='profile' element={<Profile/>}/>       
-                <Route path='settings' element={<Settings/>}/> 
+                <Route path='/notifications' element={<Notification/>}/>
+                <Route path='/create-task' element={<OrderCreation/>}/>        
+                <Route path='/profile' element={<Profile/>}/>       
+                <Route path='/settings' element={<Settings/>}/> 
                 <Route path='/order/:orderId' element={<OrderView/>}/>
               </Routes> 
             </div>   

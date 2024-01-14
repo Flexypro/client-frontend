@@ -20,6 +20,8 @@ import { checkDeadline } from '../../../../utils/helpers/DeadlineFormat';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Payment from '../../payment/Payment';
+import BiddersComponent from '../../../../components/main/bidders/BiddersComponent';
+import { Routes, Route } from 'react-router-dom'
 
 const OrderView = () => {
 
@@ -28,7 +30,6 @@ const OrderView = () => {
     const { userToken } = useAuthContext();
 
     const navigate = useNavigate();
-
 
     const fileInputRef = useRef(null);
     
@@ -52,6 +53,8 @@ const OrderView = () => {
     const [editedInstructions, setEditedInstructions] = useState(orderContent?.instructions);
 
     const [showPaymentModal, setShowPaymentModal] = useState(false);
+
+
 
     const toggleInstructionMode =  () => {
         setEditedInstructions(orderContent?.instructions);
@@ -120,6 +123,7 @@ const OrderView = () => {
             if (attachment.size <= 20 *1024 *1024){
                 uploadAttachment(attachment, orderId)
                 .then((res)=>{
+                    console.log(res)
                     const attachmentUrl = res?.attachment;
 
                     const updatedOrder = {
@@ -224,53 +228,57 @@ const OrderView = () => {
                                     </article>
                                 )}
                             </div>
-                        }                                                  
-                        <div  className='order-soln'>
+                        }   
+                                                                       
+                        {
+                            (orderContent.status === 'Completed' || orderContent.status === 'In Progress') &&
+                            <div  className='order-soln'>
                             {
-                            orderContent?.solution?
-                            <>
-                                {
-                                    showPaymentModal && 
-                                    <>
-                                        <Payment 
-                                            show={setShowPaymentModal} 
-                                            orderId={orderId}
-                                            getOrder={getOrder}
-                                        />
-                                        <hr style={{
-                                            width:'100%',
-                                        }} />
-                                    </>
-                                }                                
-                                <strong>Uploaded solution</strong>
-                                <div className='solutions'>
-                                    {                            
-                                        <div>
-                                            <a href={`${orderContent?.solution?.solution}`} id='solution-file' >
-                                                {
-                                                    (orderContent?.solution.solution)
-                                                    .substring(orderContent?.solution.solution.lastIndexOf('/')+1)                                            
-                                                }
-                                            </a>
-                                            <article>{orderContent?.solution._type}</article>
-                                            <IoMdDownload className='download-icon' onClick={downloadFile} style={{cursor:'pointer'}} size={iconSize}/>
-                                            <article className=''>{uploadedAt}</article>
-                                        </div>
-                                    }                        
-                                </div>
-                            </>:
-                                <strong style={{color:'orange'}}>Solution will be uploaded soon</strong>            
-                            }
-                        </div>                                    
+                                orderContent?.solution?
+                                <>
+                                    {
+                                        showPaymentModal && 
+                                        <>
+                                            <Payment 
+                                                show={setShowPaymentModal} 
+                                                orderId={orderId}
+                                                getOrder={getOrder}
+                                            />
+                                            <hr style={{
+                                                width:'100%',
+                                            }} />
+                                        </>
+                                    }                                
+                                    <strong>Uploaded solution</strong>
+                                    <div className='solutions'>
+                                        {                            
+                                            <div>
+                                                <a href={`${orderContent?.solution?.solution}`} id='solution-file' >
+                                                    {
+                                                        (orderContent?.solution.solution)
+                                                        .substring(orderContent?.solution.solution.lastIndexOf('/')+1)                                            
+                                                    }
+                                                </a>
+                                                <article>{orderContent?.solution._type}</article>
+                                                <IoMdDownload className='download-icon' onClick={downloadFile} style={{cursor:'pointer'}} size={iconSize}/>
+                                                <article className=''>{uploadedAt}</article>
+                                            </div>
+                                        }                        
+                                    </div>
+                                </>:
+                                <strong style={{color:'orange'}}>Solution will be uploaded soon</strong>                                            
+                                }
+                            </div>
+                        }                                   
                         <div className="instructions">
                             <strong>
                                 {
-                                    orderContent?.status ==='In Progress'?
+                                    (orderContent?.status ==='In Progress' || orderContent.status ===  'Available')?
                                     (orderContent?.instructions ? 'Instructions':  ('Add Instructions')):
                                     orderContent?.status ==='Completed' && 'Instructions'
                                 } 
                                 {                        
-                                    orderContent?.status === 'In Progress' &&  
+                                    (orderContent?.status === 'In Progress' || orderContent.status ===  'Available') &&  
                                     (
                                         editInstructions &&(orderContent?.instructions != editedInstructions)?
                                         <button className='submit-instructions' onClick={updateNewInstructions}>Submit</button>:
@@ -321,13 +329,13 @@ const OrderView = () => {
                                         {
                                             orderContent?.attachment?'Attachments':'Attachments'
                                         }
-                                        {orderContent?.status ==='In Progress' && <MdAdd onClick={openFileDialog} style={{cursor:'pointer'}} size={20}/>}
+                                        {(orderContent?.status ==='In Progress' ||  orderContent.status ===  'Available')&& <MdAdd onClick={openFileDialog} style={{cursor:'pointer'}} size={20}/>}
                                         <input onChange={uploadAttachmentFile} ref={fileInputRef} style={{ display: 'none' }} size={20 * 1024 * 1024} type="file" name="" id="" />
                                     </strong>
                                 }
                                 {
                                     !orderContent?.attachment &&
-                                    orderContent?.status ==='In Progress' &&
+                                    (orderContent?.status ==='In Progress' || orderContent.status ===  'Available' )&&
                                     <div className='upload-div'>
                                         <article onClick={openFileDialog}>
                                             <VscFile className='file-icon' size={iconSize}/>                                
@@ -350,7 +358,17 @@ const OrderView = () => {
                             </div>
                         }
                     </div>
-                    <Chat orderId={orderId} client={orderContent.client} freelancer={orderContent.freelancer} />
+                    <Routes>
+                        <Route to='bidders' element={<BiddersComponent/>}/>
+                        <Route to='chats' element={<Chat/>}/>
+                    </Routes>
+                    {
+                        orderContent.status === 'Available' ?
+                        <BiddersComponent orderId={orderId} client={orderContent.client} bidders={orderContent.bidders} getOrder={getOrder}/>:
+                        <Chat orderId={orderId} client={orderContent.client} freelancer={orderContent.freelancer} />
+                        
+                    }
+                    {/* <Chat orderId={orderId} client={orderContent.client} freelancer={orderContent.freelancer} /> */}
                 </>                
                 )
                 

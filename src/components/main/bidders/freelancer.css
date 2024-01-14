@@ -1,0 +1,29 @@
+.bid-container {
+    position: relative;    
+}
+
+.freelancer-container {
+    height: 75vh;
+    overflow-x: auto;
+    /* background-color: red; */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.freelancer {
+    position: relative;
+    background-color: var(--background);
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+.bid-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.bid-actions button {
+    width: 7rem;
+}
