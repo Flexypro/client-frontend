@@ -1,4 +1,4 @@
-.dashboard, .main-in-progress, .completed {
+.dashboard, .main-available, .main-in-progress, .completed {
     padding: 0 1rem;
     display: flex;
     flex-wrap: wrap;
@@ -44,16 +44,43 @@
     justify-content: space-between;
 }
 
+.bidding-box article{
+    position: inherit;
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+article .bid-count {
+    border-radius: 50%;
+    width: 1rem;
+    height: 1rem;
+    display: flex;
+    justify-content: center;
+    padding: 4px;
+    align-items: center;
+    background-color: var(--primary-color);
+    color: #fff;    
+}
+
 .bottom-box .fx-start {
+    font-size: var(--fontsize-small);
     display: flex;
     position: relative;
     gap: 3rem;  
 }
 
+.fx-start span {
+    color: var(--primary-color);
+} 
+
 .bottom-box .fx-end{
     position: relative;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    gap: 4px;
 }
 
 .deadline {

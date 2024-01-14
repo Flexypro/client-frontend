@@ -3,9 +3,10 @@ import './sidenav.css';
 // import gigitise from '../../../../public/gigitise.svg';
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { MdAdd, MdTaskAlt, MdPendingActions, MdAccessTime } from 'react-icons/md';
 import { FiMenu } from "react-icons/fi";
+import { FaClockRotateLeft } from "react-icons/fa6";
 
 const SideNav = () => {
     const navigate = useNavigate();
@@ -19,30 +20,30 @@ const SideNav = () => {
                 Gigitise
             </h1>
             <div className='actions'>
-                <Link to='/app' className="nav-item">
+                <NavLink to='/app' className="nav-item" activeClassName="active-link">
                     <FiMenu size={iconSize}/>
                     Dashboard
-                </Link>
-                <Link to='./in-progress' className="nav-item">
+                </NavLink>
+                <NavLink to='./available' className="nav-item" activeClassName="active-link">
+                    <FaClockRotateLeft size={iconSize}/>
+                    Bidding
+                </NavLink>
+                <NavLink to='./in-progress' className="nav-item" activeClassName="active-link">
                     <MdPendingActions size={iconSize}/>
                     In Progress
-                </Link>
-                <Link to='./completed' className="nav-item">
+                </NavLink>
+                <NavLink to='./completed' className="nav-item" activeClassName="active-link">
                     <MdTaskAlt size={iconSize}/>
                     Completed
-                </Link>
-                <Link className="nav-item">
+                </NavLink>
+                <NavLink to='./solved' className="nav-item" activeClassName="active-link">
                     <MdAccessTime size={iconSize}/>
                     Solved
-                </Link>
-                <Link to='./create-task' className="nav-item">
+                </NavLink>
+                <NavLink to='./create-task' className="nav-item" activeClassName="active-link">
                     <MdAdd size={iconSize}/>
                     Create
-                </Link>
-
-                {/* <button className={`${(currentPage == 0)?'active-button':''}`} onClick={()=>setCurrentPage(0)}>In Progress</button>
-                <button className={`${(currentPage == 1)?'active-button':''}`} onClick={()=>setCurrentPage(1)}>Completed</button>
-                <button className={`${(currentPage == 2)?'active-button':''}`} onClick={()=>setCurrentPage(2)}>Solved</button> */}
+                </NavLink>
             </div>
         </div>
     );

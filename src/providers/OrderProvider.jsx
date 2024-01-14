@@ -18,6 +18,7 @@ export const OrderProvider = (props) => {
     const { decodedToken } = useJwt(userToken);
 
     const [orders, setOrders] = useState([]);
+    const [ordersAvailable, setOrdersAvailable] = useState([])
     const [ordersInProgress, setOrdersInProgress] = useState([]);
     const [ordersCompleted, setOrdersCompleted] = useState([]);
 
@@ -44,9 +45,11 @@ export const OrderProvider = (props) => {
             })
 
             const orders = await getOrders.json();
+            const available = orders.filter(order=>order.status==='Available');
             const inProgress = orders.filter(order=>order.status==='In Progress');
             const completed = orders.filter(order=>order.status==='Completed');
 
+            setOrdersAvailable(available);
             setOrdersInProgress(inProgress);
             setOrdersCompleted(completed);
             setOrders(orders);
@@ -161,7 +164,7 @@ export const OrderProvider = (props) => {
                 body:data
             })
 
-            if (data.ok) {
+            if (response.ok) {
                 const dataRes = await response.json();
                 return (dataRes)
             } else {
@@ -261,6 +264,7 @@ export const OrderProvider = (props) => {
 
     return <OrderContext.Provider value={{
         orders, 
+        ordersAvailable,
         ordersInProgress, 
         ordersCompleted, 
         loading,

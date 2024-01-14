@@ -23,10 +23,29 @@ const OrderComponent = ({ content }) => {
                     }
                 </article>
             </div>
+            {
+                content.status === 'Available' &&
+                <div className='bidding-box'>
+                    <article>
+                        <span>Bids placed</span>
+                        <small className='bid-count'>
+                            {
+                                content.total_bids > 99 ?
+                                '99+':
+                                content.total_bids
+                            }                            
+                        </small>
+                    </article>
+                </div>                   
+            }
             <div className='bottom-box'>
                 <div className='fx-start'>
                     <article>{content.category}</article>    
                     <article>${content.amount}</article>
+                    {
+                        (content.status === 'Available') &&
+                        <span>Bidding</span>
+                    }
                 </div>
                 {
                     status === 'Completed'?
@@ -39,8 +58,9 @@ const OrderComponent = ({ content }) => {
                             backgroundColor: deadlinePased?`#f7fafc`:''
                         }}>
                             {deadline}
-                        </article>
+                        </article>                        
                     </div>
+                    
                 }                
             </div>                
         </div> 
