@@ -226,12 +226,11 @@ const Profile = () => {
                 <div>
                     <PulseLoader size={10}  color='#7fc2f5' />
                 </div>:
+                
+                transactions.length > 0 &&
                 <>
                     <article>My Transactions</article>
-                    {
-                        transactions.length > 0 &&
-                        <Transaction transactions={transactions} />
-                    }
+                    <Transaction transactions={transactions} />                             
                 </>
             }
         </div>
