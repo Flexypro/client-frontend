@@ -2,7 +2,7 @@ import React from 'react';
 import './transaction.css';
 import { timeAgo } from '../../../utils/helpers/TimeAgo';
 
-const Transaction = ({transactions}) => {
+const Transaction = ({transactions, user}) => {
 
     return (
         <div>
@@ -24,7 +24,15 @@ const Transaction = ({transactions}) => {
                                 <tr className='transaction'>
                                     <td>{transaction._from}</td>
                                     <td>{transaction._to}</td>
-                                    <td>${transaction.amount_value}</td>
+                                    <td>
+                                        {
+                                            user === transaction._from &&
+                                            <>-</> ||
+                                            user === transaction._to &&
+                                            <>+</>
+                                        }
+                                        ${transaction.amount_value}
+                                    </td>
                                     <td>{transaction.channel}</td>                                    
                                     <td>{transaction.status}</td>
                                     <td>{timeAgo(transaction.timestamp)}</td>
