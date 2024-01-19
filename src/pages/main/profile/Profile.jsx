@@ -230,7 +230,7 @@ const Profile = () => {
                 transactions.length > 0 &&
                 <>
                     <article>My Transactions</article>
-                    <Transaction transactions={transactions} />                             
+                    <Transaction transactions={transactions} user={userProfile?.username} />                             
                 </>
             }
         </div>
