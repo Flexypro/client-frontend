@@ -4,6 +4,7 @@ import { timeAgo } from '../../../utils/helpers/TimeAgo';
 import { useState } from 'react';
 import Chat from '../chat/Chat';
 import { toast } from 'react-toastify';
+import { IoIosChatbubbles, IoIosPerson } from "react-icons/io";
 
 const BiddersComponent = ({orderId, client, bidders, getOrder}) => {
     const [bidder, setBidder] = useState();
@@ -61,6 +62,8 @@ const BiddersComponent = ({orderId, client, bidders, getOrder}) => {
         checkParam()
     }
 
+    const iconSize = 25;
+
     return (
         !bidder ?
         <div className="bid-container">
@@ -80,13 +83,17 @@ const BiddersComponent = ({orderId, client, bidders, getOrder}) => {
                         return (
                             <div>
                                 <div className="freelancer">
-                                    <article>{bid.freelancer.user.username}</article>
-                                    <article> Bid amount: $ {bid.amount}</article>
-                                    <article>{timeAgo(bid.created_at)}</article>
-                                    <div className="bid-actions">
-                                        <button onClick={()=>hireFreelancer(bid.id)}>Hire</button>
-                                        <button onClick={()=>startChat(bid.id)}>Chat</button>
-                                        <button>View Profile</button>
+                                    <IoIosPerson size={80} />
+                                    <div className='freelancer-container-left'>
+                                        <div className='freelancer-elements'>
+                                            <article>{bid.freelancer.user.username}</article>
+                                            <article>Bid {timeAgo(bid.created_at)}</article>
+                                        </div>
+                                        <div className="bid-actions">                                        
+                                            <IoIosChatbubbles className='chat-icon' size={iconSize} title='Start chat' onClick={()=>startChat(bid.id)} />
+                                            <article>$ {bid.amount}</article>
+                                            <button onClick={()=>hireFreelancer(bid.id)}>Hire</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
