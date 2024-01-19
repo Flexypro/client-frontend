@@ -11,9 +11,11 @@ import { MdAdd } from "react-icons/md";
 import { useState } from 'react';
 import { useRef } from 'react';
 import { MdVerified } from "react-icons/md";
+import Transaction from '../../../components/main/transactions/Transaction';
+import PulseLoader from "react-spinners/PulseLoader";
 
 const Profile = () => {
-    const { loadingUserProfile, loadedUserProfile, submitNewBio, uploadProfilePhoto } = useAuthContext();
+    const { loadingUserProfile, loadedUserProfile, submitNewBio, uploadProfilePhoto, userToken } = useAuthContext();
 
     const [userProfile, setUserProfile] = useState(loadedUserProfile);
 
@@ -23,6 +25,9 @@ const Profile = () => {
 
     const [editBio, setEditBio] = useState(false);
     const [editedBio, setEditedBio] = useState(userProfile?.bio);
+
+    const [transactions, setTransactions] = useState();
+    const [loadingTransactions, setLoadingTransactions] = useState(true);
 
     const toggleEditBio = () => {
         setEditBio(userProfile?.bio);
@@ -76,7 +81,34 @@ const Profile = () => {
         setEditBio(false);
     }
 
+    const getTransactions = async() => {
+        const transactionUrl = `${import.meta.env.VITE_API_URL}/transactions`
+        try {
+            const retrieveTransactions = await fetch(transactionUrl, {
+                headers: {
+                    'content-Type':'application/json',
+                    'authorization':`Bearer ${userToken}`
+                }
+            })
+
+            if (retrieveTransactions.ok) {
+                const transactions = await retrieveTransactions.json();
+                setTransactions(transactions)
+                console.log(transactions);
+            }
+
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoadingTransactions(false)
+        }
+    }    
+
     const iconSize = 25;
+
+    useState(()=>{
+        userToken && getTransactions()
+    },[])
 
     return (
         <div className='profile-main'>
@@ -189,6 +221,19 @@ const Profile = () => {
             <button className='save' onClick={submitEditedProfile} style={{
 
             }}>Save</button>
+            {
+                loadingTransactions ?
+                <div>
+                    <PulseLoader size={10}  color='#7fc2f5' />
+                </div>:
+                <>
+                    <article>My Transactions</article>
+                    {
+                        transactions.length > 0 &&
+                        <Transaction transactions={transactions} />
+                    }
+                </>
+            }
         </div>
     );
 }
