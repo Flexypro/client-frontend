@@ -1,108 +1,113 @@
 .login {
-    position: relative;
-    display: flex;
-    justify-content: center;   
-    align-items: center;
-    min-height: 100vh;
-    width: 100vw;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100dvh;
+  width: 100dvw;
+  position: relative;
 }
 
 .login-box {
-    width: inherit;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 2rem;
+  width: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .heading {
-    color: var(--secondary-color);
+  color: var(--secondary-color);
 }
 
 .login-form {
-    position: inherit;
-    background-color: var(--background);
-    padding: 2rem;
-    width: 23%;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  box-sizing: border-box;
+  position: relative;
+  background-color: var(--background);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: min(100%, 25rem);
 }
 
 .login-form .login-content {
-    display: flex;
-    position: relative;
-    width: 100%;
-    align-items: center;
-    gap: 1rem;
+  display: flex;
+  position: relative;
+  width: 100%;
+  align-items: center;
+  gap: 1rem;
 }
 
 .login-form div input {
-    width: inherit;
-    padding: 1rem;
-    border: solid 1px #f5f5f5;
-    border-radius: 4px;
-    outline-color: var(--secondary-color);
-    color: gray;
+  width: inherit;
+  padding: 1rem;
+  border: solid 1px #f5f5f5;
+  border-radius: 4px;
+  outline-color: var(--secondary-color);
+  color: gray;
 }
 
-.username-icon, .password-icon {
-    position: absolute;
-    left: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1;
+.username-icon,
+.password-icon {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
 }
 
-#username, #password {
-    padding-left: 2.8rem;
+#username,
+#password {
+  padding-left: 2.8rem;
 }
 
 .password-icon-eye {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    z-index: 1;
-
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 1;
 }
 
 .submit-credentials {
-    position: relative;
-    width: 100%;
+  position: relative;
+  width: 100%;
 }
 
 .submit-credentials button {
-    width: inherit;
-    background-color: var(--secondary-color);
-    color: white;
-    border: none;
-    letter-spacing: 2px;
-    height: 3.5rem;
+  width: inherit;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  letter-spacing: 2px;
+  height: 3.5rem;
 }
 
 .register-prompt {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center !important;
 }
 
-.register-prompt span a, .reset-password a{
-    color: var(--secondary-color);
-    text-decoration: underline;
-    cursor: pointer;
-    text-decoration: none;
+.register-prompt span a,
+.reset-password a {
+  color: var(--secondary-color);
+  text-decoration: underline;
+  cursor: pointer;
+  text-decoration: none;
 }
 
-.register-prompt span a:hover, .reset-password a:hover {
-    text-decoration: underline;
+.register-prompt span a:hover,
+.reset-password a:hover {
+  text-decoration: underline;
 }
 
 .scaleloader {
-    width: inherit;
-    height: inherit;
-    color: #fff !important;
+  width: inherit;
+  height: inherit;
+  color: #fff !important;
 }
