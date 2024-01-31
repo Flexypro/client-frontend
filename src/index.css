@@ -3,8 +3,9 @@
   --fontsize-normal: 0.95rem;
   --fontsize-small: 0.9rem;
   --primary-color: #0360d1;
-  /* --secondary-color:#a7caff; */
-  --secondary-color: #7fc2f5;
+  --secondary-color: #374151;
+  --bg-color: #404c5e;
+  /* --secondary-color: #7fc2f5; */
   --complementary: #eb7100;
   --text-color: #535354;
   --background: #f7fafc;

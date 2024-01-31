@@ -30,16 +30,15 @@
 } */
 
 .app {
-    display: flex;
-    width: 100%;
-    position: relative;
+  display: flex;
+  width: 100%;
 }
 
 .app-main-content {
-    position: inherit;
-    width: 80%;
+  position: inherit;
+  width: 80%;
 }
 
 .routes {
-    padding: 1rem 0;
+  padding: 1rem 0;
 }

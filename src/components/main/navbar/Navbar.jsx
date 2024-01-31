@@ -9,6 +9,7 @@ import { useNotificationContext } from "../../../providers/NotificationProvider"
 import { useNavigate } from "react-router-dom";
 import { MdOutlineMenu } from "react-icons/md";
 import { IoSearchOutline } from "react-icons/io5";
+import { RiArrowRightSLine } from "react-icons/ri";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -47,8 +48,13 @@ const Navbar = () => {
 
   return (
     <div className="top-nav">
-      <div className="search-icon">
-        <IoSearchOutline size={iconSize} />
+      <div className="icons">
+        <div className="toggle-side">
+          <RiArrowRightSLine size={iconSize} />
+        </div>
+        <div className="search-icon">
+          <IoSearchOutline size={iconSize} />
+        </div>
       </div>
       <div className="search-nav">
         <input
