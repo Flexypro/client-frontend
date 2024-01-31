@@ -1,32 +1,38 @@
 function getHoursToDeadline(deadline) {
-  const hours = 8;
+  const now = new Date();
+  const date = new Date(deadline);
+  const timeDifference = date - now;
+  const seconds = Math.floor(timeDifference / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+
   return hours;
 }
 
-export const calculatePrice = (unit, deadline) => {
-  const basePrice = 8.0;
-  var price = basePrice * unit;
-  const hoursRemain = getHoursToDeadline(deadline);
-
-  switch (hoursRemain) {
-    case hoursRemain <= 3.1:
-      price = price * 1.35;
-      break;
-
-    case hoursRemain > 3.1 && hoursRemain < 8.0:
-      price = price * 1.2;
-      break;
-
-    case hoursRemain >= 8.0:
-      price = price;
-      break;
-
-    default:
-      price = price;
-      break;
+function getPrice(price, hoursRemain) {
+  if (hoursRemain > 2.9 && hoursRemain <= 3.1) {
+    return price * 1.35;
+  } else if (hoursRemain > 3.1 && hoursRemain < 8.0) {
+    return price * 1.2;
+  } else if (hoursRemain >= 8.0) {
+    return price;
+  } else {
+    return price;
   }
+}
 
-  console.log(price);
+export const calculatePrice = (
+  unit,
+  orderMilestoneCount,
+  deadline = new Date()
+) => {
+  let milestoneCount = parseInt(orderMilestoneCount);
+  if (milestoneCount === 0) {
+    milestoneCount = 1;
+  }
+  const basePrice = 8.0;
+  const hoursRemain = getHoursToDeadline(deadline);
+  const price = getPrice(basePrice * unit * milestoneCount, hoursRemain);
 
-  return price;
+  return parseFloat(price);
 };

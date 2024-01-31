@@ -6,6 +6,8 @@ import { useOrderContext } from "../../../../providers/OrderProvider";
 import PulseLoader from "react-spinners/PulseLoader";
 import { useRef, useState } from "react";
 import { calculatePrice } from "../../../../utils/helpers/pricing";
+import { useCallback } from "react";
+import { useEffect } from "react";
 
 const OrderCreation = () => {
   const { createOrder, submitLoading } = useOrderContext();
@@ -39,17 +41,47 @@ const OrderCreation = () => {
   modifiedDate1.setHours(currentDate.getHours() + 3);
   const minDate = formatDate(modifiedDate1);
 
-  const [subCategory, setSubCategory] = useState(categories[0].subCategory);
-  const [unit, setUnit] = useState(categories[0].unit);
-  const [price, setPrice] = useState(calculatePrice(unit, 0));
-  function setSelectedSubcategory(e) {
-    const subC = categories.find((item) => item.category === e.target.value);
-    setSubCategory(subC.subCategory);
-    setUnit(subC.unit);
-    const price = calculatePrice(unit, 0);
-    setPrice(price);
-    console.log(price);
+  const [fullCategory, setFullCategory] = useState(categories[0]);
+  const [subCategory, setSubCategory] = useState(fullCategory.subCategory);
+  const [category, setCategory] = useState(fullCategory.category);
+  const [orderMilestoneCount, setorderMilestoneCount] = useState(1);
+  const [deadline, setDeadline] = useState();
+
+  const unit = fullCategory.unit;
+
+  const [price, setPrice] = useState(
+    calculatePrice(unit, orderMilestoneCount, deadline)
+  );
+
+  function getPrice() {
+    const price = calculatePrice(
+      fullCategory.unit,
+      orderMilestoneCount,
+      deadline
+    );
+    setPrice(price.toFixed(2));
   }
+
+  function setSelectedSubcategory(e) {
+    const ctg = categories.find((item) => item.category === e.target.value);
+
+    if (
+      category !=
+      (category === "Writing" ||
+        category === "General Programming" ||
+        category === "Class Work")
+    ) {
+      setorderMilestoneCount(1);
+    }
+
+    setCategory(ctg.category);
+    setFullCategory(ctg);
+    setSubCategory(ctg.subCategory);
+  }
+
+  useEffect(() => {
+    getPrice();
+  }, [category, orderMilestoneCount, deadline]);
 
   return (
     <div className="order-creation">
@@ -97,6 +129,7 @@ const OrderCreation = () => {
             </select>
           </div>
           <div>
+            <label htmlFor="sub-category">Subject</label>
             <select required name="sub-category" id="sub-category">
               {subCategory?.map((subCategory, index) => {
                 return (
@@ -107,17 +140,65 @@ const OrderCreation = () => {
               })}
             </select>
           </div>
+          {category === "Writing" && (
+            <div>
+              <label htmlFor="">Page Count</label>
+              <input
+                onChange={(e) =>
+                  e.target.value && setorderMilestoneCount(e.target.value)
+                }
+                name="count"
+                type="number"
+                min={1}
+                max={100}
+                defaultValue={1}
+              />
+            </div>
+          )}
+          {category === "Class Work" && (
+            <div>
+              <label htmlFor="">Page Count</label>
+              <input
+                onChange={(e) =>
+                  e.target.value && setorderMilestoneCount(e.target.value)
+                }
+                name="count"
+                type="number"
+                min={1}
+                max={100}
+                defaultValue={1}
+              />
+            </div>
+          )}
+          {category === "General Programming" && (
+            <div>
+              <label htmlFor="">Milestones</label>
+              <input
+                onChange={(e) =>
+                  e.target.value && setorderMilestoneCount(e.target.value)
+                }
+                name="count"
+                type="number"
+                min={1}
+                max={100}
+                defaultValue={1}
+              />
+            </div>
+          )}
+
           <div>
-            {/* <div> */}
             <label htmlFor="file">Upload file</label>
-            {/* </div> */}
             <input id="attachment" type="file" accept="" />
           </div>
           <div>
-            {/* <div> */}
             <label htmlFor="deadline">Deadline</label>
-            {/* </div> */}
-            <input required type="datetime-local" id="deadline" min={minDate} />
+            <input
+              required
+              type="datetime-local"
+              id="deadline"
+              min={minDate}
+              onChange={(e) => setDeadline(e.target.value)}
+            />
           </div>
         </div>
         <div className="instructions-box">
@@ -125,6 +206,9 @@ const OrderCreation = () => {
             <label htmlFor="instructions">Instructions</label>
           </div>
           <textarea
+            style={{
+              resize: "none",
+            }}
             rows={4}
             type="text"
             id="instructions"
