@@ -130,7 +130,7 @@ const OrderCreation = () => {
           </div>
           <div>
             <label htmlFor="sub-category">Subject</label>
-            <select required name="sub-category" id="sub-category">
+            <select required name="sub-category" id="subCategory">
               {subCategory?.map((subCategory, index) => {
                 return (
                   <option key={index} value={subCategory}>
@@ -142,12 +142,13 @@ const OrderCreation = () => {
           </div>
           {category === "Writing" && (
             <div>
-              <label htmlFor="">Page Count</label>
+              <label htmlFor="page-count">Page Count</label>
               <input
                 onChange={(e) =>
                   e.target.value && setorderMilestoneCount(e.target.value)
                 }
-                name="count"
+                id="pages"
+                name="page-count"
                 type="number"
                 min={1}
                 max={100}
@@ -157,12 +158,13 @@ const OrderCreation = () => {
           )}
           {category === "Class Work" && (
             <div>
-              <label htmlFor="">Page Count</label>
+              <label htmlFor="class-page-count">Page Count</label>
               <input
                 onChange={(e) =>
                   e.target.value && setorderMilestoneCount(e.target.value)
                 }
-                name="count"
+                id="pages"
+                name="class-page-count"
                 type="number"
                 min={1}
                 max={100}
@@ -177,6 +179,7 @@ const OrderCreation = () => {
                 onChange={(e) =>
                   e.target.value && setorderMilestoneCount(e.target.value)
                 }
+                id="milestones"
                 name="count"
                 type="number"
                 min={1}
