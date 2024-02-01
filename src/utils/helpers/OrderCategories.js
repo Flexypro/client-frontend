@@ -33,7 +33,7 @@ export const categories = [
     ],
   },
   {
-    category: "General Programming",
+    category: "Programming",
     unit: 3.65,
     subCategory: [
       "Python",

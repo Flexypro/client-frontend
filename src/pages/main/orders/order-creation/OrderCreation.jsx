@@ -206,29 +206,33 @@ const OrderCreation = () => {
         </div>
         <div className="instructions-box">
           <div>
-            <label htmlFor="instructions">Instructions</label>
+            <div>
+              <label htmlFor="instructions">Instructions</label>
+            </div>
+            <textarea
+              style={{
+                resize: "none",
+              }}
+              rows={4}
+              type="text"
+              id="instructions"
+              placeholder="Tell us more about your task"
+            />
           </div>
-          <textarea
-            style={{
-              resize: "none",
-            }}
-            rows={4}
-            type="text"
-            id="instructions"
-            placeholder="Tell us more about your task"
-          />
         </div>
         <div className="amount-box">
           <div>
-            <label htmlFor="amount">Amount ($)</label>
+            <div>
+              <label htmlFor="amount">Amount ($)</label>
+            </div>
+            <input
+              required
+              type="number"
+              id="amount"
+              placeholder={`$ ${price}`}
+              min={price}
+            />
           </div>
-          <input
-            required
-            type="number"
-            id="amount"
-            placeholder={`$ ${price}`}
-            min={price}
-          />
         </div>
         <div
           style={{
@@ -237,7 +241,7 @@ const OrderCreation = () => {
           }}
         >
           {submitLoading ? (
-            <PulseLoader color="#7fc2f5" />
+            <PulseLoader color="#374151" />
           ) : (
             <button type="submit" className="create-task">
               Create <IoMdArrowForward size={20} />
