@@ -1,178 +1,204 @@
 .top-nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 1rem;
-    color: gray;
-    position: sticky;
-    top: 0;
-    left: 0;
-    background-color: #fff;
-    z-index: 1;
-    height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  color: gray;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  height: 10dvh;
+  background-color: var(--secondary-color);
+  color: #fff;
 }
 
 .search-nav {
-    position: inherit;
-    width: 40%;
+  position: inherit;
+  margin-right: 1rem;
+  /* max-width: 40rem; */
+  box-sizing: border-box;
+}
+
+.icons {
+  display: flex;
+  gap: 2rem;
+}
+
+.search-icon {
+  display: none;
 }
 
 .search-nav input {
-    position: relative;    
-    width: 100%;
-    padding: 0.7rem 0.8rem;
-    border-radius: 2rem;
-    border: solid 1px var(--secondary-color);
-    font-size: var(--fontsize-normal);
-    outline-color: var(--secondary-color);
+  position: relative;
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  border-radius: 2rem;
+  border: solid 1px var(--secondary-color);
+  font-size: var(--fontsize-normal);
+  outline-color: var(--secondary-color);
 }
 
 .add-icon {
-    color: var(--secondary-color);
+  color: var(--secondary-color);
 }
 
 .suggestions {
-    position: absolute;
-    background-color: #f5f5f5;
-    margin-top: 0.5rem;
-    border-radius: 4px;
-    width: 100%;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    font-size: small;
+  position: absolute;
+  background-color: #f5f5f5;
+  margin-top: 0.5rem;
+  border-radius: 4px;
+  width: 100%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  font-size: small;
 }
 
 .suggested {
-    padding: 0.5rem 0.8rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
 }
 
 .suggested:hover {
-    background-color: rgb(235, 235, 235);
-}
-
-.add-task {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-.add-task:hover {
-    color: var(--secondary-color);
+  background-color: rgb(235, 235, 235);
 }
 
 .help {
-    color: var(--secondary-color);
+  color: #fff;
 }
 
 .notif-bell {
-    position: relative;
-    padding: 0.3rem;
-    transition: transform 0.5 ease-in-out;
+  position: relative;
+  padding: 0.3rem;
+  transition: transform 0.5 ease-in-out;
 }
 
 .notif-icon {
-    color: var(--secondary-color);
+  color: #fff;
 }
 
 .notif-bell:hover {
-    transform: rotate(10deg);
+  transform: rotate(10deg);
 }
 
 .notif-bell div {
-    position: absolute;
-    display: flex;
-    top: 4%;    
-    left: 1.1rem;    
-    background-color: red;    
-    border-radius: 50%;
-    width: 15px;
-    height: 15px;
-    align-items: center;
-    justify-content: center;
-    padding: 1px;
+  position: absolute;
+  display: flex;
+  top: 4%;
+  left: 1.1rem;
+  background-color: red;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  align-items: center;
+  justify-content: center;
+  padding: 1px;
 }
 
 .notif-bell div article {
-    color: white;
-    font-size: 0.8rem;
+  color: white;
+  font-size: 0.8rem;
 }
 
 .settings {
-    transition: transform 0.5 ease-in-out;
-    color: var(--secondary-color);
+  transition: transform 0.5 ease-in-out;
+  color: #fff;
 }
 
 .settings:hover {
-    transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
 .profile {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.menu-icon {
+  display: none !important;
 }
 
 .logout {
-    cursor: pointer;
-    border: solid 1px #fff;
-    padding: 0.3rem 0.5rem;
-    border-radius: 4px;
-    transition: color 0.3s;
-    /* border: solid 1px var(--secondary-color); */
-    color: var(--secondary-color);
-    background-color: var(--background);
-    border: solid 1px var(--background);
+  cursor: pointer;
+  border: solid 1px var(--secondary-color);
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  transition: color 0.3s;
+  color: #fff;
 }
 
 .logout:hover {
-    border: solid 1px var(--secondary-color);
-    color: var(--secondary-color);
+  border: solid 1px #fff;
+  /* color: var(--secondary-color); */
 }
 
 .profile div {
-    display: flex;
-    align-items: center;
-    font-weight: bold;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
 }
 
-.profile div img, .img-placeholder {
-    width: 2.5rem;
-    aspect-ratio: 1;
-    object-fit: cover;
-    border-radius: 50%;
-    padding: 1px;
-    border: solid 1px gray;
+.profile div img,
+.img-placeholder {
+  width: 2.5rem;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  padding: 1px;
+  border: solid 1px gray;
 }
 
-.img-placeholder{
-    font-size: 1.4rem;
-    background-color: var(--secondary-color);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    font-weight:  normal;
+.img-placeholder {
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  font-weight: normal;
+  background-color: #fff;
+  color: var(--secondary-color);
 }
 
 .profile-info {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
 }
 
 /* Skeleton Anim */
 
 .username-skeleton {
-    animation: skeleton-loading 1s linear infinite alternate;  
-    height: 0.9rem;
-    width: 6rem;
-    border-radius: 4px;
+  animation: skeleton-loading 1s linear infinite alternate;
+  height: 0.9rem;
+  width: 6rem;
+  border-radius: 4px;
+}
+
+@media screen and (max-width: 768px) {
+  .logout,
+  .help,
+  .notif-bell,
+  .settings {
+    display: none !important;
+  }
+
+  .menu-icon {
+    display: flex !important;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .search-nav {
+    display: none;
+  }
+
+  .search-icon {
+    display: block;
+  }
 }

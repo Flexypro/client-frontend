@@ -1,62 +1,95 @@
 .side-nav {
-    position: sticky;
-    left: 0;
-    top: 0;
-    width: 20%;
-    background-color: var(--secondary-color);
-    /* border-right: solid 1px; */
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    border-radius: 0 12px 12px 0;
+  box-sizing: border-box;
+  position: sticky;
+  left: 0;
+  top: 0;
+  width: 20%;
+  background-color: var(--secondary-color);
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-right: solid 1px #fff;
+  /* border-radius: 0 12px 12px 0; */
 }
 
 .heading-logo {
-    display: flex;
-    align-items: center;
-    /* justify-content: center; */
-    gap: 1rem;
-    padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  color: #fff;
 }
 
 .actions {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
-    text-decoration: none;    
-    position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  text-decoration: none;
+  position: relative;
 }
 
 .nav-item {
-    border: none;
-    border-radius: 2rem;    
-    border: solid var(--secondary-color) 1px;
-    transition: color 0.3s;
-    text-align: start;
-    border-radius: 2px;
-    padding: 0.7rem; 
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    text-decoration: none;   
-    background-color: var(--secondary-color);
-    color: white;
+  border: none;
+  border-radius: 2rem;
+  border: solid var(--secondary-color) 1px;
+  transition: color 0.3s;
+  text-align: start;
+  border-radius: 2px;
+  padding: 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: border 0.3s;
+  text-decoration: none;
+  background-color: var(--secondary-color);
+  color: white;
 }
 
 .nav-item:hover {
-    background-color: var(--secondary-color);
-    color: #fff;
-    display: flex;
-    background-color: #374151;
+  background-color: var(--secondary-color);
+  color: #fff;
+  display: flex;
+  border: solid 1px #fff;
 }
 
 .active-link {
-    background-color: var(--secondary-color);
-    color: #fff;
+  background-color: var(--secondary-color);
+  color: #fff;
+  display: flex;
+  background-color: #374151;
+}
+.toggle-side {
+  display: none;
+}
+@media screen and (min-width: 1600px) {
+  .side-nav {
+    width: 15%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .toggle-side {
     display: flex;
-    background-color: #374151;
+    /* position: absolute;
+    top: 0;
+    left: 0; */
+  }
+
+  .side-nav {
+    /* width: fit-content;
+    position: absolute;
+    z-index: 2; */
+    display: none;
+  }
+
+  .top-nav {
+    width: 100dvw;
+  }
+
+  .profile-main {
+    width: 100dvw;
+  }
 }

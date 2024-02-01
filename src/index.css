@@ -1,19 +1,21 @@
 * {
+  box-sizing: border-box;
   --fontsize-normal: 0.95rem;
-  --fontsize-small:  0.90rem;
-  --primary-color:#0360d1;
-  /* --secondary-color:#a7caff; */
-  --secondary-color: #7fc2f5;
-  --complementary:#eb7100;
-  --text-color:#535354;
+  --fontsize-small: 0.9rem;
+  --primary-color: #0360d1;
+  --secondary-color: #374151;
+  --bg-color: #404c5e;
+  /* --secondary-color: #7fc2f5; */
+  --complementary: #eb7100;
+  --text-color: #535354;
   --background: #f7fafc;
-  --green-var:#14a014;
+  --green-var: #14a014;
 }
 
 :root {
-  font-family:'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   line-height: 1.5;
-  font-weight: 300;  
+  font-weight: 300;
   font-size: var(--fontsize-normal);
   color: var(--text-color);
   letter-spacing: 0.2px;
@@ -36,7 +38,6 @@ h1 {
   padding: 0;
 }
 
-
 /* Skeleton animation */
 
 @keyframes skeleton-loading {
@@ -47,11 +48,9 @@ h1 {
   100% {
     background-color: hsl(200, 20%, 95%);
   }
-  
 }
 
 /* overlay */
-
 
 .overlay {
   background-color: aliceblue;
@@ -69,10 +68,9 @@ h1 {
   border-radius: 6px; /* roundness of the scrollbar handle */
 }
 
-
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px; 
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
