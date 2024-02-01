@@ -29,9 +29,7 @@ const SideNav = () => {
       </h1>
       <div className="actions">
         <NavLink to="/app" className="nav-item" activeClassName="active-link">
-          <span>
-            <FiMenu size={iconSize} />
-          </span>
+          <FiMenu size={iconSize} />
           Dashboard
         </NavLink>
         <NavLink
@@ -39,9 +37,7 @@ const SideNav = () => {
           className="nav-item"
           activeClassName="active-link"
         >
-          <span>
-            <FaClockRotateLeft size={iconSize} />
-          </span>
+          <FaClockRotateLeft size={iconSize} />
           Bidding
         </NavLink>
         <NavLink
@@ -49,9 +45,7 @@ const SideNav = () => {
           className="nav-item"
           activeClassName="active-link"
         >
-          <span>
-            <MdPendingActions size={iconSize} />
-          </span>
+          <MdPendingActions size={iconSize} />
           In Progress
         </NavLink>
         <NavLink
@@ -59,9 +53,7 @@ const SideNav = () => {
           className="nav-item"
           activeClassName="active-link"
         >
-          <span>
-            <MdTaskAlt size={iconSize} />
-          </span>
+          <MdTaskAlt size={iconSize} />
           Completed
         </NavLink>
         <NavLink
@@ -69,9 +61,7 @@ const SideNav = () => {
           className="nav-item"
           activeClassName="active-link"
         >
-          <span>
-            <MdAccessTime size={iconSize} />
-          </span>
+          <MdAccessTime size={iconSize} />
           Solved
         </NavLink>
         <NavLink
@@ -79,9 +69,7 @@ const SideNav = () => {
           className="nav-item"
           activeClassName="active-link"
         >
-          <span>
-            <MdAdd size={iconSize} />
-          </span>
+          <MdAdd size={iconSize} />
           Create
         </NavLink>
       </div>

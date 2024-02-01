@@ -53,6 +53,16 @@ const OrderCreation = () => {
     calculatePrice(unit, orderMilestoneCount, deadline)
   );
 
+  const [priceErr, setPriceErr] = useState();
+
+  function checkAmount(amt) {
+    if (parseFloat(amt) < parseFloat(price)) {
+      setPriceErr(`Amount should be higher than or $${price}`);
+    } else {
+      setPriceErr();
+    }
+  }
+
   function getPrice() {
     const price = calculatePrice(
       fullCategory.unit,
@@ -147,6 +157,7 @@ const OrderCreation = () => {
                 onChange={(e) =>
                   e.target.value && setorderMilestoneCount(e.target.value)
                 }
+                required
                 id="pages"
                 name="page-count"
                 type="number"
@@ -163,6 +174,7 @@ const OrderCreation = () => {
                 onChange={(e) =>
                   e.target.value && setorderMilestoneCount(e.target.value)
                 }
+                required
                 id="pages"
                 name="class-page-count"
                 type="number"
@@ -224,14 +236,23 @@ const OrderCreation = () => {
           <div>
             <div>
               <label htmlFor="amount">Amount ($)</label>
+              <br />
+              {priceErr && (
+                <small style={{ color: "orange" }}>{priceErr}</small>
+              )}
             </div>
-            <input
-              required
-              type="number"
-              id="amount"
-              placeholder={`$ ${price}`}
-              min={price}
-            />
+            <div className="amount-input">
+              <article className="dollar-icon">$</article>
+              <input
+                onChange={(e) => checkAmount(e.target.value)}
+                required
+                type="number"
+                id="amount"
+                placeholder={`${price}`}
+                defaultValue={price}
+                min={price}
+              />
+            </div>
           </div>
         </div>
         <div
