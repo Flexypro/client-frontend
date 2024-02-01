@@ -72,7 +72,7 @@ export const OrderProvider = (props) => {
       const deadline = new Date(e.target.deadline?.value);
       const instructions = e.target.instructions?.value;
       const subCategory = e.target.subCategory?.value;
-      const milestones = e.target.milestone?.value;
+      const milestones = e.target.milestones?.value;
       const pages = e.target.pages?.value;
       const amount = e.target.amount?.value;
 
