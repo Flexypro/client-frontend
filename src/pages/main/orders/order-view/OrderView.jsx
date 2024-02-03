@@ -22,6 +22,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Payment from "../../payment/Payment";
 import BiddersComponent from "../../../../components/main/bidders/BiddersComponent";
 import { Routes, Route } from "react-router-dom";
+import Rating from "../../../../components/main/rating/Rating";
 
 const OrderView = () => {
   const ordersUrl = `${import.meta.env.VITE_API_URL}/orders/`;
@@ -232,6 +233,19 @@ const OrderView = () => {
                   )}
                 </div>
               )}
+              {orderContent?.status === "Completed" &&
+                (orderContent?.rating ? (
+                  <div className="rating">
+                    {
+                      <>
+                        <article>{orderContent.rating.message}</article>
+                        <Rating stars={orderContent?.rating.stars} />
+                      </>
+                    }
+                  </div>
+                ) : (
+                  <button className="rating-btn">Add Rating</button>
+                ))}
 
               {(orderContent.status === "Completed" ||
                 orderContent.status === "In Progress") && (
