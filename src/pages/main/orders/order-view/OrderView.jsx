@@ -23,6 +23,7 @@ import Payment from "../../payment/Payment";
 import BiddersComponent from "../../../../components/main/bidders/BiddersComponent";
 import { Routes, Route } from "react-router-dom";
 import Rating from "../../../../components/main/rating/Rating";
+import { MdDelete } from "react-icons/md";
 
 const OrderView = () => {
   const ordersUrl = `${import.meta.env.VITE_API_URL}/orders/`;
@@ -179,6 +180,30 @@ const OrderView = () => {
     }
   };
 
+  const deleteOrder = async (orderID) => {
+    try {
+      const performDelete = await fetch(`${ordersUrl}${orderID}`, {
+        method: "delete",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+
+      if (performDelete.ok) {
+        toast.success("Order deleted successfully");
+        getAllOrders();
+        navigate("../available");
+      } else {
+        toast.error("Failed to delete order");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error);
+    } finally {
+    }
+  };
+
   useEffect(() => {
     orderId && getOrder(orderId);
   }, [orderId]);
@@ -198,6 +223,15 @@ const OrderView = () => {
                 <article>{orderContent?.category}</article>
                 <strong>{!loading && "$" + orderContent?.amount}</strong>
                 <article className="status">{orderContent?.status}</article>
+                {orderContent.status == "Available" && (
+                  <MdDelete
+                    title="Delete order"
+                    onClick={() => deleteOrder(orderId)}
+                    size={iconSize}
+                    color="red"
+                    style={{ cursor: "pointer" }}
+                  />
+                )}
                 {orderContent?.status === "In Progress" && (
                   <button
                     style={{
