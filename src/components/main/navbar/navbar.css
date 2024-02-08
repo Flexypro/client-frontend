@@ -1,4 +1,5 @@
 .top-nav {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -9,14 +10,13 @@
   left: 0;
   z-index: 1;
   height: 10dvh;
-  background-color: var(--secondary-color);
   color: #fff;
 }
 
 .search-nav {
-  position: inherit;
+  position: relative;
+  width: 50%;
   margin-right: 1rem;
-  /* max-width: 40rem; */
   box-sizing: border-box;
 }
 
@@ -32,15 +32,13 @@
 .search-nav input {
   position: relative;
   width: 100%;
-  padding: 0.7rem 0.8rem;
+  padding: 1rem;
   border-radius: 2rem;
   border: solid 1px var(--secondary-color);
   font-size: var(--fontsize-normal);
   outline-color: var(--secondary-color);
-}
-
-.add-icon {
-  color: var(--secondary-color);
+  background-color: var(--bg-color);
+  color: #fff;
 }
 
 .suggestions {

@@ -6,30 +6,39 @@
   min-height: 100dvh;
   width: 100dvw;
   position: relative;
+  color: #fff;
+  display: flex;
+  padding: 0.5rem;
+  box-sizing: border-box;
 }
 
 .login-box {
-  width: inherit;
+  position: relative;
+  width: fit-content;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  width: 28rem;
   gap: 2rem;
+  border-radius: 4px;
+  border: solid 2px var(--bg-color);
 }
 
 .heading {
-  color: var(--secondary-color);
+  color: #fff;
 }
 
 .login-form {
   box-sizing: border-box;
   position: relative;
-  background-color: var(--background);
+  background-color: var(--bg-color);
+  color: #fff;
   padding: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  width: min(100%, 25rem);
+  width: 100%;
 }
 
 .login-form .login-content {
@@ -41,7 +50,7 @@
 }
 
 .login-form div input {
-  width: inherit;
+  width: 100%;
   padding: 1rem;
   border: solid 1px #f5f5f5;
   border-radius: 4px;
@@ -56,6 +65,7 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 1;
+  color: var(--secondary-color);
 }
 
 #username,
@@ -78,7 +88,7 @@
 }
 
 .submit-credentials button {
-  width: inherit;
+  width: 100%;
   background-color: var(--secondary-color);
   color: white;
   border: none;
@@ -95,10 +105,10 @@
 
 .register-prompt span a,
 .reset-password a {
-  color: var(--secondary-color);
   text-decoration: underline;
   cursor: pointer;
   text-decoration: none;
+  color: var(--accent-sec-color) !important;
 }
 
 .register-prompt span a:hover,
@@ -107,7 +117,7 @@
 }
 
 .scaleloader {
-  width: inherit;
+  width: 100%;
   height: inherit;
   color: #fff !important;
 }

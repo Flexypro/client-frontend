@@ -1,7 +1,8 @@
 .dashboard,
 .main-available,
 .main-in-progress,
-.completed {
+.completed,
+.anim-box {
   position: relative;
   padding: 0 1rem;
   display: grid;
@@ -22,8 +23,10 @@
   gap: 1rem;
   cursor: pointer;
   transition: box-shadow 0.2s ease-in-out;
-  background-color: var(--background);
-  border: solid 1px var(--secondary-color);
+  background-color: var(--bg-color);
+  color: #fff;
+  /* background-color: var(--background); */
+  /* border: solid 1px var(--secondary-color); */
 }
 
 .order-content .title-box {

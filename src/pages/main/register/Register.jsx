@@ -31,11 +31,16 @@ const Register = () => {
       <div className="register-info">
         <h1>Register with us</h1>
         <img
-          src="https://img.freepik.com/free-vector/studying-concept-illustration_114360-1301.jpg?w=740&t=st=1699562478~exp=1699563078~hmac=f7e370e5ddf75e11e9d7d411932c595f3642961775fad204b6be5a17ed4f9dbe"
+          // src="https://img.freepik.com/free-vector/studying-concept-illustration_114360-1301.jpg?w=740&t=st=1699562478~exp=1699563078~hmac=f7e370e5ddf75e11e9d7d411932c595f3642961775fad204b6be5a17ed4f9dbe"
           alt=""
         />
       </div>
       <div className="register-box">
+        <h1>
+          Gigitise
+          <br />
+          Account Registration
+        </h1>
         <form onSubmit={handleRegister} className="register-form">
           {registerError &&
             registerError.map((error) => {
