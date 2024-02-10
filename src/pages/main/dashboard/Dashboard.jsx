@@ -24,12 +24,12 @@ const Dashboard = () => {
       <div className="child">
         <article>Orders you create will appear here</article>
         <HiMiniClipboardDocumentList size={120} className="placeholder-icon" />
-        <article
+        <button
           className="create-task-helper"
           onClick={() => navigate("./create-task")}
         >
           Create Task
-        </article>
+        </button>
       </div>
     </div>
   );

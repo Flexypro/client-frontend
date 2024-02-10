@@ -9,6 +9,11 @@
   gap: 2rem;
 }
 
+.wrapper-placeholder {
+  display: flex;
+  justify-content: center;
+}
+
 .create-task-div {
   display: flex;
   flex-direction: column;

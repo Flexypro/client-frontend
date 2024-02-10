@@ -20,15 +20,17 @@ const Available = () => {
       );
     })
   ) : (
-    <div className="create-task-div">
-      <div className="child">
-        <article>All your orders are allocated!</article>
-        <button
-          className="create-task-helper"
-          onClick={() => navigate("../create-task")}
-        >
-          Create a new task
-        </button>
+    <div className="wrapper-placeholder">
+      <div className="create-task-div">
+        <div className="child">
+          <article>All your orders are allocated!</article>
+          <button
+            className="create-task-helper"
+            onClick={() => navigate("../create-task")}
+          >
+            Create a new task
+          </button>
+        </div>
       </div>
     </div>
   );
