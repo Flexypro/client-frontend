@@ -112,6 +112,13 @@
 .notif-sk-box div:last-child {
   width: 80%;
 }
+
+@media screen and (max-width: 1200px) {
+  .notif-box {
+    width: 90%;
+  }
+}
+
 @media screen and (max-width: 900px) {
   .notifications {
     width: 90%;

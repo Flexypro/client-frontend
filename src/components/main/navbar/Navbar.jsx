@@ -10,9 +10,30 @@ import { useNavigate } from "react-router-dom";
 import { MdOutlineMenu } from "react-icons/md";
 import { IoSearchOutline } from "react-icons/io5";
 import { RiArrowRightSLine } from "react-icons/ri";
+import { AiOutlineClose } from "react-icons/ai";
+import { IoIosLogOut } from "react-icons/io";
+import { useEffect, useRef } from "react";
 
 const Navbar = () => {
   const navigate = useNavigate();
+
+  const [showMoreElements, setShowMoreElements] = useState(false);
+
+  const navRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (navRef.current && !navRef.current.contains(event.target)) {
+        setShowMoreElements(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const { loadingUserProfile, loadedUserProfile, handleLogOut } =
     useAuthContext();
@@ -80,32 +101,41 @@ const Navbar = () => {
         )}
       </div>
       <div className="profile">
-        <article className="logout" onClick={() => handleLogOut()}>
-          Logout
-        </article>
-        <div className="help">
-          <MdHelpOutline className="" size={iconSize} />
-        </div>
-        <div
-          className="notif-bell"
-          style={{ cursor: "pointer" }}
-          onClick={() => navigate("./notifications")}
-        >
-          <IoMdNotificationsOutline className="notif-icon" size={iconSize} />
-          {unreadNotif.length > 0 && (
-            <div>
-              <article>
-                {unreadNotif.length > 9 ? "9+" : unreadNotif.length}
-              </article>
-            </div>
-          )}
-        </div>
-        <div className="settings">
-          <IoMdSettings
-            onClick={() => navigate("./settings")}
+        <div ref={navRef} className={`mini-elements ${showMoreElements?'show-mini-elements':'hide-mini-elements'}`}>
+          <div>
+            <article className="logout" onClick={() => handleLogOut()}>
+              Logout
+            </article>
+            <IoIosLogOut className="desc" size={iconSize} />
+          </div>
+          <div className="help">
+            <span className="desc">Support</span>
+            <MdHelpOutline className="" size={iconSize} />
+          </div>
+          <div
+            className="notif-bell"
             style={{ cursor: "pointer" }}
-            size={iconSize}
-          />
+            onClick={() => navigate("./notifications")}
+          >
+            <span className="desc">Notifications</span>
+            <IoMdNotificationsOutline className="notif-icon" size={iconSize} />
+            {unreadNotif.length > 0 && (
+              <div>
+                <article>
+                  {unreadNotif.length > 9 ? "9+" : unreadNotif.length}
+                </article>
+              </div>
+            )}
+          </div>
+          <div className="settings" 
+            onClick={() => navigate("./settings")}
+          >
+            <span className="desc">Settings</span>
+            <IoMdSettings
+              style={{ cursor: "pointer" }}
+              size={iconSize}
+            />
+          </div>
         </div>
         <div className="profile-info" onClick={() => navigate("./profile")}>
           <article
@@ -142,7 +172,12 @@ const Navbar = () => {
           )}
         </div>
         <div className="menu-icon">
-          <MdOutlineMenu size={iconSize} />
+          {
+            showMoreElements ?
+            <AiOutlineClose onClick={()=>setShowMoreElements(false)} style={{cursor:"pointer"}} size={iconSize} />:
+            <MdOutlineMenu onClick={()=>setShowMoreElements(true)} style={{cursor:"pointer"}} size={iconSize} />
+          }
+          
         </div>
       </div>
     </div>

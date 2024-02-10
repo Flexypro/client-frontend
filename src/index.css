@@ -12,6 +12,14 @@
   --green-var: #14a014;
 }
 
+@media screen and (max-width: 600px) {
+  * {
+    --fontsize-normal: 0.85rem;
+    --fontsize-small: 0.85rem;
+  }
+  
+}
+
 :root {
   font-family: "Poppins", sans-serif;
   line-height: 1.5;
