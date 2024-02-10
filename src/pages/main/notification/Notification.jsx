@@ -68,9 +68,6 @@ const Notification = () => {
         notifications?.map((notification, index) => {
           return (
             <div
-              style={{
-                backgroundColor: notification?.read_status ? "#eeeeee" : "",
-              }}
               onClick={() =>
                 navigateToOrder(notification.order_id, notification.id)
               }

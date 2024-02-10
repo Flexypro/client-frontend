@@ -1,11 +1,11 @@
 * {
-  box-sizing: border-box;
+  box-sizing: border-box !important;
   --fontsize-normal: 0.9rem;
   --fontsize-small: 0.9rem;
   --primary-color: #0360d1;
   --secondary-color: #374151;
   --bg-color: #404c5e;
-  /* --secondary-color: #7fc2f5; */
+  --accent-sec-color: #7fc2f5;
   --complementary: #eb7100;
   --text-color: #535354;
   --background: #f7fafc;
@@ -24,6 +24,7 @@
 body {
   padding: 0;
   margin: 0;
+  background-color: var(--secondary-color);
 }
 
 button {
@@ -42,11 +43,11 @@ h1 {
 
 @keyframes skeleton-loading {
   0% {
-    background-color: hsl(202, 16%, 86%);
+    background-color: var(--bg-color);
   }
 
   100% {
-    background-color: hsl(200, 20%, 95%);
+    background-color: #727d8d;
   }
 }
 

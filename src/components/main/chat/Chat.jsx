@@ -116,7 +116,7 @@ const Chat = ({ orderId, client, freelancer }) => {
         </div>
       ) : (
         <div className="empty-inbox">
-          <IoChatbubblesSharp className="chat-icon" size={50} />
+          <IoChatbubblesSharp color="#fff" size={50} />
           <article>Start chat</article>
         </div>
       )}
