@@ -12,13 +12,11 @@ const Dashboard = () => {
   return loading ? (
     <LoadingSkeletonOrder />
   ) : orders?.length > 0 ? (
-    orders?.map((order, index) => {
-      return (
-        <div className="dashboard">
-          <OrderComponent key={index} content={order} />
-        </div>
-      );
-    })
+    <div className="dashboard">
+      {orders?.map((order, index) => {
+        return <OrderComponent key={index} content={order} />;
+      })}
+    </div>
   ) : (
     <div className="create-task-div">
       <div className="child">

@@ -13,19 +13,20 @@ const InProgress = () => {
   return loading ? (
     <LoadingSkeletonOrder />
   ) : ordersInProgress.length > 0 ? (
-    ordersInProgress.map((order, index) => {
-      return (
-        // <div className='main-in-progress'>
-        <OrderComponent key={index} content={order} />
-        // </div>
-      );
-    })
+    <div className="main-in-progress">
+      {ordersInProgress.map((order, index) => {
+        return <OrderComponent key={index} content={order} />;
+      })}
+    </div>
   ) : (
     <div className="wrapper-placeholder">
       <div className="create-task-div">
         <div className="child">
           <article>Orders you create will appear here</article>
-          <HiMiniClipboardDocumentList size={120} className="placeholder-icon" />
+          <HiMiniClipboardDocumentList
+            size={120}
+            className="placeholder-icon"
+          />
           <button
             className="go-to-order"
             onClick={() => navigate("../create-task")}
@@ -33,7 +34,7 @@ const InProgress = () => {
             Create Task
           </button>
         </div>
-    </div>
+      </div>
     </div>
   );
 };

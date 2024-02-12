@@ -14,13 +14,11 @@ const Completed = () => {
   return loading ? (
     <LoadingSkeletonOrder />
   ) : ordersCompleted.length > 0 ? (
-    ordersCompleted.map((order, index) => {
-      return (
-        <div className="completed">
-          <OrderComponent content={order} key={index} />
-        </div>
-      );
-    })
+    <div className="completed">
+      {ordersCompleted.map((order, index) => {
+        return <OrderComponent content={order} key={index} />;
+      })}
+    </div>
   ) : (
     <div className="wrapper-placeholder">
       <div className="create-task-div">

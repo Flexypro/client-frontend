@@ -12,13 +12,11 @@ const Available = () => {
   return loading ? (
     <LoadingSkeletonOrder />
   ) : ordersAvailable.length > 0 ? (
-    ordersAvailable.map((order, index) => {
-      return (
-        <div className="main-available">
-          <OrderComponent key={index} content={order} />
-        </div>
-      );
-    })
+    <div className="main-available">
+      {ordersAvailable.map((order, index) => {
+        return <OrderComponent key={index} content={order} />;
+      })}
+    </div>
   ) : (
     <div className="wrapper-placeholder">
       <div className="create-task-div">
