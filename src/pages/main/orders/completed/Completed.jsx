@@ -26,8 +26,11 @@ const Completed = () => {
       <div className="create-task-div">
         <div className="child">
           <article>Find orders you complete here</article>
-          <HiMiniClipboardDocumentList size={120} className="placeholder-icon" />
-          <button className="go-to-order" onClick={() => navigate("/app")}>
+          <HiMiniClipboardDocumentList
+            size={120}
+            className="placeholder-icon"
+          />
+          <button className="go-to-order" onClick={() => navigate("/")}>
             Go to Orders
           </button>
         </div>

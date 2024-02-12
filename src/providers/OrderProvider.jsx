@@ -125,7 +125,7 @@ export const OrderProvider = (props) => {
       if (status === 201) {
         console.log("navigation");
         getAllOrders().then(() => {
-          navigate("./app");
+          navigate("./");
         });
         setSubmitLoading(false);
       } else if (status === 401) {

@@ -57,9 +57,9 @@ const BiddersComponent = ({ orderId, client, bidders, getOrder }) => {
 
   const startChat = (bidId) => {
     window.history.pushState(
-      { path: `/app/order/${orderId}?bid=${bidId}` },
+      { path: `/order/${orderId}?bid=${bidId}` },
       "",
-      `/app/order/${orderId}?bid=${bidId}`
+      `/order/${orderId}?bid=${bidId}`
     );
     checkParam();
   };
