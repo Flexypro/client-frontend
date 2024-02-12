@@ -16,10 +16,17 @@
   color: #fff;
 }
 
+.register-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(28rem, 1fr));
+}
+
 .register-box {
+  position: relative;
+  min-width: 100%;
   box-sizing: border-box;
   position: relative;
-  width: 28rem;
+  /* width: 28rem; */
   border: solid 2px var(--bg-color);
   border-radius: 4px;
   margin: 0.5rem;
@@ -58,6 +65,10 @@
   color: gray;
 }
 
+.register-form div input::placeholder {
+  color: var(--text-color);
+}
+
 .username-icon,
 .password-icon {
   position: absolute;
@@ -79,6 +90,7 @@
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
+  color: var(--secondary-color);
 }
 
 .submit-credentials {

@@ -24,7 +24,8 @@
 
 .icons {
   display: flex;
-  gap: 2rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .search-icon {
@@ -245,6 +246,7 @@
   }
 
   .search-icon {
-    display: block;
+    display: flex;
+    margin-left: 4rem;
   }
 }

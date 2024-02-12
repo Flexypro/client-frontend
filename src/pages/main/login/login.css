@@ -58,6 +58,10 @@
   color: gray;
 }
 
+.login-content input::placeholder {
+  color: var(--text-color) !important;
+}
+
 .username-icon,
 .password-icon {
   position: absolute;
@@ -80,6 +84,7 @@
   transform: translateY(-50%);
   cursor: pointer;
   z-index: 1;
+  color: var(--secondary-color);
 }
 
 .submit-credentials {
