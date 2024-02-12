@@ -74,7 +74,8 @@
 }
 
 @media screen and (max-width: 900px) {
-  .show-icon, .hide-icon{
+  .show-icon,
+  .hide-icon {
     cursor: pointer;
     z-index: 99999;
     display: flex;
@@ -90,7 +91,7 @@
     right: -1.55rem;
   }
 
-  .show-side-bar  {
+  .show-side-bar {
     opacity: 1;
     width: 50%;
     transition: width 0.5s ease-in-out, opacity 0.5s ease-in-out;
@@ -106,7 +107,7 @@
     position: absolute;
     z-index: 999999;
     padding-right: 2rem;
-    height: 80%;
+    height: 80dvh;
     border-bottom: solid 1px var(--bg-color);
   }
 

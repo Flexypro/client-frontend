@@ -112,7 +112,8 @@
   transform: rotate(90deg);
 }
 
-.mini-elements, .profile {
+.mini-elements,
+.profile {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -213,7 +214,7 @@
     padding: 1rem 2rem;
   }
 
-  .mini-elements  div {
+  .mini-elements div {
     position: relative;
     width: 100%;
     display: flex;
@@ -227,7 +228,7 @@
     opacity: 1;
     transition: width 0.5s ease;
   }
-  
+
   .hide-mini-elements {
     width: 0;
     opacity: 0;

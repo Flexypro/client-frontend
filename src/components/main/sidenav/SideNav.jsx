@@ -2,7 +2,7 @@ import React from "react";
 import "./sidenav.css";
 // import gigitise from '../../../../public/gigitise.svg';
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import {
   MdAdd,
@@ -18,23 +18,41 @@ const SideNav = () => {
   const navigate = useNavigate();
   const [showSideBar, setShowSideBar] = useState(false);
 
-  const iconSize = 25;
+  const iconSize = 22;
+
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    // Add event listener to window resize
+    window.addEventListener("resize", handleResize);
+
+    // Remove event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <>
-      {showSideBar ? (
+      {showSideBar || windowWidth > 900 ? (
         <div
           className={`side-nav ${
             showSideBar ? "show-side-bar" : "hide-side-bar"
           }`}
         >
-          <div className="hide-icon">
-            <RiArrowLeftSLine
-              color="#fff"
-              onClick={() => setShowSideBar(false)}
-              size={iconSize}
-            />
-          </div>
+          {windowWidth <= 900 && (
+            <div className="hide-icon">
+              <RiArrowLeftSLine
+                color="#fff"
+                onClick={() => setShowSideBar(false)}
+                size={iconSize}
+              />
+            </div>
+          )}
           <h1
             style={{ cursor: "pointer" }}
             className="heading-logo"

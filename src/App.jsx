@@ -65,7 +65,7 @@ function App() {
           element={<SetPassword />}
         />
         <Route path="register" element={<Register />} />
-        <Route path="/app/*" element={userToken ? <Main /> : <Login />} />
+        <Route path="/*" element={userToken ? <Main /> : <Login />} />
       </Routes>
     </>
   );
