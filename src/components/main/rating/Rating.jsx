@@ -15,7 +15,7 @@ const Rating = ({ stars }) => {
 
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-      <small>{stars}</small>
+      {/* <small>{stars}</small> */}
       {renderFullStars()}
       {hasHalfStar && <IoStarHalf size={20} color="orange" />}
     </div>
