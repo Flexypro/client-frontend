@@ -76,19 +76,24 @@
 @media screen and (max-width: 900px) {
   .show-icon,
   .hide-icon {
+    box-sizing: border-box;
     cursor: pointer;
     z-index: 99999;
     display: flex;
     position: absolute;
-    top: 2.5dvh;
+    top: 3dvh;
     padding: 0;
-    padding: 4px;
+    padding: 0.4rem;
     border-radius: 50%;
     background-color: var(--accent-sec-color);
   }
 
   .hide-icon {
     right: -1.55rem;
+  }
+
+  .show-icon {
+    margin-left: 0.5rem;
   }
 
   .show-side-bar {
