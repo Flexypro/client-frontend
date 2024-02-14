@@ -17,10 +17,9 @@ import { RiArrowRightSLine, RiArrowLeftSLine } from "react-icons/ri";
 const SideNav = () => {
   const navigate = useNavigate();
   const [showSideBar, setShowSideBar] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const iconSize = 22;
-
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     const handleResize = () => {
@@ -35,6 +34,14 @@ const SideNav = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  // if (
+  //   currentUrl.split("/").includes("order") &&
+  //   windowWidth > 900 &&
+  //   windowWidth < 1200
+  // ) {
+  //   setShowSideBar(false);
+  // }
 
   return (
     <>

@@ -1,4 +1,3 @@
-import React from "react";
 import "./orderview.css";
 import { IoMdDownload } from "react-icons/io";
 import Chat from "../../../../components/main/chat/Chat";
@@ -24,11 +23,14 @@ import BiddersComponent from "../../../../components/main/bidders/BiddersCompone
 import { Routes, Route } from "react-router-dom";
 import Rating from "../../../../components/main/rating/Rating";
 import { MdDelete } from "react-icons/md";
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 
 const OrderView = () => {
   const ordersUrl = `${import.meta.env.VITE_API_URL}/orders/`;
 
   const { userToken } = useAuthContext();
+
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const navigate = useNavigate();
 
@@ -55,6 +57,8 @@ const OrderView = () => {
   const deadline = formatDeadline(orderContent?.deadline);
 
   const deadlinePassed = checkDeadline(orderContent?.deadline);
+
+  const [showChat, setShowChat] = useState(false);
 
   const [editInstructions, setEditInstructions] = useState(false);
   const [editedInstructions, setEditedInstructions] = useState(
@@ -246,6 +250,21 @@ const OrderView = () => {
                   >
                     Complete Order
                   </button>
+                )}
+                {!showChat && (
+                  <div
+                    className="chat-toggle"
+                    onClick={() => setShowChat(true)}
+                    style={{
+                      padding: "4px",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <IoChatbubbleEllipsesOutline size={25} />
+                  </div>
                 )}
               </div>
               {orderContent?.status != "Completed" && (
@@ -467,6 +486,8 @@ const OrderView = () => {
                 orderId={orderId}
                 client={orderContent.client}
                 freelancer={orderContent.freelancer}
+                showChat={showChat}
+                setShowChat={setShowChat}
               />
             )}
             {/* <Chat orderId={orderId} client={orderContent.client} freelancer={orderContent.freelancer} /> */}

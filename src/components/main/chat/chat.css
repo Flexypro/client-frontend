@@ -14,16 +14,26 @@
   justify-content: space-between;
 }
 .chat-header {
-  /* background-color: var(--secondary-color); */
+  background-color: var(--accent-sec-color);
   color: #fff;
   display: flex;
   align-items: center;
   position: relative;
   padding: 0.5rem;
   height: fit-content;
-  border-bottom: solid 1px var(--background);
+  border-bottom: solid 1px var(--secondary-color);
 }
 
+.hide-icon-chat {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  width: 5rem;
+}
+
+.hide-icon-chat {
+  cursor: pointer;
+}
 .img-chat {
   position: relative;
   border: 2px solid;
@@ -107,10 +117,10 @@
   justify-content: space-between;
 }
 
-.message-reply-box input {
+.message-reply-box textarea {
   position: relative;
   padding: 0.9rem 0.5rem;
-  width: 80%;
+  width: 100%;
   border: solid 1px var(--secondary-color);
   border-radius: 8px;
   outline-color: var(--secondary-color);
@@ -120,9 +130,11 @@
   overflow-y: auto;
   outline: none;
   font-size: medium;
+  resize: none;
+  background-color: #e6e6e6;
 }
 
-.message-reply-box input::placeholder {
+.message-reply-box textarea::placeholder {
   color: var(--text-color);
 }
 

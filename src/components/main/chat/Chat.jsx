@@ -9,8 +9,9 @@ import { IoChatbubblesSharp } from "react-icons/io5";
 import { useRef } from "react";
 import { useState } from "react";
 import { useLayoutEffect } from "react";
+import { GoDash } from "react-icons/go";
 
-const Chat = ({ orderId, client, freelancer }) => {
+const Chat = ({ orderId, client, freelancer, showChat, setShowChat }) => {
   const { loadedUserProfile } = useAuthContext();
   const { loadingChats, chats, getChats, sendChat, socket, typingData } =
     useChatContext();
@@ -23,13 +24,45 @@ const Chat = ({ orderId, client, freelancer }) => {
   const chatBoxRef = useRef();
 
   const getReceiver = () => {
-    return freelancer.user.username;
+    return freelancer?.user?.username;
     // if  (loadedUserProfile.username === client.user.username) {
     //     return freelancer.user.username
     // } else if (loadedUserProfile.username === freelancer.user.username) {
     //     return client.user.username
     // }
   };
+
+  function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+  }
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(isMobileDevice());
+  }, []);
+
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const handleFocus = () => {
+      setIsKeyboardVisible(true);
+    };
+
+    const handleBlur = () => {
+      setIsKeyboardVisible(false);
+    };
+
+    window.addEventListener("focus", handleFocus, true);
+    window.addEventListener("blur", handleBlur, true);
+
+    return () => {
+      window.removeEventListener("focus", handleFocus, true);
+      window.removeEventListener("blur", handleBlur, true);
+    };
+  }, []);
 
   const checkMsg = () => {
     setMsg(messageRef.current.value);
@@ -59,6 +92,24 @@ const Chat = ({ orderId, client, freelancer }) => {
     }
   };
 
+  const chatRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (chatRef.current && !chatRef.current.contains(event.target)) {
+        setShowChat(false);
+      }
+
+      console.log("clicked");
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   useEffect(() => {
     if (typingData?.order_id === orderId) {
       setTyping(typingData.typing);
@@ -72,7 +123,12 @@ const Chat = ({ orderId, client, freelancer }) => {
   }, [orderId, loadedUserProfile]);
 
   return (
-    <div className="chat">
+    <div
+      className={`chat ${showChat ? "show-chat-box" : "hide-chat-box"} ${
+        isKeyboardVisible && isMobile ? "minimize" : "maximize"
+      }`}
+      ref={chatRef}
+    >
       <div className="chat-header">
         <div className="receiver-profile">
           <article className="img-chat">{`${
@@ -88,6 +144,9 @@ const Chat = ({ orderId, client, freelancer }) => {
             <article>{getReceiver()}</article>
             {typing && <span>Typing...</span>}
           </div>
+        </div>
+        <div className="hide-icon-chat" onClick={() => setShowChat(false)}>
+          <GoDash size={30} title="Click to hide chatbox" />
         </div>
       </div>
       {chats?.length > 0 ? (
@@ -121,7 +180,9 @@ const Chat = ({ orderId, client, freelancer }) => {
         </div>
       )}
       <form className="message-reply-box" onSubmit={submitMessage}>
-        <input
+        <textarea
+          rows="1"
+          id="chat-input"
           required
           type="text"
           value={msg}

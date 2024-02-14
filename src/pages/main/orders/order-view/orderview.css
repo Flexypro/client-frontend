@@ -208,6 +208,17 @@ textarea {
 @media screen and (max-width: 1024px) {
 }
 
+@media screen and (max-width: 1200px) {
+  .chat {
+    width: 35% !important;
+    background-color: red;
+  }
+
+  .order-details {
+    width: 52%;
+  }
+}
+
 @media screen and (max-width: 900px) {
   .order-view {
     width: 100dvw;
@@ -231,7 +242,28 @@ textarea {
   }
 
   .chat {
-    display: none !important;
+    height: 80% !important;
+    bottom: 2% !important;
+    width: 98% !important;
+    bottom: 0 !important;
+    z-index: 1;
+  }
+
+  .minimize {
+    height: 55% !important;
+  }
+
+  .show-chat-box {
+    /* height: 80% !important;
+    max-height: 80% !important; */
+    opacity: 1;
+    transition: height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  }
+
+  .hide-chat-box {
+    height: 0 !important;
+    opacity: 0;
+    transition: height 0.4s ease-in-out, opacity 0.5s ease-in-out;
   }
 
   .order-details {
