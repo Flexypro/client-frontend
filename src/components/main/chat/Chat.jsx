@@ -132,8 +132,9 @@ const Chat = ({ orderId, client, freelancer }) => {
         <IoSend
           title={!msg && "Type a message"}
           size={25}
-          type="submit"
+          type="button"
           className={msg ? "submit-message active" : "submit-message inactive"}
+          onClick={submitMessage}
         />
       </form>
     </div>
