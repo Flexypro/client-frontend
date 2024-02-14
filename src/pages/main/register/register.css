@@ -59,14 +59,18 @@
 .register-form div input {
   width: 100%;
   padding: 1rem;
-  border: solid 1px #f5f5f5;
+  border: var(--accent-sec-color);
   border-radius: 4px;
-  outline-color: var(--secondary-color);
-  color: gray;
+  color: #fff;
+  background-color: var(--secondary-color);
+}
+
+.register-form div input:focus {
+  outline: solid 1px #fff;
 }
 
 .register-form div input::placeholder {
-  color: var(--text-color);
+  color: rgb(168, 168, 168);
 }
 
 .username-icon,
@@ -75,6 +79,7 @@
   left: 8px;
   top: 50%;
   transform: translateY(-50%);
+  color: #f5f5f5;
 }
 
 #username,
