@@ -253,6 +253,7 @@ const OrderView = () => {
                 )}
                 {!showChat && (
                   <div
+                    title="Click to view chats"
                     className="chat-toggle"
                     onClick={() => setShowChat(true)}
                     style={{

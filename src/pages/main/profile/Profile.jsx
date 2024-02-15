@@ -13,6 +13,7 @@ import { useRef } from "react";
 import { MdVerified } from "react-icons/md";
 import Transaction from "../../../components/main/transactions/Transaction";
 import PulseLoader from "react-spinners/PulseLoader";
+import getUnicodeFlagIcon from "country-flag-icons/unicode";
 
 const Profile = () => {
   const {
@@ -96,8 +97,7 @@ const Profile = () => {
 
       if (retrieveTransactions.ok) {
         const transactions = await retrieveTransactions.json();
-        setTransactions(transactions);
-        console.log(transactions);
+        setTransactions(transactions.results);
       }
     } catch (error) {
       console.log(error);
@@ -177,6 +177,28 @@ const Profile = () => {
           >
             {userProfile?.email}
           </article>
+        </div>
+      </div>
+      <div className="address">
+        <div className="address-element">
+          {userProfile?.address.country ? (
+            <>
+              <article>{userProfile?.address.country}</article>
+              <article>
+                {getUnicodeFlagIcon(`${userProfile?.address.countryCode}`)}
+              </article>
+            </>
+          ) : (
+            <span>Loading Country</span>
+          )}
+        </div>
+        <div className="address-element">
+          <span>IP Address: </span>
+          {userProfile?.address.ip ? (
+            <article>{userProfile?.address.ip}</article>
+          ) : (
+            <span>-------</span>
+          )}
         </div>
       </div>
       <div className="prof-summary">

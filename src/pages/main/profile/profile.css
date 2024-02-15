@@ -29,7 +29,7 @@
 .prof-summary {
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   gap: 1rem;
   position: relative;
   width: 100%;
@@ -81,6 +81,19 @@
   gap: 2rem;
 }
 
+.address {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  /* background-color: red; */
+  /* gap: 0.5rem; */
+}
+
+.address .address-element {
+  display: flex;
+  gap: 3rem;
+  padding: 0.5rem;
+}
+
 .profile-view div {
   position: inherit;
 }
@@ -95,22 +108,15 @@
   border: solid 1px var(--bg-color);
 }
 
-.helper-info {
-  background-color: var(--bg-color);
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  border-radius: 4px;
-}
-
 .helper-info strong,
 .bio strong,
 .react-icon-verified {
   color: var(--accent-sec-color);
 }
 
+.helper-info,
 .bio {
+  box-sizing: border-box;
   position: inherit;
   padding: 1rem;
   background-color: var(--bg-color);
@@ -118,12 +124,15 @@
   flex-direction: column;
   gap: 1rem;
   border-radius: 4px;
-  transition: border 3s;
+  transition: border 0.3s;
+  cursor: pointer;
 }
 
 .bio:hover,
 .helper-info:hover {
   border-style: dashed;
+  border: dashed 1px;
+  /* border-width: 1px; */
 }
 
 .save {
