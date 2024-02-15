@@ -222,6 +222,10 @@
     gap: 4rem;
   }
 
+  .hide-mini-elements div {
+    display: none;
+  }
+
   .show-mini-elements {
     display: flex;
     width: 100%;

@@ -30,8 +30,6 @@ const OrderView = () => {
 
   const { userToken } = useAuthContext();
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
   const navigate = useNavigate();
 
   const fileInputRef = useRef(null);
@@ -58,7 +56,7 @@ const OrderView = () => {
 
   const deadlinePassed = checkDeadline(orderContent?.deadline);
 
-  const [showChat, setShowChat] = useState(false);
+  const [showBidders, setShowBidders] = useState(false);
 
   const [editInstructions, setEditInstructions] = useState(false);
   const [editedInstructions, setEditedInstructions] = useState(
@@ -66,6 +64,17 @@ const OrderView = () => {
   );
 
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+
+  const bidderParam = new URLSearchParams(location.search).get("bid");
+
+  const checkChatParam = (bidderParam) => {
+    if (bidderParam) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  const [showChat, setShowChat] = useState(checkChatParam(bidderParam));
 
   const toggleInstructionMode = () => {
     setEditedInstructions(orderContent?.instructions);
@@ -251,7 +260,7 @@ const OrderView = () => {
                     Complete Order
                   </button>
                 )}
-                {!showChat && (
+                {!showChat && (bidderParam || orderContent?.freelancer) && (
                   <div
                     title="Click to view chats"
                     className="chat-toggle"
@@ -265,6 +274,16 @@ const OrderView = () => {
                     }}
                   >
                     <IoChatbubbleEllipsesOutline size={25} />
+                  </div>
+                )}
+                {!bidderParam && orderContent?.status === "Available" && (
+                  <div className="bidders-toggle" title="Show bidders">
+                    <button
+                      className="bidders"
+                      onClick={() => setShowBidders(true)}
+                    >
+                      Bidders
+                    </button>
                   </div>
                 )}
               </div>
@@ -481,6 +500,10 @@ const OrderView = () => {
                 client={orderContent.client}
                 bidders={orderContent.bidders}
                 getOrder={getOrder}
+                setShowBidders={setShowBidders}
+                showBidders={showBidders}
+                showChat={showChat}
+                setShowChat={setShowChat}
               />
             ) : (
               <Chat

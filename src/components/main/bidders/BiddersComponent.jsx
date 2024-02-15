@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import "./freelancer.css";
 import { timeAgo } from "../../../utils/helpers/TimeAgo";
 import { useState } from "react";
@@ -6,7 +6,16 @@ import Chat from "../chat/Chat";
 import { toast } from "react-toastify";
 import { IoIosChatbubbles, IoIosPerson } from "react-icons/io";
 
-const BiddersComponent = ({ orderId, client, bidders, getOrder }) => {
+const BiddersComponent = ({
+  orderId,
+  client,
+  bidders,
+  getOrder,
+  showBidders,
+  setShowBidders,
+  showChat,
+  setShowChat,
+}) => {
   const [bidder, setBidder] = useState();
 
   const checkParam = () => {
@@ -56,6 +65,7 @@ const BiddersComponent = ({ orderId, client, bidders, getOrder }) => {
   };
 
   const startChat = (bidId) => {
+    setShowBidders(false);
     window.history.pushState(
       { path: `/order/${orderId}?bid=${bidId}` },
       "",
@@ -64,11 +74,30 @@ const BiddersComponent = ({ orderId, client, bidders, getOrder }) => {
     checkParam();
   };
 
+  const bidderRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (bidderRef.current && !bidderRef.current.contains(event.target)) {
+        setShowBidders(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const iconSize = 25;
 
   return !bidder ? (
-    <div className="bid-container">
-      <h1 title="Freelancers bidding on your order">
+    <div
+      ref={bidderRef}
+      className={`bid-container ${showBidders ? "show-bidder" : "hide-bidder"}`}
+    >
+      <h1 className="heading" title="Freelancers bidding on your order">
         Bidders
         {bidders.length > 0 && (
           <span>
@@ -82,16 +111,14 @@ const BiddersComponent = ({ orderId, client, bidders, getOrder }) => {
         {bidders.length > 0 ? (
           bidders?.map((bid, key) => {
             return (
-              <div>
+              <div key={key}>
                 <div className="freelancer">
                   <IoIosPerson size={80} />
                   <div className="freelancer-container-left">
                     <div className="freelancer-elements">
                       <article>{bid.freelancer.user.username}</article>
                       <span>-</span>
-                      <article>
-                        Placed bid {timeAgo(bid.created_at)} ago
-                      </article>
+                      <article>Bid {timeAgo(bid.created_at)} ago</article>
                     </div>
                     <div className="bid-actions">
                       <IoIosChatbubbles
@@ -120,8 +147,13 @@ const BiddersComponent = ({ orderId, client, bidders, getOrder }) => {
       </div>
     </div>
   ) : (
-    // 'ii'
-    <Chat orderId={orderId} client={client} freelancer={bidder} />
+    <Chat
+      orderId={orderId}
+      client={client}
+      freelancer={bidder}
+      showChat={showChat}
+      setShowChat={setShowChat}
+    />
   );
 };
 

@@ -97,8 +97,26 @@ const Navbar = () => {
         )}
       </div>
       <div className="profile">
-        <div ref={navRef} className={`mini-elements ${showMoreElements?'show-mini-elements':'hide-mini-elements'}`}>
+        <div
+          className={`mini-elements ${
+            showMoreElements ? "show-mini-elements" : "hide-mini-elements"
+          }`}
+          ref={navRef}
+        >
           <div>
+            <article className="logout" onClick={() => handleLogOut()}>
+              Logout
+            </article>
+            <IoIosLogOut className="desc" size={iconSize} />
+          </div>
+        </div>
+        {/* <div
+          ref={navRef}
+          className={`mini-elements ${
+            showMoreElements ? "show-mini-elements" : "hide-mini-elements"
+          }`}
+        > */}
+        {/* <div>
             <article className="logout" onClick={() => handleLogOut()}>
               Logout
             </article>
@@ -131,8 +149,8 @@ const Navbar = () => {
               style={{ cursor: "pointer" }}
               size={iconSize}
             />
-          </div>
-        </div>
+          </div> */}
+        {/* </div> */}
         <div className="profile-info" onClick={() => navigate("./profile")}>
           <article
             className={loadingUserProfile ? "username-skeleton" : ""}
@@ -168,12 +186,19 @@ const Navbar = () => {
           )}
         </div>
         <div className="menu-icon">
-          {
-            showMoreElements ?
-            <AiOutlineClose onClick={()=>setShowMoreElements(false)} style={{cursor:"pointer"}} size={iconSize} />:
-            <MdOutlineMenu onClick={()=>setShowMoreElements(true)} style={{cursor:"pointer"}} size={iconSize} />
-          }
-          
+          {showMoreElements ? (
+            <AiOutlineClose
+              onClick={() => setShowMoreElements(false)}
+              style={{ cursor: "pointer" }}
+              size={iconSize}
+            />
+          ) : (
+            <MdOutlineMenu
+              onClick={() => setShowMoreElements(true)}
+              style={{ cursor: "pointer" }}
+              size={iconSize}
+            />
+          )}
         </div>
       </div>
     </div>

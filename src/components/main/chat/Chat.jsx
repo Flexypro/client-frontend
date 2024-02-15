@@ -23,6 +23,15 @@ const Chat = ({ orderId, client, freelancer, showChat, setShowChat }) => {
 
   const chatBoxRef = useRef();
 
+  const bidderParam = new URLSearchParams(location.search).get("bid");
+
+  useEffect(() => {
+    const bidderParam = new URLSearchParams(location.search).get("bid");
+    if (bidderParam) {
+      setShowChat(true);
+    }
+  }, []);
+
   const getReceiver = () => {
     return freelancer?.user?.username;
     // if  (loadedUserProfile.username === client.user.username) {
@@ -99,8 +108,6 @@ const Chat = ({ orderId, client, freelancer, showChat, setShowChat }) => {
       if (chatRef.current && !chatRef.current.contains(event.target)) {
         setShowChat(false);
       }
-
-      console.log("clicked");
     };
 
     document.addEventListener("mousedown", handleClickOutside);

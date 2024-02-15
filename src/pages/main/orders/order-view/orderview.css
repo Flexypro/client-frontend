@@ -74,14 +74,14 @@
   font-size: 0.9rem;
 }
 
-.complete-order {
+/* .complete-order {
   width: inherit;
   background-color: var(--secondary-color);
   border: none;
   border-radius: 4px;
   border: solid 1px;
   color: #f5f5f5;
-}
+} */
 
 .order-soln div div {
   position: inherit;
@@ -200,6 +200,15 @@ textarea {
   border-radius: 4px;
 }
 
+.chat-toggle,
+.bidders-toggle {
+  display: none !important;
+}
+
+.hide-icon-chat {
+  display: none !important;
+}
+
 /* Desktop */
 @media screen and (min-width: 1200px) {
 }
@@ -211,7 +220,6 @@ textarea {
 @media screen and (max-width: 1200px) {
   .chat {
     width: 35% !important;
-    background-color: red;
   }
 
   .order-details {
@@ -227,12 +235,21 @@ textarea {
     width: 58%;
   }
 
+  .bid-container {
+    width: 40% !important;
+  }
+
   .chat {
     width: 40% !important;
   }
 }
 
 @media screen and (max-width: 768px) {
+  .hide-icon-chat,
+  .chat-toggle,
+  .bidders-toggle {
+    display: flex !important;
+  }
   .order-skeleton .skeleton-heading,
   .double-content {
     width: 100%;
