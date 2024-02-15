@@ -69,7 +69,7 @@ export const ChatProvider = (props) => {
       const chats = await getOrderChats.json();
 
       if (getOrderChats.ok) {
-        setChats(chats.results);
+        setChats(chats);
       } else {
         console.error("Error fetching chats");
       }
