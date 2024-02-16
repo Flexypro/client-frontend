@@ -71,9 +71,16 @@
 }
 
 .notif-bell {
-  position: relative;
+  position: relative !important;
   padding: 0.3rem;
   transition: transform 0.5 ease-in-out;
+  display: flex;
+  align-items: center;
+}
+
+.profile div div span {
+  display: flex;
+  align-items: center;
 }
 
 .notif-icon {
@@ -84,21 +91,21 @@
   transform: rotate(10deg);
 }
 
-.notif-bell div {
-  position: absolute;
+.notif-bell .red {
+  position: absolute !important;
   display: flex;
   top: 4%;
   left: 1.1rem;
-  background-color: red;
   border-radius: 50%;
-  width: 15px;
-  height: 15px;
+  width: 15px !important;
+  height: 15px !important;
   align-items: center;
   justify-content: center;
   padding: 1px;
+  background-color: red;
 }
 
-.notif-bell div article {
+.notif-bell .red div article {
   color: white;
   font-size: 0.8rem;
 }
@@ -182,7 +189,13 @@
 }
 
 .desc {
-  display: none;
+  display: none !important;
+}
+
+.red div {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 @media screen and (max-width: 768px) {
@@ -191,11 +204,14 @@
   }
 
   .notif-bell {
-    padding-left: 0;
+    padding: 0rem;
+    background-color: blue;
   }
 
-  .notif-bell {
-    padding: 0rem;
+  .notif-bell .red {
+    position: absolute !important;
+    left: 98% !important;
+    top: 0;
   }
 
   .logout {
@@ -204,6 +220,7 @@
   }
   .mini-elements *:hover {
     transform: translate(0);
+    border: none;
   }
   .mini-elements {
     position: absolute;
@@ -212,6 +229,7 @@
     right: 0;
     top: 10dvh;
     padding: 1rem 2rem;
+    cursor: pointer;
   }
 
   .mini-elements div {
@@ -223,7 +241,7 @@
   }
 
   .hide-mini-elements div {
-    display: none;
+    width: 0 !important;
   }
 
   .show-mini-elements {

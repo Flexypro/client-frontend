@@ -103,28 +103,17 @@ const Navbar = () => {
           }`}
           ref={navRef}
         >
-          <div>
-            <article className="logout" onClick={() => handleLogOut()}>
-              Logout
-            </article>
-            <IoIosLogOut className="desc" size={iconSize} />
-          </div>
-        </div>
-        {/* <div
-          ref={navRef}
-          className={`mini-elements ${
-            showMoreElements ? "show-mini-elements" : "hide-mini-elements"
-          }`}
-        > */}
-        {/* <div>
-            <article className="logout" onClick={() => handleLogOut()}>
-              Logout
-            </article>
-            <IoIosLogOut className="desc" size={iconSize} />
+          <div onClick={() => handleLogOut()}>
+            <article className="logout">Logout</article>
+            <span>
+              <IoIosLogOut className="desc" size={iconSize} />
+            </span>
           </div>
           <div className="help">
             <span className="desc">Support</span>
-            <MdHelpOutline className="" size={iconSize} />
+            <span>
+              <MdHelpOutline className="" size={iconSize} />
+            </span>
           </div>
           <div
             className="notif-bell"
@@ -132,25 +121,29 @@ const Navbar = () => {
             onClick={() => navigate("./notifications")}
           >
             <span className="desc">Notifications</span>
-            <IoMdNotificationsOutline className="notif-icon" size={iconSize} />
+            <span>
+              <IoMdNotificationsOutline
+                className="notif-icon"
+                size={iconSize}
+              />
+            </span>
             {unreadNotif.length > 0 && (
-              <div>
-                <article>
-                  {unreadNotif.length > 9 ? "9+" : unreadNotif.length}
-                </article>
+              <div className="red">
+                <div>
+                  <article>
+                    {unreadNotif.length > 9 ? "9+" : unreadNotif.length}
+                  </article>
+                </div>
               </div>
             )}
           </div>
-          <div className="settings" 
-            onClick={() => navigate("./settings")}
-          >
+          <div className="settings" onClick={() => navigate("./settings")}>
             <span className="desc">Settings</span>
-            <IoMdSettings
-              style={{ cursor: "pointer" }}
-              size={iconSize}
-            />
-          </div> */}
-        {/* </div> */}
+            <span>
+              <IoMdSettings style={{ cursor: "pointer" }} size={iconSize} />
+            </span>
+          </div>
+        </div>
         <div className="profile-info" onClick={() => navigate("./profile")}>
           <article
             className={loadingUserProfile ? "username-skeleton" : ""}
