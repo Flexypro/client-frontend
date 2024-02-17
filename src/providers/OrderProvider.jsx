@@ -19,14 +19,17 @@ export const OrderProvider = (props) => {
   const [orders, setOrders] = useState([]);
   const [ordersAvailable, setOrdersAvailable] = useState({
     orders: [],
+    count: 0,
     next: null,
   });
   const [ordersInProgress, setOrdersInProgress] = useState({
     orders: [],
+    count: 0,
     next: null,
   });
   const [ordersCompleted, setOrdersCompleted] = useState({
     orders: [],
+    count: 0,
     next: null,
   });
   const [loadingAvailable, setLoadingAvailable] = useState(true);
@@ -63,6 +66,7 @@ export const OrderProvider = (props) => {
 
       setOrdersAvailable((prev) => ({
         orders: prev.orders.concat(available.results),
+        count: available.count,
         next: available.next,
       }));
     } catch (error) {
@@ -83,6 +87,7 @@ export const OrderProvider = (props) => {
       const inProgress = await getInProgress.json();
       setOrdersInProgress((prev) => ({
         orders: prev.orders.concat(inProgress.results),
+        count: inProgress.count,
         next: inProgress.next,
       }));
     } catch (error) {
@@ -103,6 +108,7 @@ export const OrderProvider = (props) => {
       const completed = await getCompleted.json();
       setOrdersCompleted((prev) => ({
         orders: prev.orders.concat(completed.results),
+        count: completed.count,
         next: completed.next,
       }));
     } catch (error) {
