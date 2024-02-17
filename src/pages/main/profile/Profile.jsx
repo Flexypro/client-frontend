@@ -11,9 +11,7 @@ import { MdAdd } from "react-icons/md";
 import { useState } from "react";
 import { MdVerified } from "react-icons/md";
 import Transaction from "../../../components/main/transactions/Transaction";
-import PulseLoader from "react-spinners/PulseLoader";
 import getUnicodeFlagIcon from "country-flag-icons/unicode";
-import ViewMore from "../../../components/main/more/ScrollMore";
 import ProfilePlaceholder from "../../../components/main/profile-placeholder/ProfilePlaceholder";
 
 const Profile = () => {
@@ -31,12 +29,6 @@ const Profile = () => {
 
   const [editBio, setEditBio] = useState(false);
   const [editedBio, setEditedBio] = useState(userProfile?.bio);
-
-  const [transactions, setTransactions] = useState({
-    list: [],
-    next: null,
-  });
-  const [loadingTransactions, setLoadingTransactions] = useState(true);
 
   const toggleEditBio = () => {
     setEditBio(userProfile?.bio);
@@ -57,37 +49,7 @@ const Profile = () => {
     setEditBio(false);
   };
 
-  const getTransactions = async (page) => {
-    const transactionUrl = `${
-      import.meta.env.VITE_API_URL
-    }/transactions/?page=${page}`;
-    try {
-      const retrieveTransactions = await fetch(transactionUrl, {
-        headers: {
-          "content-Type": "application/json",
-          authorization: `Bearer ${userToken}`,
-        },
-      });
-
-      if (retrieveTransactions.ok) {
-        const transactions = await retrieveTransactions.json();
-        setTransactions((prev) => ({
-          list: prev.list.concat(transactions.results),
-          next: transactions.next,
-        }));
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoadingTransactions(false);
-    }
-  };
-
   const iconSize = 25;
-
-  useState(() => {
-    userToken && getTransactions(1);
-  }, [userToken]);
 
   return (
     <div className="profile-main">
@@ -240,22 +202,8 @@ const Profile = () => {
       <button className="save" onClick={submitEditedProfile} style={{}}>
         Save
       </button>
-      {loadingTransactions ? (
-        <div>
-          <PulseLoader size={10} color="#7fc2f5" />
-        </div>
-      ) : (
-        transactions.list.length > 0 && (
-          <>
-            <article>My Transactions</article>
-            <Transaction
-              transactions={transactions.list}
-              user={userProfile?.username}
-            />
-            {transactions.next && <ViewMore fetch={getTransactions} />}
-          </>
-        )
-      )}
+
+      <Transaction user={userProfile?.username} userToken={userToken} />
     </div>
   );
 };
