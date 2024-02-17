@@ -21,37 +21,43 @@ export const NotificationProvider = (props) => {
 
   const [newNotification, setNewNotification] = useState({});
   const [showNotification, setShowNotification] = useState(false);
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState({
+    notifications: [],
+    next: null,
+  });
   const [loading, setLoading] = useState(true);
-  const [unreadNotif, setUnreadNotif] = useState([]);
-
+  const [unreadNotifCount, setUnreadNotifCount] = useState(0);
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${userToken}`,
+  };
   const toggleShow = () => {
     setShowNotification(false);
   };
 
-  const getUnread = (notifications) => {
-    const updatedNotif = notifications.filter(
-      (notif) => notif.read_status === false
-    );
-    setUnreadNotif(updatedNotif);
-    return updatedNotif;
-  };
+  // const getUnread = (notifications) => {
+  //   const updatedNotif = notifications.filter(
+  //     (notif) => notif.read_status === false
+  //   );
+  //   setUnreadNotif(updatedNotif);
+  //   return updatedNotif;
+  // };
 
-  const getNotifications = async () => {
+  const getNotifications = async (page) => {
     try {
-      const getNotif = await fetch(notifUrl, {
+      const getNotif = await fetch(`${notifUrl}/?page=${page}`, {
         method: "get",
-        headers: {
-          "content-Type": "application/json",
-          Authorization: `Bearer ${userToken}`,
-        },
+        headers,
       });
 
       if (getNotif.ok) {
         const notifications = await getNotif.json();
-        getUnread(notifications.results);
-        setNotifications(notifications.results);
-        return notifications.results;
+        setUnreadNotifCount(notifications.unread_count);
+        setNotifications((prev) => ({
+          notifications: prev.notifications.concat(notifications.results),
+          next: notifications.next,
+        }));
+        // return notifications.results;
       } else {
         const status = getNotif.status;
         if (status === 401) {
@@ -65,29 +71,37 @@ export const NotificationProvider = (props) => {
     }
   };
 
-  const markNotificationRead = async (notifId) => {
-    const notification = notifications.find((item) => item.id === notifId);
+  const markNotificationRead = async (notifId, notif) => {
+    const readNotification = await fetch(`${notifUrl}/${notifId}/`, {
+      method: "put",
+      headers,
 
-    if (!notification?.read_status) {
-      const readNotification = await fetch(`${notifUrl}/${notifId}/`, {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userToken}`,
-        },
-        body: JSON.stringify({
-          read_status: true,
-        }),
-      });
+      body: JSON.stringify({
+        read_status: true,
+      }),
+    });
 
-      if (readNotification.ok) {
-        getNotifications();
+    if (readNotification.ok) {
+      const res = await readNotification.json();
+
+      if (notif) {
+        notif.read_status = res.read_status;
       }
+
+      const getUnread = await fetch(`${notifUrl}/?status=unread_count`, {
+        headers,
+      });
+      if (getUnread.ok) {
+        const res = await getUnread.json();
+        setUnreadNotifCount(res.unread_count);
+      }
+
+      return res;
     }
   };
 
   useEffect(() => {
-    getNotifications();
+    userToken && getNotifications(1);
   }, [userToken]);
 
   const CustomToast = ({ newNotification }) => {
@@ -156,7 +170,7 @@ export const NotificationProvider = (props) => {
     <NotificationContext.Provider
       value={{
         loading,
-        unreadNotif,
+        unreadNotifCount,
         showNotification,
         newNotification,
         notifications,
