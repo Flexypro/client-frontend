@@ -11,6 +11,13 @@
   box-sizing: border-box;
 }
 
+.next-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
 .order-content {
   box-sizing: border-box;
   position: relative;
