@@ -22,7 +22,7 @@ export const NotificationProvider = (props) => {
   const [newNotification, setNewNotification] = useState({});
   const [showNotification, setShowNotification] = useState(false);
   const [notifications, setNotifications] = useState({
-    notifications: [],
+    list: [],
     next: null,
   });
   const [loading, setLoading] = useState(true);
@@ -54,7 +54,7 @@ export const NotificationProvider = (props) => {
         const notifications = await getNotif.json();
         setUnreadNotifCount(notifications.unread_count);
         setNotifications((prev) => ({
-          notifications: prev.notifications.concat(notifications.results),
+          list: prev.list.concat(notifications.results),
           next: notifications.next,
         }));
         // return notifications.results;

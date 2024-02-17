@@ -128,8 +128,11 @@
   cursor: pointer;
 }
 
-.bio:hover,
 .helper-info:hover {
+  cursor: text;
+}
+
+.bio:hover {
   border-style: dashed;
   border: dashed 1px;
   /* border-width: 1px; */

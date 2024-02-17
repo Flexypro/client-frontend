@@ -17,9 +17,7 @@ const Notification = () => {
     useNotificationContext();
 
   const navigateToOrder = (orderId, notifId) => {
-    const notif = notifications.notifications.find(
-      (notif) => notif.id === notifId
-    );
+    const notif = notifications.list.find((notif) => notif.id === notifId);
     orderId && navigate(`../order/${orderId}`);
     console.log(notif);
 
@@ -72,9 +70,9 @@ const Notification = () => {
             </div>
           </div>
         </div>
-      ) : notifications.notifications.length > 0 ? (
+      ) : notifications.list.length > 0 ? (
         <>
-          {notifications.notifications?.map((notification, index) => {
+          {notifications.list?.map((notification, index) => {
             return (
               <div
                 onClick={() =>

@@ -14,6 +14,7 @@ import { MdVerified } from "react-icons/md";
 import Transaction from "../../../components/main/transactions/Transaction";
 import PulseLoader from "react-spinners/PulseLoader";
 import getUnicodeFlagIcon from "country-flag-icons/unicode";
+import ViewMore from "../../../components/main/more/ScrollMore";
 
 const Profile = () => {
   const {
@@ -33,7 +34,10 @@ const Profile = () => {
   const [editBio, setEditBio] = useState(false);
   const [editedBio, setEditedBio] = useState(userProfile?.bio);
 
-  const [transactions, setTransactions] = useState();
+  const [transactions, setTransactions] = useState({
+    list: [],
+    next: null,
+  });
   const [loadingTransactions, setLoadingTransactions] = useState(true);
 
   const toggleEditBio = () => {
@@ -85,8 +89,10 @@ const Profile = () => {
     setEditBio(false);
   };
 
-  const getTransactions = async () => {
-    const transactionUrl = `${import.meta.env.VITE_API_URL}/transactions`;
+  const getTransactions = async (page) => {
+    const transactionUrl = `${
+      import.meta.env.VITE_API_URL
+    }/transactions/?page=${page}`;
     try {
       const retrieveTransactions = await fetch(transactionUrl, {
         headers: {
@@ -97,7 +103,10 @@ const Profile = () => {
 
       if (retrieveTransactions.ok) {
         const transactions = await retrieveTransactions.json();
-        setTransactions(transactions.results);
+        setTransactions((prev) => ({
+          list: prev.list.concat(transactions.results),
+          next: transactions.next,
+        }));
       }
     } catch (error) {
       console.log(error);
@@ -109,8 +118,8 @@ const Profile = () => {
   const iconSize = 25;
 
   useState(() => {
-    userToken && getTransactions();
-  }, []);
+    userToken && getTransactions(1);
+  }, [userToken]);
 
   return (
     <div className="profile-main">
@@ -300,13 +309,14 @@ const Profile = () => {
           <PulseLoader size={10} color="#7fc2f5" />
         </div>
       ) : (
-        transactions.length > 0 && (
+        transactions.list.length > 0 && (
           <>
             <article>My Transactions</article>
             <Transaction
-              transactions={transactions}
+              transactions={transactions.list}
               user={userProfile?.username}
             />
+            {transactions.next && <ViewMore fetch={getTransactions} />}
           </>
         )
       )}
