@@ -264,6 +264,31 @@ export const OrderProvider = (props) => {
 
       if (completeOrderStatus.ok) {
         const data = await completeOrderStatus.json();
+
+        setOrdersInProgress((prev) => {
+          console.log(prev);
+          const updatedOrders = prev.orders.filter(
+            (order) => order.id !== orderId
+          );
+          console.log(updatedOrders);
+          return {
+            ...prev,
+            orders: updatedOrders,
+            count: prev.count - 1,
+          };
+        });
+
+        getInProgress(1);
+
+        setOrdersCompleted((prev) => {
+          const updatedOrders = [data].concat(prev.orders);
+
+          return {
+            ...prev,
+            orders: updatedOrders,
+            count: prev.count + 1,
+          };
+        });
         return data;
       } else {
         const status = completeOrderStatus.status;
@@ -276,6 +301,33 @@ export const OrderProvider = (props) => {
     } finally {
     }
   };
+
+  const updateOrdersAvailable = (orderRes) => {
+    setOrdersAvailable((prev) => {
+      const updatedOrders = prev.orders.filter(
+        (order) => order.id !== orderRes?.id
+      );
+      return {
+        ...prev,
+        orders: updatedOrders,
+        count: prev.count - 1,
+      };
+    });
+
+    getAvailable(1);
+
+    setOrdersInProgress((prev) => {
+      const updatedOrders = [orderRes].concat(prev.orders);
+      return {
+        ...prev,
+        orders: updatedOrders,
+        count: prev.count + 1,
+      };
+    });
+  };
+
+  // TODO: Fix webscokets
+  // FIXME: Fix some errors
 
   useEffect(() => {
     setUser(decodedToken?.user_id);
@@ -337,6 +389,7 @@ export const OrderProvider = (props) => {
         getInProgress,
         getCompleted,
         uploadAttachment,
+        updateOrdersAvailable,
       }}
     >
       {props.children}
