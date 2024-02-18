@@ -24,6 +24,8 @@ import { Routes, Route } from "react-router-dom";
 import Rating from "../../../../components/main/rating/Rating";
 import { MdDelete } from "react-icons/md";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import { useAddRating } from "../../../../components/main/modal/Ratings-modal/addRating";
+import { useDeleteModal } from "../../../../components/main/modal/Ratings-modal/cancelRating";
 
 const OrderView = () => {
   const ordersUrl = `${import.meta.env.VITE_API_URL}/orders/`;
@@ -45,6 +47,9 @@ const OrderView = () => {
     completeOrder,
     uploadAttachment,
   } = useOrderContext();
+
+  const {AddRating, setShowAddRatingModal} = useAddRating()
+  const {DeleteModal,setShowDeleteModal} = useDeleteModal()
 
   const [orderContent, setOrderContent] = useState();
 
@@ -229,6 +234,7 @@ const OrderView = () => {
         orderContent && (
           <>
             <div className="order-details">
+            <AddRating />
               <strong style={{ fontWeight: "bold" }}>
                 {orderContent?.title}
               </strong>
@@ -317,7 +323,8 @@ const OrderView = () => {
                     }
                   </div>
                 ) : (
-                  <button className="rating-btn">Add Rating</button>
+                  <button onClick={() => setShowAddRatingModal(true)} className="rating-btn">Add Rating</button>
+                  
                 ))}
 
               {(orderContent.status === "Completed" ||
