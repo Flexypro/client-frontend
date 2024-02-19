@@ -1,22 +1,27 @@
 import React from "react";
 import OrderComponent from "../../../../components/main/order-component/OrderComponent";
-import { useOrderContext } from "../../../../providers/OrderProvider";
+// import { useOrderContext } from "../../../../providers/OrderProvider";
 import { useNavigate } from "react-router-dom";
-import { HiMiniClipboardDocumentList } from "react-icons/hi2";
+// import { HiMiniClipboardDocumentList } from "react-icons/hi2";
 import LoadingSkeletonOrder from "../../loading/Loading";
+import { useOrderContext } from "../../../../providers/OrderProvider";
+import ViewMore from "../../../../components/main/more/ScrollMore";
 
 const Available = () => {
-  const { ordersAvailable, loading } = useOrderContext();
-
+  const { getAvailable, loadingAvailable, ordersAvailable } = useOrderContext();
   const navigate = useNavigate();
-  return loading ? (
+
+  return loadingAvailable ? (
     <LoadingSkeletonOrder />
-  ) : ordersAvailable.length > 0 ? (
-    <div className="main-available">
-      {ordersAvailable.map((order, index) => {
-        return <OrderComponent key={index} content={order} />;
-      })}
-    </div>
+  ) : ordersAvailable.orders.length > 0 ? (
+    <>
+      <div className="main-available">
+        {ordersAvailable.orders.map((order, index) => {
+          return <OrderComponent key={index} content={order} />;
+        })}
+      </div>
+      {ordersAvailable.next && <ViewMore fetch={getAvailable} />}
+    </>
   ) : (
     <div className="wrapper-placeholder">
       <div className="create-task-div">

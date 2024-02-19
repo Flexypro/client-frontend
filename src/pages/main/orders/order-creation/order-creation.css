@@ -77,6 +77,7 @@
   background-color: var(--bg-color);
 }
 
+.next,
 .complete-order,
 .bidders,
 .rating-btn,

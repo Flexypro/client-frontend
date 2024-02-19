@@ -123,7 +123,6 @@ const OrderView = () => {
           orderContent.status = data.status;
           setOrderContent(updatedOrder);
         });
-        getAllOrders();
       }
     } else {
       toast.error("The order has no solution");
@@ -184,13 +183,13 @@ const OrderView = () => {
       if (getOrderById.ok) {
         const orderDetails = await getOrderById.json();
         setOrderContent(orderDetails);
+        return orderDetails;
       } else {
         const status = getOrderById.status;
         if (status === 401) {
           navigate(`/login?order=${orderId}`);
         }
       }
-      // return orderDetails;
     } catch (error) {
       console.log(error);
     } finally {
@@ -226,6 +225,8 @@ const OrderView = () => {
     orderId && getOrder(orderId);
   }, [orderId]);
 
+  // FIXME: Order creation price update
+  // FIXME: Fix order not loading to dashboard
   return (
     <div className="order-view">
       {loading ? (

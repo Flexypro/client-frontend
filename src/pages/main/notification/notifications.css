@@ -22,6 +22,12 @@
   grid-column: 3;
 }
 
+.next-notif {
+  display: flex;
+  justify-content: center;
+  width: 60%;
+}
+
 .notif-message {
   width: 80%;
 }
@@ -115,7 +121,8 @@
 }
 
 @media screen and (max-width: 1200px) {
-  .notif-box {
+  .notif-box,
+  .next-notif {
     width: 90%;
   }
 }
@@ -126,7 +133,8 @@
     gap: 0.5rem;
   }
 
-  .notif-box {
+  .notif-box,
+  .next-notif {
     width: 100%;
     height: fit-content;
     padding: 0.5rem;
@@ -139,7 +147,8 @@
     gap: 0.5rem;
   }
 
-  .notif-box {
+  .notif-box,
+  .next-notif {
     width: 100%;
     height: fit-content;
     padding: 0.5rem;

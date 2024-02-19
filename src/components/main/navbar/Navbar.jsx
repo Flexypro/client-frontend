@@ -39,7 +39,7 @@ const Navbar = () => {
 
   const [userProfile, setUserProfile] = useState(loadedUserProfile);
 
-  const { unreadNotif } = useNotificationContext();
+  const { unreadNotifCount } = useNotificationContext();
 
   const { orders } = useOrderContext();
 
@@ -127,11 +127,11 @@ const Navbar = () => {
                 size={iconSize}
               />
             </span>
-            {unreadNotif.length > 0 && (
+            {unreadNotifCount > 0 && (
               <div className="red">
                 <div>
                   <article>
-                    {unreadNotif.length > 9 ? "9+" : unreadNotif.length}
+                    {unreadNotifCount > 9 ? "9+" : unreadNotifCount}
                   </article>
                 </div>
               </div>

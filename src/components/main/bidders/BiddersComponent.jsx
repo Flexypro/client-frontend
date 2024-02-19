@@ -5,6 +5,7 @@ import { useState } from "react";
 import Chat from "../chat/Chat";
 import { toast } from "react-toastify";
 import { IoIosChatbubbles, IoIosPerson } from "react-icons/io";
+import { useOrderContext } from "../../../providers/OrderProvider";
 
 const BiddersComponent = ({
   orderId,
@@ -15,8 +16,11 @@ const BiddersComponent = ({
   setShowBidders,
   showChat,
   setShowChat,
+  orderContent,
 }) => {
   const [bidder, setBidder] = useState();
+
+  const { updateOrdersAvailable } = useOrderContext();
 
   const checkParam = () => {
     const bidderParam = new URLSearchParams(location.search).get("bid");
@@ -54,7 +58,10 @@ const BiddersComponent = ({
 
       if (hireFreelancer.ok) {
         toast.success("Your order was allocated");
-        getOrder(orderId);
+        getOrder(orderId).then((res) => {
+          console.log(res);
+          updateOrdersAvailable(res);
+        });
       } else {
         toast.error("Order not allocated. Try again!");
       }

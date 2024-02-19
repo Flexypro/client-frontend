@@ -42,8 +42,7 @@ export const AuthProvider = (props) => {
       });
 
       const profile = await getProfile.json();
-      // console.log(profile.results);
-      setuserProfile(profile.results[0]);
+      setuserProfile(profile[0]);
     } catch (error) {
       console.error(error);
     } finally {

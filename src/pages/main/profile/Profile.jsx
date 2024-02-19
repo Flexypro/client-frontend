@@ -9,11 +9,10 @@ import { timeAgo } from "../../../utils/helpers/TimeAgo";
 import { useOrderContext } from "../../../providers/OrderProvider";
 import { MdAdd } from "react-icons/md";
 import { useState } from "react";
-import { useRef } from "react";
 import { MdVerified } from "react-icons/md";
 import Transaction from "../../../components/main/transactions/Transaction";
-import PulseLoader from "react-spinners/PulseLoader";
 import getUnicodeFlagIcon from "country-flag-icons/unicode";
+import ProfilePlaceholder from "../../../components/main/profile-placeholder/ProfilePlaceholder";
 
 const Profile = () => {
   const {
@@ -26,49 +25,14 @@ const Profile = () => {
 
   const [userProfile, setUserProfile] = useState(loadedUserProfile);
 
-  const fileInputRef = useRef(null);
-
   const { ordersCompleted, ordersInProgress } = useOrderContext();
 
   const [editBio, setEditBio] = useState(false);
   const [editedBio, setEditedBio] = useState(userProfile?.bio);
 
-  const [transactions, setTransactions] = useState();
-  const [loadingTransactions, setLoadingTransactions] = useState(true);
-
   const toggleEditBio = () => {
     setEditBio(userProfile?.bio);
     setEditBio(!editBio);
-  };
-
-  const openFileDialog = () => {
-    console.log("Open");
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
-  const updateProfilePhoto = (e) => {
-    const profilePhoto = e.target.files[0];
-    console.log("Submitted");
-
-    if (profilePhoto) {
-      if (profilePhoto.size <= 5 * 1024 * 1024) {
-        uploadProfilePhoto(profilePhoto, userProfile?.id).then((json) => {
-          const updateProfile = {
-            ...userProfile,
-            profile_photo: json.profile_photo,
-          };
-
-          userProfile.profile_photo = json.profile_photo;
-          setUserProfile(updateProfile);
-        });
-      } else {
-        console.log("Select lower resolution image");
-      }
-    } else {
-      console.log("Select correct img format");
-    }
   };
 
   const submitEditedProfile = () => {
@@ -85,73 +49,16 @@ const Profile = () => {
     setEditBio(false);
   };
 
-  const getTransactions = async () => {
-    const transactionUrl = `${import.meta.env.VITE_API_URL}/transactions`;
-    try {
-      const retrieveTransactions = await fetch(transactionUrl, {
-        headers: {
-          "content-Type": "application/json",
-          authorization: `Bearer ${userToken}`,
-        },
-      });
-
-      if (retrieveTransactions.ok) {
-        const transactions = await retrieveTransactions.json();
-        setTransactions(transactions.results);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoadingTransactions(false);
-    }
-  };
-
   const iconSize = 25;
-
-  useState(() => {
-    userToken && getTransactions();
-  }, []);
 
   return (
     <div className="profile-main">
       <div className="profile-info">
-        {userProfile?.profile_photo ? (
-          <img
-            style={{
-              animation: loadingUserProfile
-                ? `skeleton-loading 1s linear infinite alternate`
-                : "",
-            }}
-            onClick={openFileDialog}
-            className="pic"
-            src={userProfile?.profile_photo}
-            alt="profile cover"
-          />
-        ) : (
-          <label
-            style={{
-              animation: loadingUserProfile
-                ? `skeleton-loading 1s linear infinite alternate`
-                : "",
-            }}
-            htmlFor="upload-profile"
-            className="img-placeholder-profile"
-          >
-            {userProfile &&
-              `${
-                userProfile?.username?.charAt(0)?.toUpperCase() +
-                userProfile?.username.slice(1).slice(0, 1)
-              }`}
-          </label>
-        )}
-        <input
-          id="upload-profile"
-          onChange={updateProfilePhoto}
-          ref={fileInputRef}
-          style={{ display: "none" }}
-          size={5 * 1024 * 1024}
-          accept="image/*"
-          type="file"
+        <ProfilePlaceholder
+          uploadProfilePhoto={uploadProfilePhoto}
+          userProfile={userProfile}
+          loadingUserProfile={loadingUserProfile}
+          setUserProfile={setUserProfile}
         />
         <div className="email-username">
           <article
@@ -214,14 +121,14 @@ const Profile = () => {
             <MdPendingActions className="react-icon" size={iconSize} />
             <article>Pending Tasks</article>
           </div>
-          <span>{ordersInProgress.length}</span>
+          <span>{ordersInProgress.orders.length}</span>
         </div>
         <div className="prof-element">
           <div>
             <MdOutlineAddTask className="react-icon" size={iconSize} />
             <article>Completed Tasks</article>
           </div>
-          <span>{ordersCompleted?.length}</span>
+          <span>{ordersCompleted?.orders.length}</span>
         </div>
         <div className="prof-element">
           <div>
@@ -295,21 +202,8 @@ const Profile = () => {
       <button className="save" onClick={submitEditedProfile} style={{}}>
         Save
       </button>
-      {loadingTransactions ? (
-        <div>
-          <PulseLoader size={10} color="#7fc2f5" />
-        </div>
-      ) : (
-        transactions.length > 0 && (
-          <>
-            <article>My Transactions</article>
-            <Transaction
-              transactions={transactions}
-              user={userProfile?.username}
-            />
-          </>
-        )
-      )}
+
+      <Transaction user={userProfile?.username} userToken={userToken} />
     </div>
   );
 };

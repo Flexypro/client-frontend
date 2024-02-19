@@ -8,23 +8,29 @@ import { timeAgo } from "../../../utils/helpers/TimeAgo";
 import { useNavigate } from "react-router-dom";
 import { MdNotificationAdd } from "react-icons/md";
 import { useNotificationContext } from "../../../providers/NotificationProvider";
+import ViewMore from "../../../components/main/more/ScrollMore";
 
 const Notification = () => {
   const navigate = useNavigate();
 
-  const { notifications, loading, markNotificationRead } =
+  const { notifications, loading, markNotificationRead, getNotifications } =
     useNotificationContext();
 
   const navigateToOrder = (orderId, notifId) => {
+    const notif = notifications.list.find((notif) => notif.id === notifId);
     orderId && navigate(`../order/${orderId}`);
-    markNotificationRead(notifId);
-    // .then((status)=>{
-    //     if (status===200){
-    //     }
-    // })
-    // .catch((error)=>{
-    //     console.error(error);
-    // })
+    console.log(notif);
+
+    if (!notif.read_status) {
+      markNotificationRead(notifId, notif);
+      // .then((res) => {
+      //   const upatedNotif = {
+      //     ...prevNotif,
+      //     read_status: res.read_status,
+      //   };
+      //   upatedNotif.read_status = res.read_status;
+      // });
+    }
   };
 
   return (
@@ -64,31 +70,38 @@ const Notification = () => {
             </div>
           </div>
         </div>
-      ) : notifications.length > 0 ? (
-        notifications?.map((notification, index) => {
-          return (
-            <div
-              onClick={() =>
-                navigateToOrder(notification.order_id, notification.id)
-              }
-              className="notif-box"
-              key={index}
-            >
-              <div className="bell">
-                <IoMdNotificationsOutline size={30} />
+      ) : notifications.list.length > 0 ? (
+        <>
+          {notifications.list?.map((notification, index) => {
+            return (
+              <div
+                onClick={() =>
+                  navigateToOrder(notification.order_id, notification.id)
+                }
+                className="notif-box"
+                key={index}
+              >
+                <div className="bell">
+                  <IoMdNotificationsOutline size={30} />
+                </div>
+                <div className="notif-message">
+                  <article>{notification.message}</article>
+                </div>
+                <div className="notif-duration">
+                  <article>{timeAgo(notification.created_at)}</article>
+                  {!notification?.read_status && (
+                    <div className="notif-circle"></div>
+                  )}
+                </div>
               </div>
-              <div className="notif-message">
-                <article>{notification.message}</article>
-              </div>
-              <div className="notif-duration">
-                <article>{timeAgo(notification.created_at)}</article>
-                {!notification?.read_status && (
-                  <div className="notif-circle"></div>
-                )}
-              </div>
+            );
+          })}
+          {notifications.next && (
+            <div className="next-notif">
+              <ViewMore fetch={getNotifications} />
             </div>
-          );
-        })
+          )}
+        </>
       ) : (
         <div className="no-notif">
           <div className="notif-child-box">

@@ -17,12 +17,28 @@ export const OrderProvider = (props) => {
   const { decodedToken } = useJwt(userToken);
 
   const [orders, setOrders] = useState([]);
-  const [ordersAvailable, setOrdersAvailable] = useState([]);
-  const [ordersInProgress, setOrdersInProgress] = useState([]);
-  const [ordersCompleted, setOrdersCompleted] = useState([]);
+  const [ordersAvailable, setOrdersAvailable] = useState({
+    orders: [],
+    count: 0,
+    next: null,
+  });
+  const [ordersInProgress, setOrdersInProgress] = useState({
+    orders: [],
+    count: 0,
+    next: null,
+  });
+  const [ordersCompleted, setOrdersCompleted] = useState({
+    orders: [],
+    count: 0,
+    next: null,
+  });
+  const [loadingAvailable, setLoadingAvailable] = useState(true);
 
   const [loadingAttachemnt, setLoadingAttachment] = useState(false);
-  const [loading, setLoading] = useState(true);
+
+  const [loadingInProgress, setLoadingInProgress] = useState(true);
+  const [loadingCompleted, setLoadingCompleted] = useState(true);
+
   const [submitLoading, setSubmitLoading] = useState(false);
 
   const [user, setUser] = useState();
@@ -33,38 +49,77 @@ export const OrderProvider = (props) => {
     Authorization: `Bearer ${userToken}`,
   };
 
-  const getAllOrders = async () => {
-    const ordersUrl = `${import.meta.env.VITE_API_URL}/orders`;
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${userToken}`,
+  };
+
+  const getAvailable = async (page_number) => {
     try {
-      const getOrders = await fetch(ordersUrl, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userToken}`,
-        },
-      });
-
-      const orders = await getOrders.json();
-      const available = orders.results.filter(
-        (order) => order.status === "Available"
+      const getAvaialable = await fetch(
+        `${ordersUrl}?status=available&page=${page_number}`,
+        {
+          headers,
+        }
       );
-      const inProgress = orders.results.filter(
-        (order) => order.status === "In Progress"
-      );
-      const completed = orders.results.filter(
-        (order) => order.status === "Completed"
-      );
+      const available = await getAvaialable.json();
 
-      setOrdersAvailable(available);
-      setOrdersInProgress(inProgress);
-      setOrdersCompleted(completed);
-      setOrders(orders.results);
-
-      return orders.results;
-    } catch (errors) {
-      console.error(errors);
+      setOrdersAvailable((prev) => ({
+        orders: prev.orders.concat(available.results),
+        count: available.count,
+        next: available.next,
+      }));
+    } catch (error) {
+      console.log(error);
     } finally {
-      setLoading(false);
+      setLoadingAvailable(false);
     }
+  };
+
+  const getInProgress = async (page_number) => {
+    try {
+      const getInProgress = await fetch(
+        `${ordersUrl}?status=in_progress&page=${page_number}`,
+        {
+          headers,
+        }
+      );
+      const inProgress = await getInProgress.json();
+      setOrdersInProgress((prev) => ({
+        orders: prev.orders.concat(inProgress.results),
+        count: inProgress.count,
+        next: inProgress.next,
+      }));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingInProgress(false);
+    }
+  };
+
+  const getCompleted = async (page_number) => {
+    try {
+      const getCompleted = await fetch(
+        `${ordersUrl}?status=completed&page=${page_number}`,
+        {
+          headers,
+        }
+      );
+      const completed = await getCompleted.json();
+      setOrdersCompleted((prev) => ({
+        orders: prev.orders.concat(completed.results),
+        count: completed.count,
+        next: completed.next,
+      }));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingCompleted(false);
+    }
+  };
+
+  const getAllOrders = async (page_number) => {
+    // setLoading(false);
   };
 
   const createOrder = async (e) => {
@@ -209,6 +264,31 @@ export const OrderProvider = (props) => {
 
       if (completeOrderStatus.ok) {
         const data = await completeOrderStatus.json();
+
+        setOrdersInProgress((prev) => {
+          console.log(prev);
+          const updatedOrders = prev.orders.filter(
+            (order) => order.id !== orderId
+          );
+          console.log(updatedOrders);
+          return {
+            ...prev,
+            orders: updatedOrders,
+            count: prev.count - 1,
+          };
+        });
+
+        getInProgress(1);
+
+        setOrdersCompleted((prev) => {
+          const updatedOrders = [data].concat(prev.orders);
+
+          return {
+            ...prev,
+            orders: updatedOrders,
+            count: prev.count + 1,
+          };
+        });
         return data;
       } else {
         const status = completeOrderStatus.status;
@@ -222,21 +302,32 @@ export const OrderProvider = (props) => {
     }
   };
 
-  // useEffect(()=>{
+  const updateOrdersAvailable = (orderRes) => {
+    setOrdersAvailable((prev) => {
+      const updatedOrders = prev.orders.filter(
+        (order) => order.id !== orderRes?.id
+      );
+      return {
+        ...prev,
+        orders: updatedOrders,
+        count: prev.count - 1,
+      };
+    });
 
-  // },[])
+    getAvailable(1);
 
-  // socket.onmessage = (event) => {
-  //     const receivedData = JSON.parse(event.data);
-  //     const newOrder = (receivedData.message.order);
-  //     console.log("Received ", receivedData);
-  //     setOrders(prev=>{
-  //         const updatedOrders = [newOrder, ...prev];
-  //         const inProgress = updatedOrders.filter(order=>order.status==='In Progress');
-  //         setOrdersInProgress(inProgress);
-  //         return updatedOrders;
-  //     });
-  // }
+    setOrdersInProgress((prev) => {
+      const updatedOrders = [orderRes].concat(prev.orders);
+      return {
+        ...prev,
+        orders: updatedOrders,
+        count: prev.count + 1,
+      };
+    });
+  };
+
+  // TODO: Fix webscokets
+  // FIXME: Fix some errors
 
   useEffect(() => {
     setUser(decodedToken?.user_id);
@@ -271,9 +362,11 @@ export const OrderProvider = (props) => {
 
   useEffect(() => {
     userToken && getAllOrders();
-    // socket.onopen = () => {
-    //     console.log("Connection established");
-    // }
+    if (userToken) {
+      getAvailable(1);
+      getInProgress(1);
+      getCompleted(1);
+    }
   }, [userToken]);
 
   return (
@@ -283,15 +376,20 @@ export const OrderProvider = (props) => {
         ordersAvailable,
         ordersInProgress,
         ordersCompleted,
-        loading,
+        loadingAvailable,
+        loadingInProgress,
+        loadingCompleted,
         submitLoading,
         loadingAttachemnt,
         // getOrder,
         createOrder,
         updateInstructions,
         completeOrder,
-        getAllOrders,
+        getAvailable,
+        getInProgress,
+        getCompleted,
         uploadAttachment,
+        updateOrdersAvailable,
       }}
     >
       {props.children}

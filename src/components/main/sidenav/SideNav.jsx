@@ -13,12 +13,13 @@ import {
 import { FiMenu } from "react-icons/fi";
 import { FaClockRotateLeft } from "react-icons/fa6";
 import { RiArrowRightSLine, RiArrowLeftSLine } from "react-icons/ri";
+import { useOrderContext } from "../../../providers/OrderProvider";
 
 const SideNav = () => {
   const navigate = useNavigate();
   const [showSideBar, setShowSideBar] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
+  const { ordersAvailable, ordersInProgress } = useOrderContext();
   const iconSize = 22;
 
   useEffect(() => {
@@ -69,48 +70,74 @@ const SideNav = () => {
           </h1>
           <div className="actions">
             <NavLink to="/" className="nav-item" activeClassName="active-link">
-              <FiMenu size={iconSize} />
-              Dashboard
+              <div>
+                <span>
+                  <FiMenu size={iconSize} />
+                </span>
+                <span>Dashboard</span>
+              </div>
             </NavLink>
             <NavLink
               to="./available"
               className="nav-item"
               activeClassName="active-link"
             >
-              <FaClockRotateLeft size={iconSize} />
-              Bidding
+              <div>
+                <span>
+                  <FaClockRotateLeft size={iconSize} />
+                </span>
+                <span>Bidding</span>
+              </div>
+              <span className="count">{ordersAvailable.count}</span>
             </NavLink>
             <NavLink
               to="./in-progress"
               className="nav-item"
               activeClassName="active-link"
             >
-              <MdPendingActions size={iconSize} />
-              In Progress
+              <div>
+                <span>
+                  <MdPendingActions size={iconSize} />
+                </span>
+                <span>In Progress</span>
+              </div>
+              <span className="count">{ordersInProgress.count}</span>
             </NavLink>
             <NavLink
               to="./completed"
               className="nav-item"
               activeClassName="active-link"
             >
-              <MdTaskAlt size={iconSize} />
-              Completed
+              <div>
+                <span>
+                  <MdTaskAlt size={iconSize} />
+                </span>
+                <span>Completed</span>
+              </div>
             </NavLink>
             <NavLink
               to="./solved"
               className="nav-item"
               activeClassName="active-link"
             >
-              <MdAccessTime size={iconSize} />
-              Solved
+              <div>
+                <span>
+                  <MdAccessTime size={iconSize} />
+                </span>
+                <span>Solved</span>
+              </div>
             </NavLink>
             <NavLink
               to="./create-task"
               className="nav-item"
               activeClassName="active-link"
             >
-              <MdAdd size={iconSize} />
-              Create
+              <div>
+                <span>
+                  <MdAdd size={iconSize} />
+                </span>
+                <span>Create</span>
+              </div>
             </NavLink>
           </div>
         </div>
