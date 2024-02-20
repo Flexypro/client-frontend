@@ -49,6 +49,52 @@
   width: 100%;
   gap: 1rem;
 }
+.label-toggle{
+  width: 54px;
+  height: 25px;
+  position: relative;
+  background-color: gray;
+  border-radius: 12px;
+  transition: 0.4s;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.label-toggle::before{
+  content: '';
+  position: absolute;
+  width: 25px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: white;
+  top: 2px;
+  left: 2px;
+  transition: 0.4s;
+}
+
+.label-toggle::after{
+  content: 'OFF';
+  position: absolute;
+  color: white;
+  top: 4px;
+  right: 3px;
+  transition: 0.4s;
+}
+
+.input-toggle:checked + .label-toggle{
+  background-color: var(--secondary-color);
+}
+
+.input-toggle:checked + .label-toggle::before{
+  background-color: white;
+  left: 24px;
+}
+
+.input-toggle:checked + .label-toggle::after{
+  content: 'ON';
+  color: white;
+  left: 2px;
+}
 
 .pref {
   position: inherit;

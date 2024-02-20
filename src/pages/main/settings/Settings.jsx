@@ -5,9 +5,36 @@ import { FaUser } from "react-icons/fa6";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { MdOutlineMarkEmailRead } from "react-icons/md";
 import { MdAppSettingsAlt } from "react-icons/md";
+import { useState } from 'react';
 
 const Settings = () => {
+    const [emailToggleStates, setEmailToggleStates] = useState({
+        uploadedWork: false,
+        newMessages: false,
+        deadline: false
+    });
+
+    const [appToggleStates, setAppToggleStates] = useState({
+        uploadedWork: false,
+        newMessages: false,
+        deadline: false
+    });
+
+    const handleEmailToggle = (field) => {
+        setEmailToggleStates(prevState => ({
+            ...prevState,
+            [field]: !prevState[field]
+        }));
+    };
+
+    const handleAppToggle = (field) => {
+        setAppToggleStates(prevState => ({
+            ...prevState,
+            [field]: !prevState[field]
+        }));
+    };
     const iconSize = 23;
+    
     return (
         <div className='settings-page'>
             <div className='settings-content'>
@@ -37,30 +64,36 @@ const Settings = () => {
                             <strong><MdOutlineMarkEmailRead size={iconSize} /> Email Notifications</strong>                            
                             <div>
                                 <article>Uploaded Work</article>
-                                <span>ON</span>
+                                <input className="input-toggle" type="radio" checked={emailToggleStates.uploadedWork} hidden={true}/>
+                                <label className="label-toggle" onClick={() => handleEmailToggle('uploadedWork')}></label>
                             </div>
                             <div>
                                 <article>New Messages</article>
-                                <span>OFF</span>
+                                <input className="input-toggle" type="radio" checked={emailToggleStates.newMessages} hidden={true}/>
+                                <label className="label-toggle" onClick={() => handleEmailToggle('newMessages')}></label>
                             </div>
                             <div>
                                 <article>Dealine</article>
-                                <span>ON</span>
+                                <input className="input-toggle" type="radio" checked={emailToggleStates.deadline} hidden={true}/>
+                                <label className="label-toggle" onClick={() => handleEmailToggle('deadline')}></label>
                             </div>
                         </div>
                         <div className='pref'>
                             <strong><MdAppSettingsAlt size={iconSize}/> In App Notifications</strong>
                             <div>
                                 <article>Uploaded Work</article>
-                                <span>ON</span>
+                                <input className="input-toggle" type="radio" checked={appToggleStates.uploadedWork} hidden={true}/>
+                                <label className="label-toggle" onClick={() => handleAppToggle('uploadedWork')}></label>
                             </div>
                             <div>
                                 <article>New Messages</article>
-                                <span>ON</span>
+                                <input className="input-toggle" type="radio" checked={appToggleStates.newMessages} hidden={true}/>
+                                <label className="label-toggle" onClick={() => handleAppToggle('newMessages')}></label>
                             </div>
                             <div>
                                 <article>Dealine</article>
-                                <span>ON</span>
+                                <input className="input-toggle" type="radio" checked={appToggleStates.deadline} hidden={true}/>
+                                <label className="label-toggle" onClick={() => handleAppToggle('deadline')}></label>
                             </div>
                         </div>
                     </div>
