@@ -10,8 +10,10 @@ import { useRef } from "react";
 import { useState } from "react";
 import { useLayoutEffect } from "react";
 import { GoDash } from "react-icons/go";
+import { useNavigate } from "react-router-dom";
 
 const Chat = ({ orderId, client, freelancer, showChat, setShowChat }) => {
+  const navigate = useNavigate();
   const { loadedUserProfile } = useAuthContext();
   const { loadingChats, chats, getChats, sendChat, socket, typingData } =
     useChatContext();
@@ -138,7 +140,7 @@ const Chat = ({ orderId, client, freelancer, showChat, setShowChat }) => {
     >
       <div className="chat-header">
         <div className="receiver-profile">
-          <article className="img-chat">{`${
+          <article className="img-chat" onClick={() => navigate("../freelancer-prof")}>{`${
             getReceiver()?.charAt(0)?.toUpperCase() +
             getReceiver()?.slice(1).slice(0, 1)
           }`}</article>

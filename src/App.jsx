@@ -4,6 +4,7 @@ import Dashboard from "./pages/main/dashboard/Dashboard";
 import Notification from "./pages/main/notification/Notification";
 import OrderCreation from "./pages/main/orders/order-creation/OrderCreation";
 import Profile from "./pages/main/profile/Profile";
+import FreelancerProf from "./pages/main/profile/FreelancerProf";
 import Settings from "./pages/main/settings/Settings";
 import OrderView from "./pages/main/orders/order-view/OrderView";
 import Login from "./pages/main/login/Login";
@@ -40,6 +41,7 @@ function App() {
                 <Route path="/notifications" element={<Notification />} />
                 <Route path="/create-task" element={<OrderCreation />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/freelancer-prof" element={<FreelancerProf />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/order/:orderId" element={<OrderView />} />
               </Routes>
