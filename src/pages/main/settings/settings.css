@@ -43,13 +43,14 @@
 }
 
 .notifications-settings .content {
-  position: inherit;
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
   width: 100%;
   gap: 1rem;
 }
-.label-toggle{
+
+.label-toggle {
   width: 54px;
   height: 25px;
   position: relative;
@@ -60,8 +61,8 @@
   font-size: 12px;
 }
 
-.label-toggle::before{
-  content: '';
+.label-toggle::before {
+  content: "";
   position: absolute;
   width: 25px;
   height: 20px;
@@ -72,8 +73,8 @@
   transition: 0.4s;
 }
 
-.label-toggle::after{
-  content: 'OFF';
+.label-toggle::after {
+  content: "OFF";
   position: absolute;
   color: white;
   top: 4px;
@@ -81,17 +82,17 @@
   transition: 0.4s;
 }
 
-.input-toggle:checked + .label-toggle{
+.input-toggle:checked + .label-toggle {
   background-color: var(--secondary-color);
 }
 
-.input-toggle:checked + .label-toggle::before{
+.input-toggle:checked + .label-toggle::before {
   background-color: white;
   left: 24px;
 }
 
-.input-toggle:checked + .label-toggle::after{
-  content: 'ON';
+.input-toggle:checked + .label-toggle::after {
+  content: "ON";
   color: white;
   left: 2px;
 }
