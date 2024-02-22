@@ -140,7 +140,10 @@ const Chat = ({ orderId, client, freelancer, showChat, setShowChat }) => {
     >
       <div className="chat-header">
         <div className="receiver-profile">
-          <article className="img-chat" onClick={() => navigate("../freelancer-prof")}>{`${
+          <article
+            className="img-chat"
+            onClick={() => navigate(`../freelancer-prof/${getReceiver()}`)}
+          >{`${
             getReceiver()?.charAt(0)?.toUpperCase() +
             getReceiver()?.slice(1).slice(0, 1)
           }`}</article>
