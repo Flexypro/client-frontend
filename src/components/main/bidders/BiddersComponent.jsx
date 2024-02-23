@@ -6,6 +6,7 @@ import Chat from "../chat/Chat";
 import { toast } from "react-toastify";
 import { IoIosChatbubbles, IoIosPerson } from "react-icons/io";
 import { useOrderContext } from "../../../providers/OrderProvider";
+import { useNavigate } from "react-router-dom";
 
 const BiddersComponent = ({
   orderId,
@@ -19,6 +20,8 @@ const BiddersComponent = ({
   orderContent,
 }) => {
   const [bidder, setBidder] = useState();
+
+  const navigate = useNavigate();
 
   const { updateOrdersAvailable } = useOrderContext();
 
@@ -120,7 +123,16 @@ const BiddersComponent = ({
             return (
               <div key={key}>
                 <div className="freelancer">
-                  <IoIosPerson size={80} />
+                  <div>
+                    <IoIosPerson
+                      size={80}
+                      onClick={() =>
+                        navigate(
+                          `../freelancer-prof/${bid.freelancer.user.username}`
+                        )
+                      }
+                    />
+                  </div>
                   <div className="freelancer-container-left">
                     <div className="freelancer-elements">
                       <article>{bid.freelancer.user.username}</article>
