@@ -41,7 +41,10 @@ function App() {
                 <Route path="/notifications" element={<Notification />} />
                 <Route path="/create-task" element={<OrderCreation />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/freelancer-prof" element={<FreelancerProf />} />
+                <Route
+                  path="/freelancer-prof/:freelancerParam"
+                  element={<FreelancerProf />}
+                />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/order/:orderId" element={<OrderView />} />
               </Routes>
