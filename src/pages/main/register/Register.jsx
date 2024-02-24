@@ -59,7 +59,7 @@ const Register = () => {
                 });
               })}
             <div className="register-content">
-              <FiUser className="username-icon" size={iconSize} />
+              <FiUser className="username-icon-r" size={iconSize} />
               <input
                 required
                 id="username"
@@ -68,11 +68,11 @@ const Register = () => {
               />
             </div>
             <div className="register-content">
-              <MdOutlineMail className="username-icon" size={iconSize} />
+              <MdOutlineMail className="username-icon-r" size={iconSize} />
               <input required id="email" type="email" placeholder="email" />
             </div>
             <div className="register-content">
-              <MdLock className="password-icon" size={iconSize} />
+              <MdLock className="password-icon-r" size={iconSize} />
               <input
                 required
                 id="password1"
@@ -84,7 +84,7 @@ const Register = () => {
               />
             </div>
             <div className="register-content">
-              <MdLock className="password-icon" size={iconSize} />
+              <MdLock className="password-icon-r" size={iconSize} />
               <input
                 required
                 id="password2"
@@ -98,14 +98,14 @@ const Register = () => {
                 <IoEye
                   title="Hide password"
                   onClick={togglePassword}
-                  className="password-icon-eye"
+                  className="password-icon-eye-r"
                   size={20}
                 />
               ) : (
                 <IoEyeOff
                   title="See password"
                   onClick={togglePassword}
-                  className="password-icon-eye"
+                  className="password-icon-eye-r"
                   size={20}
                 />
               )}
