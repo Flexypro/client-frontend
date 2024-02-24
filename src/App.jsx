@@ -21,6 +21,7 @@ import SideNav from "./components/main/sidenav/SideNav";
 import Completed from "./pages/main/orders/completed/Completed";
 import InProgress from "./pages/main/orders/in-progress/InProgress";
 import Available from "./pages/main/orders/available/Available";
+import PaymentConfirm from "./components/main/payment-confirm/PaymentConfirm";
 
 function App() {
   const { userToken, loadedUserProfile } = useAuthContext();
@@ -47,6 +48,7 @@ function App() {
                 />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/order/:orderId" element={<OrderView />} />
+                <Route path="/payment" element={<PaymentConfirm />} />
               </Routes>
             </div>
           </div>

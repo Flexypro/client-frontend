@@ -18,7 +18,7 @@ import { formatDeadline } from "../../../../utils/helpers/DeadlineFormat";
 import { checkDeadline } from "../../../../utils/helpers/DeadlineFormat";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Payment from "../../payment/Payment";
+import PaypalPayment from "../../payment/PaypalPayment";
 import BiddersComponent from "../../../../components/main/bidders/BiddersComponent";
 import { Routes, Route } from "react-router-dom";
 import Rating from "../../../../components/main/rating/Rating";
@@ -26,11 +26,14 @@ import { MdDelete } from "react-icons/md";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { useAddRating } from "../../../../components/main/modal/Ratings-modal/addRating";
 import { useDeleteModal } from "../../../../components/main/modal/Ratings-modal/cancelRating";
+import StripePayment from "../../payment/StripePayment";
+import { FiAlertOctagon } from "react-icons/fi";
+import { IoIosClose } from "react-icons/io";
 
 const OrderView = () => {
   const ordersUrl = `${import.meta.env.VITE_API_URL}/orders/`;
 
-  const { userToken } = useAuthContext();
+  const { userToken, loadedUserProfile } = useAuthContext();
 
   const navigate = useNavigate();
 
@@ -48,8 +51,8 @@ const OrderView = () => {
     uploadAttachment,
   } = useOrderContext();
 
-  const {AddRating, setShowAddRatingModal} = useAddRating()
-  const {DeleteModal,setShowDeleteModal} = useDeleteModal()
+  const { AddRating, setShowAddRatingModal } = useAddRating();
+  const { DeleteModal, setShowDeleteModal } = useDeleteModal();
 
   const [orderContent, setOrderContent] = useState();
 
@@ -72,6 +75,9 @@ const OrderView = () => {
 
   const bidderParam = new URLSearchParams(location.search).get("bid");
 
+  const paymentOption = loadedUserProfile?.settings.payment_option;
+
+  const [showPaypal, setshowPaypal] = useState(true);
   const checkChatParam = (bidderParam) => {
     if (bidderParam) {
       return true;
@@ -235,7 +241,7 @@ const OrderView = () => {
         orderContent && (
           <>
             <div className="order-details">
-            <AddRating />
+              <AddRating />
               <strong style={{ fontWeight: "bold" }}>
                 {orderContent?.title}
               </strong>
@@ -324,8 +330,12 @@ const OrderView = () => {
                     }
                   </div>
                 ) : (
-                  <button onClick={() => setShowAddRatingModal(true)} className="rating-btn">Add Rating</button>
-                  
+                  <button
+                    onClick={() => setShowAddRatingModal(true)}
+                    className="rating-btn"
+                  >
+                    Add Rating
+                  </button>
                 ))}
 
               {(orderContent.status === "Completed" ||
@@ -334,18 +344,45 @@ const OrderView = () => {
                   {orderContent?.solution ? (
                     <>
                       {showPaymentModal && (
-                        <>
-                          <Payment
-                            show={setShowPaymentModal}
-                            orderId={orderId}
-                            getOrder={getOrder}
-                          />
-                          <hr
-                            style={{
-                              width: "100%",
-                            }}
-                          />
-                        </>
+                        <div className="payment-box ">
+                          <div className="payment-info">
+                            <article
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "4px",
+                              }}
+                            >
+                              <div>
+                                <FiAlertOctagon size={20} />
+                              </div>
+                              You're a step away, let's checkout your order
+                              first
+                            </article>
+                            <IoIosClose
+                              onClick={() => {
+                                setShowPaymentModal(false);
+                                setshowPaypal(true);
+                              }}
+                              className="close-pay"
+                              size={25}
+                            />
+                          </div>
+                          <div className="payment-options">
+                            <StripePayment
+                              show={setShowPaymentModal}
+                              order_id={orderId}
+                              showPaypal={setshowPaypal}
+                            />
+                            {showPaypal && (
+                              <PaypalPayment
+                                show={setShowPaymentModal}
+                                orderId={orderId}
+                                getOrder={getOrder}
+                              />
+                            )}
+                          </div>
+                        </div>
                       )}
                       <strong>Uploaded solution</strong>
                       <div className="solutions">
