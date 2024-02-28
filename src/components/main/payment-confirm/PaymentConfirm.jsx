@@ -48,9 +48,13 @@ const PaymentConfirm = () => {
       <div>
         <h1>Stripe Payment</h1>
         <div className="details">
-          <span>Transaction Status: {details.status}</span>
-          <span>Peformed by {details.email}</span>
-          <span className="amount">${details.amount}</span>
+          <span>
+            Transaction Status: {details.status ? details.status : "---"}{" "}
+          </span>
+          <span>Peformed by {details.email ? details.email : "---"}</span>
+          <span className="amount">
+            ${details.amount ? details.amount : "---"}
+          </span>
         </div>
         <button className="home-btn" onClick={goBack}>
           Go Back

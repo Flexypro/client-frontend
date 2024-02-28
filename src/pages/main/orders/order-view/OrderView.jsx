@@ -128,6 +128,7 @@ const OrderView = () => {
           };
           orderContent.status = data.status;
           setOrderContent(updatedOrder);
+          toast.success("Order completed successfully");
         });
       }
     } else {

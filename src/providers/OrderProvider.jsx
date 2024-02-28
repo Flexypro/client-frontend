@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useJwt } from "react-jwt";
+import { toast } from "react-toastify";
 
 export const OrderContext = createContext();
 
@@ -131,11 +132,13 @@ export const OrderProvider = (props) => {
       const deadline = new Date(e.target.deadline?.value);
       const instructions = e.target.instructions?.value;
       const subCategory = e.target.subCategory?.value;
-      const milestones = e.target.milestones?.value;
       const pages = e.target.pages?.value;
       const amount = e.target.amount?.value;
+      let milestones = 1;
 
-      console.log();
+      if (e.target.milestones) {
+        milestones = e.target.milestones?.value;
+      }
 
       const headers = {
         Authorization: `Bearer ${userToken}`,
@@ -157,6 +160,7 @@ export const OrderProvider = (props) => {
         data.append("amount", amount);
 
         bodyData = data;
+        console.log(data);
       } else {
         const jsonPayload = {
           title,
@@ -182,15 +186,14 @@ export const OrderProvider = (props) => {
       const status = createOrder.status;
 
       if (status === 201) {
-        console.log("navigation");
-        getAllOrders().then(() => {
-          navigate("./");
-        });
+        toast.success("Your task has been created.");
         setSubmitLoading(false);
+        navigate("../");
       } else if (status === 401) {
         navigate("/login?redirect=create-task");
       }
     } catch (error) {
+      toast.error("Error occured while creating your order");
       console.error(error);
     } finally {
       setSubmitLoading(false);

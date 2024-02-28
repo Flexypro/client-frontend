@@ -8,6 +8,7 @@ import { useRef, useState } from "react";
 import { calculatePrice } from "../../../../utils/helpers/pricing";
 import { useCallback } from "react";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const OrderCreation = () => {
   const { createOrder, submitLoading } = useOrderContext();
@@ -78,7 +79,7 @@ const OrderCreation = () => {
     if (
       category !=
       (category === "Writing" ||
-        category === "General Programming" ||
+        category === "Programming" ||
         category === "Class Work")
     ) {
       setorderMilestoneCount(1);
@@ -184,7 +185,7 @@ const OrderCreation = () => {
               />
             </div>
           )}
-          {category === "General Programming" && (
+          {category === "Programming" && (
             <div>
               <label htmlFor="">Milestones</label>
               <input
@@ -249,7 +250,7 @@ const OrderCreation = () => {
                 type="number"
                 id="amount"
                 placeholder={`${price}`}
-                defaultValue={price}
+                // defaultValue={price}
                 min={price}
               />
             </div>
