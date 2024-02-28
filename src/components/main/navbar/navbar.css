@@ -13,6 +13,7 @@
   color: #fff;
   border-bottom: solid 1px var(--bg-color);
   width: 100% !important;
+  background-color: var(--secondary-color);
 }
 
 .search-nav {

@@ -21,7 +21,6 @@
     --fontsize-normal: 0.85rem;
     --fontsize-small: 0.85rem;
   }
-  
 }
 
 :root {
@@ -88,4 +87,8 @@ h1 {
 
 ::-webkit-scrollbar-track {
   background: #f1f1f1; /* color of the scrollbar track */
+}
+
+#rating-input {
+  color: #f7fafc;
 }

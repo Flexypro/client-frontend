@@ -51,10 +51,13 @@ const OrderView = () => {
     uploadAttachment,
   } = useOrderContext();
 
-  const { AddRating, setShowAddRatingModal } = useAddRating();
-  const { DeleteModal, setShowDeleteModal } = useDeleteModal();
-
   const [orderContent, setOrderContent] = useState();
+
+  const { AddRating, setShowAddRatingModal } = useAddRating(
+    orderId,
+    setOrderContent
+  );
+  const { DeleteModal, setShowDeleteModal } = useDeleteModal();
 
   const [loading, setLoading] = useState(true);
 

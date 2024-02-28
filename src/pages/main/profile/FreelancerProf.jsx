@@ -10,12 +10,15 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import RatingOrderView from "../../../components/main/rating-order-view/RatingOrderView";
 
 const FreelancerProf = () => {
   const { freelancerParam } = useParams();
   const { userToken } = useAuthContext();
 
   const [freelancerData, setFreelancerData] = useState();
+
+  console.log(freelancerData);
 
   const headers = {
     "content-Type": "application/json",
@@ -134,9 +137,19 @@ const FreelancerProf = () => {
             </div>
           </div>
           <div className="mt-5 flex flex-col space-y-2 mb-4">
-            <div className="bio text-white">
+            <div className="bio-v text-white">
               <strong>Bio</strong>
               <article>{freelancerData?.bio}</article>
+            </div>
+          </div>
+          <div className="f-review">
+            <h1>Reviews and rating</h1>
+            <div className="review-box">
+              {freelancerData?.orders.map((order, key) => {
+                return (
+                  order.rating && <RatingOrderView order={order} key={key} />
+                );
+              })}
             </div>
           </div>
         </div>
