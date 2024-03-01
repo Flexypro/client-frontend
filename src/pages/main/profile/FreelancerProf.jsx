@@ -59,7 +59,7 @@ const FreelancerProf = () => {
           <div className="flex gap-3 items-center">
             {freelancerData?.profile_photo ? (
               <img
-                className=""
+                className="rounded-full w-16 h-16 overflow-hidden"
                 src={freelancerData?.profile_photo}
                 alt="profile-cover"
               />
