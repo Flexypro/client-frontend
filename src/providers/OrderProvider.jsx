@@ -12,6 +12,8 @@ export const OrderContext = createContext();
 export const OrderProvider = (props) => {
   const navigate = useNavigate();
 
+  const isSecureConnection = window.location.protocol === "https:";
+
   const ordersUrl = `${import.meta.env.VITE_API_URL}/orders/`;
 
   const { userToken } = useAuthContext();
@@ -335,19 +337,31 @@ export const OrderProvider = (props) => {
   useEffect(() => {
     setUser(decodedToken?.user_id);
     if (user) {
-      const newSocket = new WebSocket(`ws://127.0.0.1:8000/ws/order/${user}/`);
+      const newSocket = new WebSocket(
+        `${
+          isSecureConnection
+            ? import.meta.env.VITE_WSS_URL
+            : import.meta.env.VITE_WS_URL
+        }/order/${user}/`
+      );
       setSocket(newSocket);
       newSocket.onmessage = (event) => {
         const receivedData = JSON.parse(event.data);
         const newOrder = receivedData.message.order;
-        setOrders((prev) => {
-          const updatedOrders = [newOrder, ...prev];
-          const inProgress = updatedOrders.filter(
-            (order) => order.status === "In Progress"
-          );
-          setOrdersInProgress(inProgress);
-          return updatedOrders;
+        setOrdersAvailable((prev) => {
+          return {
+            ...prev,
+            orders: [newOrder].concat(prev.orders),
+          };
         });
+        // setOrders((prev) => {
+        //   const updatedOrders = [newOrder, ...prev];
+        //   const inProgress = updatedOrders.filter(
+        //     (order) => order.status === "In Progress"
+        //   );
+        //   setOrdersInProgress(inProgress);
+        //   return updatedOrders;
+        // });
       };
       setSocket(newSocket);
     } else {

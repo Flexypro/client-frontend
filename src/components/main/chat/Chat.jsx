@@ -92,7 +92,7 @@ const Chat = ({ orderId, client, freelancer, showChat, setShowChat }) => {
     if (chatBoxRef.current) {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight * 2;
     }
-  }, [chats]);
+  }, [chats.list]);
 
   const submitMessage = (e) => {
     e.preventDefault();
@@ -161,9 +161,9 @@ const Chat = ({ orderId, client, freelancer, showChat, setShowChat }) => {
           <GoDash size={30} title="Click to hide chatbox" />
         </div>
       </div>
-      {chats?.length > 0 ? (
+      {chats.list?.length > 0 ? (
         <div className="messages-box" id="msg" ref={chatBoxRef}>
-          {chats?.map((msg, index) => {
+          {chats.list?.map((msg, index) => {
             return (
               <>
                 <div

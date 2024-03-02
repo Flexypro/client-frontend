@@ -14,6 +14,8 @@ const InProgress = () => {
 
   const navigate = useNavigate();
 
+  console.log(ordersInProgress);
+
   return loadingInProgress ? (
     <LoadingSkeletonOrder />
   ) : ordersInProgress.orders.length > 0 ? (
