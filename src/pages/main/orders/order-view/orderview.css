@@ -296,10 +296,10 @@ textarea {
   .summary,
   .instructions,
   .attachments {
-    padding: 0.25rem;
+    padding: 0.5rem;
   }
 
   .rating {
-    padding: 0.25rem;
+    padding: 0.5rem;
   }
 }

@@ -18,8 +18,9 @@
   gap: 1rem;
   padding: 1rem;
   color: #fff;
+  font-size: 23pt;
+  font-weight: bold;
 }
-
 .actions {
   display: flex;
   flex-direction: column;
@@ -121,7 +122,7 @@
 
   .show-side-bar {
     opacity: 1;
-    width: 50%;
+    width: 60%;
     transition: width 0.5s ease-in-out, opacity 0.5s ease-in-out;
   }
 
@@ -135,7 +136,7 @@
     position: absolute;
     z-index: 999999;
     padding-right: 2rem;
-    height: 80dvh;
+    height: auto;
     border-bottom: solid 1px var(--bg-color);
   }
 

@@ -40,7 +40,8 @@
   padding: 9px;
   border-radius: 50%;
   font-weight: bold;
-  height: 100%;
+  width: 4rem;
+  aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -53,8 +54,9 @@
   display: flex;
   align-items: center;
   flex-direction: row;
-  position: inherit;
+  position: relative;
   width: 100%;
+  overflow: hidden;
 }
 
 .messages-box {
