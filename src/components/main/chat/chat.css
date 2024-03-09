@@ -79,6 +79,12 @@
   gap: 1rem;
 }
 
+.chat-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .send-message,
 .received-message {
   position: inherit;

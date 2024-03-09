@@ -11,10 +11,11 @@ import { useState } from "react";
 import { useLayoutEffect } from "react";
 import { GoDash } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
+import PulseLoader from "react-spinners/PulseLoader";
 
 const Chat = ({ orderId, client, freelancer, showChat, setShowChat }) => {
   const navigate = useNavigate();
-  const { loadedUserProfile } = useAuthContext();
+  const { loadedUserProfile, loadingUserProfile } = useAuthContext();
   const { loadingChats, chats, getChats, sendChat, socket, typingData } =
     useChatContext();
 
@@ -161,7 +162,13 @@ const Chat = ({ orderId, client, freelancer, showChat, setShowChat }) => {
           <GoDash size={30} title="Click to hide chatbox" />
         </div>
       </div>
-      {chats.list?.length > 0 ? (
+      {loadingChats || loadingUserProfile ? (
+        <div>
+          <span className="chat-loader">
+            <PulseLoader color="#7fc2f5" />
+          </span>
+        </div>
+      ) : chats.list?.length > 0 && loadedUserProfile ? (
         <div className="messages-box" id="msg" ref={chatBoxRef}>
           {chats.list?.map((msg, index) => {
             return (
