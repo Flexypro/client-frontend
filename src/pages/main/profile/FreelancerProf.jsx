@@ -113,7 +113,7 @@ const FreelancerProf = () => {
               {freelancerData?.address.timezone}
             </div>
           </div>
-          <div className="prof-summary flex flex-wrap gap-4 w-full items-center mt-4">
+          <div className="prof-summary w-full items-center mt-4">
             <div className="prof-element justify-between p-4 border border-gray-600 flex items-center flex-1 text-gray-600">
               <div className="flex items-center gap-2">
                 <MdTaskAlt className="text-white" size={iconSize} />
