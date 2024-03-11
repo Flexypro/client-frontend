@@ -108,14 +108,8 @@ const BiddersComponent = ({
       className={`bid-container ${showBidders ? "show-bidder" : "hide-bidder"}`}
     >
       <h1 className="heading" title="Freelancers bidding on your order">
-        Bidders
-        {bidders.length > 0 && (
-          <span>
-            {" "}
-            &nbsp;-&nbsp;
-            {bidders.length}
-          </span>
-        )}
+        Active Bidders
+        {bidders.length > 0 && <span>{bidders.length}</span>}
       </h1>
       <div className="freelancer-container">
         {bidders.length > 0 ? (

@@ -41,7 +41,6 @@
 .go-to-order,
 .create-task-helper:hover {
   cursor: pointer;
-  transform: scale(1.08);
 }
 
 .placeholder-icon {
