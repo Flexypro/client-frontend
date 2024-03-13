@@ -6,10 +6,16 @@ import { useNavigate } from "react-router-dom";
 import LoadingSkeletonOrder from "../../loading/Loading";
 import { useOrderContext } from "../../../../providers/OrderProvider";
 import ViewMore from "../../../../components/main/more/ScrollMore";
+import { useEffect } from "react";
+import updateTitle from "../../../../utils/helpers/titleToggle";
 
 const Available = () => {
   const { getAvailable, loadingAvailable, ordersAvailable } = useOrderContext();
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   updateTitle("Bidding");
+  // }, [1]);
 
   return loadingAvailable ? (
     <LoadingSkeletonOrder />

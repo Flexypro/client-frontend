@@ -22,13 +22,14 @@ import PaypalPayment from "../../payment/PaypalPayment";
 import BiddersComponent from "../../../../components/main/bidders/BiddersComponent";
 import { Routes, Route } from "react-router-dom";
 import Rating from "../../../../components/main/rating/Rating";
-import { MdDelete } from "react-icons/md";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { useAddRating } from "../../../../components/main/modal/Ratings-modal/addRating";
 import { useDeleteModal } from "../../../../components/main/modal/Ratings-modal/cancelRating";
 import StripePayment from "../../payment/StripePayment";
 import { FiAlertOctagon } from "react-icons/fi";
 import { IoIosClose } from "react-icons/io";
+import ViewMore from "../../../../components/main/more/ScrollMore";
 
 const OrderView = () => {
   const ordersUrl = `${import.meta.env.VITE_API_URL}/orders/`;
@@ -42,6 +43,12 @@ const OrderView = () => {
   const iconSize = 20;
 
   const { orderId } = useParams();
+
+  const [solution, setSolution] = useState({
+    count: null,
+    list: null,
+    next: null,
+  });
 
   const {
     loadingAttachemnt,
@@ -77,8 +84,6 @@ const OrderView = () => {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const bidderParam = new URLSearchParams(location.search).get("bid");
-
-  const paymentOption = loadedUserProfile?.settings.payment_option;
 
   const [showPaypal, setshowPaypal] = useState(true);
   const checkChatParam = (bidderParam) => {
@@ -119,7 +124,7 @@ const OrderView = () => {
   };
 
   const changeOrderStatus = () => {
-    if (orderContent?.solution) {
+    if (solution?.list) {
       // check not paid
       if (!orderContent.paid) {
         setShowPaymentModal(true);
@@ -174,8 +179,8 @@ const OrderView = () => {
 
   const downloadFile = () => {
     const link = document.getElementById("solution-file");
-    link.download = (orderContent?.solution.solution).substring(
-      orderContent?.solution.solution.lastIndexOf("/") + 1
+    link.download = solution?.list?.substring(
+      solution?.list?.lastIndexOf("/") + 1
     );
     link.click();
   };
@@ -231,9 +236,37 @@ const OrderView = () => {
     }
   };
 
+  const getSolutionForOrder = async (page) => {
+    const getSolution = await fetch(
+      `${ordersUrl}${orderId}/solution?page=${page}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+      }
+    );
+
+    if (getSolution.ok) {
+      const response = await getSolution.json();
+
+      setSolution((prev) => {
+        return {
+          ...prev,
+          list: prev?.list
+            ? response.results.concat(prev?.list)
+            : response.results,
+          count: response.count,
+          next: response.next,
+        };
+      });
+    }
+  };
+
   useEffect(() => {
     orderId && getOrder(orderId);
-  }, [orderId]);
+    orderId && getSolutionForOrder(1);
+  }, [orderId, userToken]);
 
   // FIXME: Order creation price update
   // FIXME: Fix order not loading to dashboard
@@ -254,7 +287,7 @@ const OrderView = () => {
                 <strong>{!loading && "$" + orderContent?.amount}</strong>
                 <article className="status">{orderContent?.status}</article>
                 {orderContent.status == "Available" && (
-                  <MdDelete
+                  <RiDeleteBin6Line
                     title="Delete order"
                     onClick={() => deleteOrder(orderId)}
                     size={iconSize}
@@ -265,10 +298,10 @@ const OrderView = () => {
                 {orderContent?.status === "In Progress" && (
                   <button
                     style={{
-                      cursor: !orderContent?.solution && "not-allowed",
+                      cursor: !solution?.list && "not-allowed",
                     }}
                     title={
-                      !orderContent?.solution &&
+                      !solution?.list &&
                       "Cannot complete order without solution"
                     }
                     onClick={changeOrderStatus}
@@ -345,7 +378,7 @@ const OrderView = () => {
               {(orderContent.status === "Completed" ||
                 orderContent.status === "In Progress") && (
                 <div className="order-soln">
-                  {orderContent?.solution ? (
+                  {solution?.list ? (
                     <>
                       {showPaymentModal && (
                         <div className="payment-box ">
@@ -390,31 +423,55 @@ const OrderView = () => {
                       )}
                       <strong>Uploaded solution</strong>
                       <div className="solutions">
-                        {
-                          <div>
-                            <a
-                              href={`${orderContent?.solution?.solution}`}
-                              id="solution-file"
-                            >
-                              {(orderContent?.solution.solution).substring(
-                                orderContent?.solution.solution.lastIndexOf(
-                                  "/"
-                                ) + 1
-                              )}
-                            </a>
-                            <article>{orderContent?.solution._type}</article>
-                            <>
-                              <IoMdDownload
-                                className="download-icon"
-                                onClick={downloadFile}
-                                style={{ cursor: "pointer" }}
-                                size={iconSize}
-                              />
-                            </>
-                            <article className="">{uploadedAt}</article>
-                          </div>
-                        }
+                        {solution?.list?.map((sln) => {
+                          return (
+                            <table className="sln-table">
+                              <tbody>
+                                <td className="solution">
+                                  <a
+                                    href={`${sln?.solution}`}
+                                    id="solution-file"
+                                  >
+                                    {sln?.solution?.substring(
+                                      sln?.solution?.lastIndexOf("/") + 1
+                                    )}
+                                  </a>
+                                </td>
+                                <td className="type">
+                                  <article
+                                    style={{
+                                      color:
+                                        sln?._type === "Final"
+                                          ? "green"
+                                          : "orange",
+                                    }}
+                                  >
+                                    {sln?._type}
+                                  </article>
+                                </td>
+                                <td className="dnload">
+                                  <>
+                                    <IoMdDownload
+                                      className="download-icon"
+                                      onClick={downloadFile}
+                                      style={{ cursor: "pointer" }}
+                                      size={iconSize}
+                                    />
+                                  </>
+                                </td>
+                                <td className="timeago">
+                                  <article className="">
+                                    {timeAgo(sln?.created)}{" "}
+                                  </article>
+                                </td>
+                              </tbody>
+                            </table>
+                          );
+                        })}
                       </div>
+                      {solution.next && (
+                        <ViewMore fetch={getSolutionForOrder} />
+                      )}
                     </>
                   ) : (
                     <strong style={{ color: "orange" }}>
@@ -547,7 +604,7 @@ const OrderView = () => {
               <BiddersComponent
                 orderId={orderId}
                 client={orderContent.client}
-                bidders={orderContent.bidders}
+                // bidders={orderContent.bidders}
                 getOrder={getOrder}
                 setShowBidders={setShowBidders}
                 showBidders={showBidders}

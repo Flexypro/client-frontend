@@ -56,6 +56,28 @@
 
 .solutions {
   display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sln-table tbody td {
+  text-align: start;
+}
+
+.sln-table tbody .solution {
+  width: 60%;
+}
+
+.sln-table tbody .type {
+  width: 20%;
+}
+
+.sln-table tbody .dnload {
+  width: 10%;
+}
+
+.sln-table tbody .dnload {
+  width: 10%;
 }
 
 .order-elements,
