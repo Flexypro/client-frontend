@@ -25,66 +25,48 @@ const BiddersComponent = ({
 
   const ordersUrl = `${import.meta.env.VITE_API_URL}/orders/`;
 
-  const [bidders, setBidders] = useState({
-    count: null,
-    list: null,
-    next: null,
-  });
-
-  const [loadingBidders, setLoadingBidders] = useState(true);
-
   const navigate = useNavigate();
 
-  const { updateOrdersAvailable } = useOrderContext();
+  const { updateOrdersAvailable, loadingBidders, getBiddersForOrder, bidders } =
+    useOrderContext();
 
   const { userToken } = useAuthContext();
 
   const checkParam = () => {
     const bidderParam = new URLSearchParams(location.search).get("bid");
     if (bidderParam) {
-      const bid = bidders.list?.filter((bid) => bid.id === bidderParam);
-      setBidder(bid[0]?.freelancer);
+      try {
+        fetch(`${ordersUrl}${orderId}/bidders?bidder=${bidderParam}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        })
+          .then((res) => {
+            if (res.ok) {
+              return res.json();
+            } else {
+              console.log("ERROR");
+            }
+          })
+          .then((data) => {
+            console.log(data);
+            setBidder(data.freelancer);
+          });
+      } catch (err) {
+        console.error(err);
+      } finally {
+      }
+      // const bid = bidders?.list?.filter((bid) => bid.id === bidderParam);
+      // console.log(bidders);
+      // setBidder(bid[0]?.freelancer);
     } else {
       setBidder();
     }
   };
 
-  const getBiddersForOrder = async (page) => {
-    try {
-      const getBidders = await fetch(
-        `${ordersUrl}${orderId}/bidders?page=${page}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${userToken}`,
-          },
-        }
-      );
-
-      if (getBidders.ok) {
-        const response = await getBidders.json();
-        setBidders((prev) => {
-          return {
-            ...prev,
-            list: prev.list
-              ? prev.list?.concat(response.results)
-              : response.results,
-            next: response.next,
-            count: response.count,
-          };
-        });
-      } else {
-        toast.error("Failed to load available bidders!");
-      }
-    } catch (error) {
-      toast.error("We could not find any bidders at the moment!");
-    } finally {
-      setLoadingBidders(false);
-    }
-  };
-
   useEffect(() => {
-    orderId && getBiddersForOrder(1);
+    orderId && getBiddersForOrder(1, orderId);
   }, [orderId]);
 
   useEffect(() => {
@@ -115,7 +97,6 @@ const BiddersComponent = ({
       if (hireFreelancer.ok) {
         toast.success("Your order was allocated");
         getOrder(orderId).then((res) => {
-          console.log(res);
           updateOrdersAvailable(res);
         });
       } else {
@@ -162,7 +143,7 @@ const BiddersComponent = ({
     >
       <h1 className="heading" title="Freelancers bidding on your order">
         Active Bidders
-        {bidders.list?.length > 0 && <span>{bidders.count}</span>}
+        {bidders?.list?.length > 0 && <span>{bidders?.count}</span>}
       </h1>
       {loadingBidders ? (
         <div>
@@ -170,7 +151,7 @@ const BiddersComponent = ({
         </div>
       ) : (
         <div className="freelancer-container">
-          {bidders.list?.length > 0 ? (
+          {bidders?.list?.length > 0 ? (
             <>
               {bidders?.list.map((bid, key) => {
                 return (
@@ -209,7 +190,9 @@ const BiddersComponent = ({
                   </div>
                 );
               })}
-              {bidders.next && <ViewMore fetch={getBiddersForOrder} />}
+              {bidders?.next && (
+                <ViewMore fetch={getBiddersForOrder} orderId={orderId} />
+              )}
             </>
           ) : (
             <div>

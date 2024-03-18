@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-const ViewMore = ({ fetch }) => {
+const ViewMore = ({ fetch, orderId }) => {
   let [page, setPage] = useState(1);
   const fetchNext = () => {
     setPage((page += 1));
-    fetch(page);
+    fetch(page, orderId);
   };
 
   return (

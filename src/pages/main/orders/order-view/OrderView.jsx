@@ -224,7 +224,6 @@ const OrderView = () => {
 
       if (performDelete.ok) {
         toast.success("Order deleted successfully");
-        getAllOrders();
         navigate("../available");
       } else {
         toast.error("Failed to delete order");

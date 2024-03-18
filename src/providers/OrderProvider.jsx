@@ -35,6 +35,13 @@ export const OrderProvider = (props) => {
     count: 0,
     next: null,
   });
+
+  const [bidders, setBidders] = useState({
+    count: null,
+    list: null,
+    next: null,
+  });
+
   const [loadingAvailable, setLoadingAvailable] = useState(true);
 
   const [loadingAttachemnt, setLoadingAttachment] = useState(false);
@@ -44,8 +51,11 @@ export const OrderProvider = (props) => {
 
   const [submitLoading, setSubmitLoading] = useState(false);
 
+  const [loadingBidders, setLoadingBidders] = useState(true);
+
   const [user, setUser] = useState();
   const [socket, setSocket] = useState(null);
+  const [bidSocket, setBidSocket] = useState(null);
 
   const headersContent = {
     "Content-Type": "application/json",
@@ -188,9 +198,18 @@ export const OrderProvider = (props) => {
       const status = createOrder.status;
 
       if (status === 201) {
+        // const createdOrder = await createOrder.json();
+
         toast.success("Your task has been created.");
         setSubmitLoading(false);
-        navigate("../");
+        setOrdersAvailable((prev) => {
+          return {
+            ...prev,
+            // orders: [createdOrder].concat(prev.orders),
+            count: prev.count + 1,
+          };
+        });
+        navigate("../available");
       } else if (status === 401) {
         navigate("/login?redirect=create-task");
       }
@@ -331,8 +350,103 @@ export const OrderProvider = (props) => {
     });
   };
 
-  // TODO: Fix webscokets
-  // FIXME: Fix some errors
+  const getBiddersForOrder = async (page, orderId) => {
+    try {
+      const getBidders = await fetch(
+        `${ordersUrl}${orderId}/bidders?page=${page}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      );
+
+      if (getBidders.ok) {
+        const response = await getBidders.json();
+        setBidders((prev) => {
+          return {
+            ...prev,
+            list: prev.list
+              ? prev.list?.concat(response.results)
+              : response.results,
+            next: response.next,
+            count: response.count,
+          };
+        });
+      } else {
+        toast.error("Failed to load available bidders!");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("We could not find any bidders at the moment!");
+    } finally {
+      setLoadingBidders(false);
+    }
+  };
+
+  useEffect(() => {
+    setUser(decodedToken?.user_id);
+    if (user) {
+      const newSocket = new WebSocket(
+        `${
+          isSecureConnection
+            ? import.meta.env.VITE_WSS_URL
+            : import.meta.env.VITE_WS_URL
+        }/bid/${user}/`
+      );
+      setBidSocket(newSocket);
+      newSocket.onmessage = (event) => {
+        const receivedData = JSON.parse(event.data);
+        console.log(receivedData);
+
+        const newBid = receivedData.message.bid;
+        if (!receivedData.message.delete)
+          setBidders((prev) => {
+            const bidsForOrder = prev?.list?.filter(
+              (p) => p.order === newBid.order
+            );
+            return {
+              ...prev,
+              list: bidsForOrder?.concat([newBid]),
+              count: prev.count + 1,
+            };
+          });
+
+        if (receivedData.message.delete) {
+          setBidders((prev) => {
+            const bidsForOrder = prev?.list?.filter(
+              (p) => p.order === newBid.order
+            );
+
+            const newBidList = bidsForOrder?.filter(
+              (bid) => bid.id !== newBid.id
+            );
+            return {
+              list: newBidList,
+              count: prev.count - 1,
+            };
+          });
+          console.log("Delete");
+        }
+        // setOrdersAvailable((prev) => {
+        //   return {
+        //     ...prev,
+        //     orders: [newOrder].concat(prev.orders),
+        //   };
+        // });
+      };
+      setBidSocket(newSocket);
+    } else {
+      bidSocket?.close();
+    }
+
+    return () => {
+      if (bidSocket) {
+        bidSocket.close();
+      }
+    };
+  }, [decodedToken, user]);
 
   useEffect(() => {
     setUser(decodedToken?.user_id);
@@ -354,14 +468,6 @@ export const OrderProvider = (props) => {
             orders: [newOrder].concat(prev.orders),
           };
         });
-        // setOrders((prev) => {
-        //   const updatedOrders = [newOrder, ...prev];
-        //   const inProgress = updatedOrders.filter(
-        //     (order) => order.status === "In Progress"
-        //   );
-        //   setOrdersInProgress(inProgress);
-        //   return updatedOrders;
-        // });
       };
       setSocket(newSocket);
     } else {
@@ -398,6 +504,8 @@ export const OrderProvider = (props) => {
         loadingCompleted,
         submitLoading,
         loadingAttachemnt,
+        bidders,
+        loadingBidders,
         // getOrder,
         createOrder,
         updateInstructions,
@@ -407,6 +515,7 @@ export const OrderProvider = (props) => {
         getCompleted,
         uploadAttachment,
         updateOrdersAvailable,
+        getBiddersForOrder,
       }}
     >
       {props.children}
