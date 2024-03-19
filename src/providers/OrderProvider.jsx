@@ -198,14 +198,14 @@ export const OrderProvider = (props) => {
       const status = createOrder.status;
 
       if (status === 201) {
-        // const createdOrder = await createOrder.json();
+        const createdOrder = await createOrder.json();
 
         toast.success("Your task has been created.");
         setSubmitLoading(false);
         setOrdersAvailable((prev) => {
           return {
             ...prev,
-            // orders: [createdOrder].concat(prev.orders),
+            orders: [createdOrder].concat(prev.orders),
             count: prev.count + 1,
           };
         });
@@ -291,9 +291,9 @@ export const OrderProvider = (props) => {
 
         setOrdersInProgress((prev) => {
           console.log(prev);
-          const updatedOrders = prev.orders.filter(
-            (order) => order.id !== orderId
-          );
+          const updatedOrders = prev.orders.filter((order) => {
+            return order.id !== orderId;
+          });
           console.log(updatedOrders);
           return {
             ...prev,
@@ -328,9 +328,9 @@ export const OrderProvider = (props) => {
 
   const updateOrdersAvailable = (orderRes) => {
     setOrdersAvailable((prev) => {
-      const updatedOrders = prev.orders.filter(
-        (order) => order.id !== orderRes?.id
-      );
+      const updatedOrders = prev.orders.filter((order) => {
+        return order.id !== orderRes?.id;
+      });
       return {
         ...prev,
         orders: updatedOrders,
@@ -401,34 +401,85 @@ export const OrderProvider = (props) => {
         console.log(receivedData);
 
         const newBid = receivedData.message.bid;
-        if (!receivedData.message.delete)
-          setBidders((prev) => {
-            const bidsForOrder = prev?.list?.filter(
-              (p) => p.order === newBid.order
-            );
-            return {
-              ...prev,
-              list: bidsForOrder?.concat([newBid]),
-              count: prev.count + 1,
-            };
+
+        fetch(`${ordersUrl}${newBid.order}`, {
+          method: "get",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        })
+          .then((res) => {
+            if (res.ok) {
+              return res.json();
+            } else {
+              throw new Error("Error occurred");
+            }
+          })
+          .then((data) => {
+            return data;
+          })
+          .then((newOrder) => {
+            if (!receivedData.message.delete);
+            setBidders((prev) => {
+              const bidsForOrder = prev?.list?.filter(
+                (p) => p.order === newBid.order
+              );
+              return {
+                ...prev,
+                list: bidsForOrder?.concat([newBid]),
+                count: prev.count + 1,
+              };
+            });
+
+            setOrdersAvailable((prev) => {
+              const newOrdersList = prev?.orders?.map((order) => {
+                if (order.id === newOrder.id) {
+                  return newOrder;
+                } else {
+                  return prev;
+                }
+              });
+              return {
+                orders: newOrdersList,
+                count: prev.count,
+              };
+            });
+
+            if (receivedData.message.delete) {
+              setOrdersAvailable((prev) => {
+                const newOrdersList = prev?.orders?.map((order) => {
+                  if (order.id === newOrder.id) {
+                    return newOrder;
+                  } else {
+                    return prev;
+                  }
+                });
+                return {
+                  orders: newOrdersList,
+                  count: prev.count,
+                };
+              });
+              setBidders((prev) => {
+                const bidsForOrder = prev?.list?.filter(
+                  (p) => p.order === newBid.order
+                );
+
+                const newBidList = bidsForOrder?.filter((bid) => {
+                  return bid.id !== newBid.id;
+                });
+                return {
+                  list: newBidList,
+                  count: prev.count - 1,
+                };
+              });
+              console.log("Delete");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
           });
 
-        if (receivedData.message.delete) {
-          setBidders((prev) => {
-            const bidsForOrder = prev?.list?.filter(
-              (p) => p.order === newBid.order
-            );
-
-            const newBidList = bidsForOrder?.filter(
-              (bid) => bid.id !== newBid.id
-            );
-            return {
-              list: newBidList,
-              count: prev.count - 1,
-            };
-          });
-          console.log("Delete");
-        }
         // setOrdersAvailable((prev) => {
         //   return {
         //     ...prev,
@@ -481,6 +532,39 @@ export const OrderProvider = (props) => {
     };
   }, [decodedToken, user]);
 
+  useEffect(() => {
+    setUser(decodedToken?.user_id);
+    if (user) {
+      const newSocket = new WebSocket(
+        `${
+          isSecureConnection
+            ? import.meta.env.VITE_WSS_URL
+            : import.meta.env.VITE_WS_URL
+        }/solutions/${user}/`
+      );
+      setSocket(newSocket);
+      newSocket.onmessage = (event) => {
+        const receivedData = JSON.parse(event.data);
+        const newOrder = receivedData.message.solution;
+        console.log(receivedData);
+        // setOrdersAvailable((prev) => {
+        //   return {
+        //     ...prev,
+        //     orders: [newOrder].concat(prev.orders),
+        //   };
+        // });
+      };
+      setSocket(newSocket);
+    } else {
+      socket?.close();
+    }
+
+    return () => {
+      if (socket) {
+        socket.close();
+      }
+    };
+  }, [decodedToken, user]);
   // const [orderDetails, setOrderDetails] = useState();
 
   useEffect(() => {

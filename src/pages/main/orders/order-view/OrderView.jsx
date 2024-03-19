@@ -124,7 +124,7 @@ const OrderView = () => {
   };
 
   const changeOrderStatus = () => {
-    if (solution?.list) {
+    if (solution?.list?.length > 0) {
       // check not paid
       if (!orderContent.paid) {
         setShowPaymentModal(true);
@@ -297,10 +297,10 @@ const OrderView = () => {
                 {orderContent?.status === "In Progress" && (
                   <button
                     style={{
-                      cursor: !solution?.list && "not-allowed",
+                      cursor: !solution?.list?.length && "not-allowed",
                     }}
                     title={
-                      !solution?.list &&
+                      !solution?.list?.length &&
                       "Cannot complete order without solution"
                     }
                     onClick={changeOrderStatus}

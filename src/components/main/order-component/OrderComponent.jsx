@@ -23,7 +23,7 @@ const OrderComponent = ({ content }) => {
     >
       <div className="title-box">
         <article>
-          {content?.title.length > maxCharsToDisplay
+          {content?.title?.length > maxCharsToDisplay
             ? `${content?.title.slice(0, 60)}...`
             : content?.title}
         </article>
