@@ -202,13 +202,13 @@ export const OrderProvider = (props) => {
 
         toast.success("Your task has been created.");
         setSubmitLoading(false);
-        setOrdersAvailable((prev) => {
-          return {
-            ...prev,
-            orders: [createdOrder].concat(prev.orders),
-            count: prev.count + 1,
-          };
-        });
+        // setOrdersAvailable((prev) => {
+        //   return {
+        //     ...prev,
+        //     orders: [createdOrder].concat(prev.orders),
+        //     count: prev.count + 1,
+        //   };
+        // });
         navigate("../available");
       } else if (status === 401) {
         navigate("/login?redirect=create-task");
@@ -420,50 +420,24 @@ export const OrderProvider = (props) => {
             return data;
           })
           .then((newOrder) => {
-            if (!receivedData.message.delete);
-            setBidders((prev) => {
-              const bidsForOrder = prev?.list?.filter(
-                (p) => p.order === newBid.order
-              );
-              return {
-                ...prev,
-                list: bidsForOrder?.concat([newBid]),
-                count: prev.count + 1,
-              };
-            });
-
-            setOrdersAvailable((prev) => {
-              const newOrdersList = prev?.orders?.map((order) => {
-                if (order.id === newOrder.id) {
-                  return newOrder;
-                } else {
-                  return prev;
-                }
-              });
-              return {
-                orders: newOrdersList,
-                count: prev.count,
-              };
-            });
-
-            if (receivedData.message.delete) {
-              setOrdersAvailable((prev) => {
-                const newOrdersList = prev?.orders?.map((order) => {
-                  if (order.id === newOrder.id) {
-                    return newOrder;
-                  } else {
-                    return prev;
-                  }
+            if (!receivedData.message.delete) {
+              setBidders((prev) => {
+                const bidsForOrder = prev?.list?.filter((p) => {
+                  return p.order === newOrder.order;
                 });
                 return {
-                  orders: newOrdersList,
-                  count: prev.count,
+                  ...prev,
+                  list: bidsForOrder?.concat([newBid]),
+                  count: prev.count + 1,
                 };
               });
+            }
+
+            if (receivedData.message.delete) {
               setBidders((prev) => {
-                const bidsForOrder = prev?.list?.filter(
-                  (p) => p.order === newBid.order
-                );
+                const bidsForOrder = prev?.list?.filter((p) => {
+                  return p.order === newBid.order;
+                });
 
                 const newBidList = bidsForOrder?.filter((bid) => {
                   return bid.id !== newBid.id;
@@ -475,17 +449,39 @@ export const OrderProvider = (props) => {
               });
               console.log("Delete");
             }
+
+            // setOrdersAvailable((prev) => {
+            //   console.log(prev);
+            // });
+
+            setOrdersAvailable((prev) => ({
+              ...prev,
+              orders: prev.orders.map((order) => {
+                if (order.id === newOrder.id) {
+                  return {
+                    ...order,
+                    ...newOrder,
+                  };
+                }
+                return order;
+              }),
+            }));
+
+            // setOrdersAvailable.orders.map((order) => {
+            //   console.log(order.id, newOrder.id);
+            //   if (order.id === newOrder.id) {
+            //     console.log("True");
+            //     return {
+            //       ...order,
+            //       ...newOrder,
+            //     };
+            //   }
+            //   return order;
+            // });
           })
           .catch((error) => {
             console.log(error);
           });
-
-        // setOrdersAvailable((prev) => {
-        //   return {
-        //     ...prev,
-        //     orders: [newOrder].concat(prev.orders),
-        //   };
-        // });
       };
       setBidSocket(newSocket);
     } else {

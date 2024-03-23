@@ -22,6 +22,7 @@ import Completed from "./pages/main/orders/completed/Completed";
 import InProgress from "./pages/main/orders/in-progress/InProgress";
 import Available from "./pages/main/orders/available/Available";
 import PaymentConfirm from "./components/main/payment-confirm/PaymentConfirm";
+import Solved from "./pages/main/solved/Solved";
 
 function App() {
   const { userToken, loadedUserProfile } = useAuthContext();
@@ -41,6 +42,7 @@ function App() {
                 <Route path="/completed" element={<Completed />} />
                 <Route path="/notifications" element={<Notification />} />
                 <Route path="/create-task" element={<OrderCreation />} />
+                <Route path="/solved" element={<Solved />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route
                   path="/freelancer-prof/:freelancerParam"
