@@ -1,3 +1,4 @@
+
 .top-nav {
   box-sizing: border-box;
   display: flex;
@@ -15,6 +16,8 @@
   width: 100% !important;
   background-color: var(--secondary-color);
 }
+
+
 
 .search-nav {
   position: relative;
@@ -56,7 +59,6 @@
   flex-direction: column;
   font-size: small;
 }
-
 .suggested {
   padding: 0.5rem 0.8rem;
   cursor: pointer;
@@ -146,11 +148,7 @@
   /* color: var(--secondary-color); */
 }
 
-.profile div {
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-}
+
 
 .profile div img,
 .img-placeholder {
@@ -199,14 +197,22 @@
   justify-content: center !important;
 }
 
+
+
 @media screen and (max-width: 768px) {
+ 
   .desc {
     display: block;
   }
 
+  .profile-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
   .notif-bell {
     padding: 0rem;
-    background-color: blue;
   }
 
   .notif-bell .red {
@@ -219,11 +225,9 @@
     border: none;
     padding: 0;
   }
-  .mini-elements *:hover {
-    transform: translate(0);
-    border: none;
-  }
+  
   .mini-elements {
+    display: none; /* Initially hide the mini-elements */
     position: absolute;
     flex-direction: column !important;
     background-color: #4e5868;
@@ -232,45 +236,53 @@
     padding: 1rem 2rem;
     cursor: pointer;
   }
-
-  .mini-elements div {
-    position: relative;
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    gap: 4rem;
-  }
-
-  .hide-mini-elements div {
-    width: 0 !important;
-  }
-
+  
+  
+  /* Show and hide animations */
   .show-mini-elements {
     display: flex;
-    width: 100%;
     opacity: 1;
-    transition: width 0.5s ease;
+    transition: opacity 0.5s ease;
+  }
+  
+  .hide-mini-elements {
+    display: none; /* Completely hide the mini-elements when not active */
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  
+
+  .menu-icon {
+    display: flex !important;
+    align-items: center;
+    cursor: pointer; /* Add cursor pointer to indicate it's clickable */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .mobile-invisible {
+    display: none;
+  }
+  .search-nav {
+    display: none;
   }
 
-  .hide-mini-elements {
-    width: 0;
-    opacity: 0;
-    transition: width 0.5s ease, opacity 0.5s ease;
+  .visible {
+    display: none;
+  }
+  .search-nav {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .search-icon {
+    margin-left: 0;
+    display: flex;
+    margin-left: 4rem;
   }
 
   .menu-icon {
     display: flex !important;
     align-items: center;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .search-nav {
-    display: none;
-  }
-
-  .search-icon {
-    display: flex;
-    margin-left: 4rem;
   }
 }
