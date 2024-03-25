@@ -180,7 +180,9 @@ const BiddersComponent = ({
                             title="Start chat"
                             onClick={() => startChat(bid.id)}
                           />
-                          <article>$ {bid.amount}</article>
+                          <article style={{ fontWeight: "bold" }}>
+                            $ {bid.amount}
+                          </article>
                           <button onClick={() => hireFreelancer(bid.id)}>
                             Hire
                           </button>

@@ -64,15 +64,6 @@
   text-align: start;
 }
 
-.sln-table tbody .solution {
-  background-color: red;
-  /* position: relative;
-  max-width: 200px;
-  overflow: "hidden";
-  white-space: "nowrap";
-  text-overflow: "ellipsis"; */
-}
-
 .sln-table tbody .type {
   width: 20%;
 }
@@ -236,6 +227,15 @@ textarea {
   display: none !important;
 }
 
+.help-icon {
+  position: absolute;
+  right: 1%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 1;
+}
+
 /* Desktop */
 @media screen and (min-width: 1200px) {
 }
@@ -245,6 +245,7 @@ textarea {
 }
 
 @media screen and (max-width: 1200px) {
+  .support,
   .chat {
     width: 35% !important;
   }
@@ -285,6 +286,7 @@ textarea {
     padding: 0.5rem;
   }
 
+  .support,
   .chat {
     height: 80% !important;
     bottom: 2% !important;

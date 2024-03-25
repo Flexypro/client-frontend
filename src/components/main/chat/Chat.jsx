@@ -200,7 +200,7 @@ const Chat = ({ orderId, client, freelancer, showChat, setShowChat }) => {
       )}
       <form className="message-reply-box" onSubmit={submitMessage}>
         <textarea
-          rows="1"
+          rows="2"
           id="chat-input"
           required
           type="text"

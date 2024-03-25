@@ -143,7 +143,7 @@ export const OrderProvider = (props) => {
       const category = e.target.category?.value;
       const deadline = new Date(e.target.deadline?.value);
       const instructions = e.target.instructions?.value;
-      const subCategory = e.target.subCategory?.value;
+      const subject = e.target.subCategory?.value;
       const pages = e.target.pages?.value;
       const amount = e.target.amount?.value;
       let milestones = 1;
@@ -166,7 +166,7 @@ export const OrderProvider = (props) => {
         data.append("attachment", attachment);
         data.append("deadline", deadline.toISOString());
         data.append("instructions", instructions);
-        data.append("subCategory", subCategory);
+        data.append("subCategory", subject);
         data.append("milestones", milestones);
         data.append("pages", pages);
         data.append("amount", amount);
@@ -180,7 +180,7 @@ export const OrderProvider = (props) => {
           deadline: deadline.toISOString(),
           instructions,
           amount,
-          subcategory: subCategory,
+          subject: subject,
           milestones: milestones,
           page_count: pages,
         };
@@ -572,6 +572,17 @@ export const OrderProvider = (props) => {
     }
   }, [userToken]);
 
+  const [openHelp, setOpenHelp] = useState(false);
+
+  const help = () => {
+    setOpenHelp(true);
+    console.log("Open help");
+  };
+
+  const closeHelp = () => {
+    setOpenHelp(false);
+  };
+
   return (
     <OrderContext.Provider
       value={{
@@ -586,7 +597,9 @@ export const OrderProvider = (props) => {
         loadingAttachemnt,
         bidders,
         loadingBidders,
-        // getOrder,
+        openHelp,
+        help,
+        closeHelp,
         createOrder,
         updateInstructions,
         completeOrder,

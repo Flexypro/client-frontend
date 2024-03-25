@@ -10,7 +10,7 @@ import PulseLoader from "react-spinners/PulseLoader";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import gigitise from "../../../../public/gigitise.svg";
+import gigitise from "../../../assets/logo/gigitise.svg";
 // import { IoMdEye } from "react-icons/md";
 // import { IoMdEyeOff } from "react-icons/md";
 import { toast } from "react-toastify";

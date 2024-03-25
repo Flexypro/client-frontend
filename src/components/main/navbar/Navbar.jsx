@@ -41,7 +41,7 @@ const Navbar = () => {
 
   const { unreadNotifCount } = useNotificationContext();
 
-  const { orders } = useOrderContext();
+  const { orders, help } = useOrderContext();
 
   const iconSize = 25;
 
@@ -98,7 +98,9 @@ const Navbar = () => {
       </div>
       <div className="profile">
         <div
-          className={`mini-elements ${showMoreElements ? "show-mini-elements" : "hide-mini-elements"}`}
+          className={`mini-elements ${
+            showMoreElements ? "show-mini-elements" : "hide-mini-elements"
+          }`}
           ref={navRef}
         >
           <div onClick={() => handleLogOut()}>
@@ -107,12 +109,12 @@ const Navbar = () => {
               <IoIosLogOut className="desc" size={iconSize} />
             </span>
           </div>
-          <div className="help">
+          {/* <div className="help" onClick={help}>
             <span className="desc">Support</span>
             <span>
-              <MdHelpOutline className="" size={iconSize} />
+              <MdHelpOutline style={{ cursor: "pointer" }} size={iconSize} />
             </span>
-          </div>
+          </div> */}
           <div
             className="notif-bell"
             style={{ cursor: "pointer" }}

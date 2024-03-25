@@ -30,6 +30,8 @@ import StripePayment from "../../payment/StripePayment";
 import { FiAlertOctagon } from "react-icons/fi";
 import { IoIosClose } from "react-icons/io";
 import ViewMore from "../../../../components/main/more/ScrollMore";
+import Support from "../../../../components/main/support/Support";
+import { MdHelpOutline } from "react-icons/md";
 
 const OrderView = () => {
   const ordersUrl = `${import.meta.env.VITE_API_URL}/orders/`;
@@ -53,7 +55,8 @@ const OrderView = () => {
   const {
     loadingAttachemnt,
     updateInstructions,
-    getAllOrders,
+    openHelp,
+    help,
     completeOrder,
     uploadAttachment,
   } = useOrderContext();
@@ -271,6 +274,18 @@ const OrderView = () => {
   // FIXME: Fix order not loading to dashboard
   return (
     <div className="order-view">
+      {!openHelp && (
+        <span className="help-icon">
+          Help
+          <MdHelpOutline
+            style={{ cursor: "pointer" }}
+            size={30}
+            title="Contact support team"
+            onClick={help}
+          />
+        </span>
+      )}
+
       {loading ? (
         <OrderSkeletonLoading />
       ) : (
@@ -283,7 +298,14 @@ const OrderView = () => {
               </strong>
               <div className="order-elements">
                 <article>{orderContent?.category}</article>
-                <strong>{!loading && "$" + orderContent?.amount}</strong>
+                {orderContent?.category === "Writing" ? (
+                  <article>{orderContent?.milestones} Pages</article>
+                ) : (
+                  <article>{orderContent?.milestones} Milestones</article>
+                )}
+                <strong style={{ fontWeight: "bold" }}>
+                  {!loading && "$" + orderContent?.amount}
+                </strong>
                 <article className="status">{orderContent?.status}</article>
                 {orderContent.status == "Available" && (
                   <RiDeleteBin6Line
@@ -600,17 +622,21 @@ const OrderView = () => {
               <Route to="chats" element={<Chat />} />
             </Routes>
             {orderContent.status === "Available" ? (
-              <BiddersComponent
-                orderId={orderId}
-                client={orderContent.client}
-                // bidders={orderContent.bidders}
-                getOrder={getOrder}
-                setShowBidders={setShowBidders}
-                showBidders={showBidders}
-                showChat={showChat}
-                setShowChat={setShowChat}
-              />
-            ) : (
+              !openHelp ? (
+                <BiddersComponent
+                  orderId={orderId}
+                  client={orderContent.client}
+                  // bidders={orderContent.bidders}
+                  getOrder={getOrder}
+                  setShowBidders={setShowBidders}
+                  showBidders={showBidders}
+                  showChat={showChat}
+                  setShowChat={setShowChat}
+                />
+              ) : (
+                <Support />
+              )
+            ) : !openHelp ? (
               <Chat
                 orderId={orderId}
                 client={orderContent.client}
@@ -618,6 +644,9 @@ const OrderView = () => {
                 showChat={showChat}
                 setShowChat={setShowChat}
               />
+            ) : (
+              <Support />
+              // <Support client={orderContent.client} />
             )}
             {/* <Chat orderId={orderId} client={orderContent.client} freelancer={orderContent.freelancer} /> */}
           </>
