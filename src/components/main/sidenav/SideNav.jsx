@@ -20,6 +20,7 @@ const SideNav = () => {
   const [showSideBar, setShowSideBar] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const { ordersAvailable, ordersInProgress } = useOrderContext();
+
   const iconSize = 22;
 
   useEffect(() => {

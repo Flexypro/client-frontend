@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./profile.css";
 import { MdTaskAlt } from "react-icons/md";
 import { MdPendingActions } from "react-icons/md";
@@ -34,7 +34,6 @@ const Profile = () => {
     setEditBio(userProfile?.bio);
     setEditBio(!editBio);
   };
-
   const submitEditedProfile = () => {
     if (userProfile.bio != editedBio) {
       submitNewBio(editedBio, userProfile?.id).then((response) => {

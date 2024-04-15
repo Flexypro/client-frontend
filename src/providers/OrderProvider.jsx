@@ -576,7 +576,6 @@ export const OrderProvider = (props) => {
 
   const help = () => {
     setOpenHelp(true);
-    console.log("Open help");
   };
 
   const closeHelp = () => {

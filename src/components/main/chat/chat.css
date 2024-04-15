@@ -59,14 +59,19 @@
   overflow: hidden;
 }
 
-.messages-box {
-  padding: 1rem;
+.messages-box,
+.messages-box-support {
+  padding: 0.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   position: relative;
   height: 80%;
   overflow-y: auto;
+}
+
+.messages-box-support {
+  padding: 0.1rem;
 }
 
 .empty-inbox {

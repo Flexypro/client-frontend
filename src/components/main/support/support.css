@@ -47,3 +47,7 @@
 .close-support {
   height: 0 !important;
 }
+
+.messages-box-support {
+  height: 100%;
+}

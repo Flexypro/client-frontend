@@ -37,8 +37,6 @@ const Navbar = () => {
   const { loadingUserProfile, loadedUserProfile, handleLogOut } =
     useAuthContext();
 
-  const [userProfile, setUserProfile] = useState(loadedUserProfile);
-
   const { unreadNotifCount } = useNotificationContext();
 
   const { orders, help } = useOrderContext();
@@ -149,16 +147,16 @@ const Navbar = () => {
             className={loadingUserProfile ? "username-skeleton" : ""}
             style={{ width: loadingUserProfile ? "3rem" : "" }}
           >
-            {userProfile?.username}
+            {loadedUserProfile?.username}
           </article>
-          {userProfile?.profile_photo ? (
+          {loadedUserProfile?.profile_photo ? (
             <img
               style={{
                 animation: loadingUserProfile
                   ? `skeleton-loading 1s linear infinite alternate`
                   : "",
               }}
-              src={userProfile?.profile_photo}
+              src={loadedUserProfile?.profile_photo}
               alt="profile cover"
             />
           ) : (
@@ -170,10 +168,10 @@ const Navbar = () => {
               }}
               className="img-placeholder"
             >
-              {userProfile &&
+              {loadedUserProfile &&
                 `${
-                  userProfile?.username?.charAt(0)?.toUpperCase() +
-                  userProfile?.username.slice(1).slice(0, 1)
+                  loadedUserProfile?.username?.charAt(0)?.toUpperCase() +
+                  loadedUserProfile?.username.slice(1).slice(0, 1)
                 }`}
             </article>
           )}

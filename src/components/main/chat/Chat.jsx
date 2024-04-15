@@ -26,8 +26,6 @@ const Chat = ({ orderId, client, freelancer, showChat, setShowChat }) => {
 
   const chatBoxRef = useRef();
 
-  const bidderParam = new URLSearchParams(location.search).get("bid");
-
   useEffect(() => {
     const bidderParam = new URLSearchParams(location.search).get("bid");
     if (bidderParam) {
@@ -130,7 +128,7 @@ const Chat = ({ orderId, client, freelancer, showChat, setShowChat }) => {
 
   useEffect(() => {
     orderId && getChats(orderId);
-  }, [orderId, loadedUserProfile]);
+  }, [orderId]);
 
   return (
     <div

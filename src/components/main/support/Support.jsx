@@ -6,13 +6,21 @@ import { IoSend } from "react-icons/io5";
 import { useLayoutEffect } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 import { useOrderContext } from "../../../providers/OrderProvider";
+import { useChatContext } from "../../../providers/ChatProvider";
+import { useParams } from "react-router-dom";
+import { IoChatbubblesSharp } from "react-icons/io5";
+import { useAuthContext } from "../../../providers/AuthProvider";
 
 const Support = () => {
   const messageRef = useRef();
 
   const { closeHelp, help } = useOrderContext();
+  const { supportChats, getSupportChats, sendSupportChat } = useChatContext();
+  const { loadedUserProfile } = useAuthContext();
 
   const [msg, setMsg] = useState();
+
+  const { orderId } = useParams();
 
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
@@ -40,15 +48,17 @@ const Support = () => {
 
   const submitMessage = (e) => {
     e.preventDefault();
+    console.log(msg);
     if (msg) {
       setShowQuickMessages(false);
-      //   sendChat(msg, orderId, getReceiver()).then(() => {
-      //     setMsg("");
-      //   });
+      sendSupportChat(msg, orderId).then(() => {
+        setMsg("");
+      });
     }
   };
   useEffect(() => {
     setIsMobile(isMobileDevice());
+    getSupportChats(orderId);
   }, []);
 
   useEffect(() => {
@@ -75,7 +85,6 @@ const Support = () => {
     }
   }, []);
 
-  const supportChats = [];
   const [showQuickMessages, setShowQuickMessages] = useState(
     !supportChats?.length
   );
@@ -109,7 +118,7 @@ const Support = () => {
         </div>
       </div>
       <div className="messages-box" id="msg" ref={chatBoxRef}>
-        {showQuickMessages && (
+        {/* {showQuickMessages && (
           <div className="quick">
             <button
               onClick={sendQuickMessage}
@@ -133,19 +142,37 @@ const Support = () => {
               General order enquiries
             </button>
           </div>
+        )} */}
+        {supportChats?.list?.length > 0 && loadedUserProfile ? (
+          <div className="messages-box-support" id="msg" ref={chatBoxRef}>
+            {supportChats.list?.map((msg, index) => {
+              return (
+                <>
+                  <div
+                    key={index}
+                    className={
+                      msg.sender?.username === loadedUserProfile?.username
+                        ? "send-message"
+                        : "received-message"
+                    }
+                  >
+                    <article>{msg.message}</article>
+                    <div className="time">
+                      <small className="sent-at">
+                        {timeFormater(msg.timestamp)}
+                      </small>
+                    </div>
+                  </div>
+                </>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="empty-inbox">
+            <IoChatbubblesSharp color="#fff" size={50} />
+            <article>Start chat</article>
+          </div>
         )}
-        <div className={true !== true ? "send-message" : "received-message"}>
-          <article>This is sample message received</article>
-          <div className="time">
-            <small className="sent-at">12:45AM</small>
-          </div>
-        </div>
-        <div className={true === true ? "send-message" : "received-message"}>
-          <article>This is sample message sent</article>
-          <div className="time">
-            <small className="sent-at">12:55AM</small>
-          </div>
-        </div>
       </div>
       <form className="message-reply-box" onSubmit={submitMessage}>
         <textarea

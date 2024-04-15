@@ -18,8 +18,6 @@ const FreelancerProf = () => {
 
   const [freelancerData, setFreelancerData] = useState();
 
-  console.log(freelancerData);
-
   const headers = {
     "content-Type": "application/json",
     Authorization: `Bearer ${userToken}`,

@@ -8,7 +8,7 @@ import { timeAgo } from "../../../../utils/helpers/TimeAgo";
 import { MdAdd } from "react-icons/md";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useRef } from "react";
 import { VscFile } from "react-icons/vsc";
 import OrderSkeletonLoading from "../../loading/OrderSkeletonLoading";
@@ -36,7 +36,7 @@ import { MdHelpOutline } from "react-icons/md";
 const OrderView = () => {
   const ordersUrl = `${import.meta.env.VITE_API_URL}/orders/`;
 
-  const { userToken, loadedUserProfile } = useAuthContext();
+  const { userToken } = useAuthContext();
 
   const navigate = useNavigate();
 
@@ -69,7 +69,7 @@ const OrderView = () => {
   );
   const { DeleteModal, setShowDeleteModal } = useDeleteModal();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState();
 
   const uploadedAt = timeAgo(orderContent?.solution?.created);
 
@@ -119,7 +119,7 @@ const OrderView = () => {
       }
     });
     setEditInstructions(false);
-    // setOrder(getOrder(orderId));
+    // setOrder(getOrder(orderId));coi
 
     // useCallback(()=>{
     //     setRefresh((prev)=>prev+1);
@@ -189,7 +189,9 @@ const OrderView = () => {
   };
 
   const getOrder = async (orderId) => {
+    console.log("Getting order...");
     try {
+      setLoading(true);
       const getOrderById = await fetch(`${ordersUrl}${orderId}`, {
         method: "get",
         headers: {
@@ -266,9 +268,9 @@ const OrderView = () => {
   };
 
   useEffect(() => {
-    orderId && getOrder(orderId);
+    getOrder(orderId);
     orderId && getSolutionForOrder(1);
-  }, [orderId, userToken]);
+  }, [orderId]);
 
   // FIXME: Order creation price update
   // FIXME: Fix order not loading to dashboard
