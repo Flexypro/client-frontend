@@ -49,7 +49,7 @@ const Profile = () => {
   };
 
   const iconSize = 25;
-
+  console.log(loadedUserProfile);
   return (
     <div className="profile-main">
       <div className="profile-info">

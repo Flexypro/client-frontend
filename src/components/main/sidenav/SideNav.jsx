@@ -15,6 +15,13 @@ import { FaClockRotateLeft } from "react-icons/fa6";
 import { RiArrowRightSLine, RiArrowLeftSLine } from "react-icons/ri";
 import { useOrderContext } from "../../../providers/OrderProvider";
 
+const styleFunc = ({ isActive }) => {
+  return {
+    backgroundColor: isActive ? "#404c5e" : "",
+    color: isActive ? "#fff" : "",
+  };
+};
+
 const SideNav = () => {
   const navigate = useNavigate();
   const [showSideBar, setShowSideBar] = useState(false);
@@ -78,11 +85,7 @@ const SideNav = () => {
                 <span>Dashboard</span>
               </div>
             </NavLink>
-            <NavLink
-              to="./available"
-              className="nav-item"
-              activeClassName="active-link"
-            >
+            <NavLink to="./available" className="nav-item" style={styleFunc}>
               <div>
                 <span>
                   <FaClockRotateLeft size={iconSize} />
@@ -91,11 +94,7 @@ const SideNav = () => {
               </div>
               <span className="count">{ordersAvailable.count}</span>
             </NavLink>
-            <NavLink
-              to="./in-progress"
-              className="nav-item"
-              activeClassName="active-link"
-            >
+            <NavLink to="./in-progress" className="nav-item" style={styleFunc}>
               <div>
                 <span>
                   <MdPendingActions size={iconSize} />
@@ -104,11 +103,7 @@ const SideNav = () => {
               </div>
               <span className="count">{ordersInProgress.count}</span>
             </NavLink>
-            <NavLink
-              to="./completed"
-              className="nav-item"
-              activeClassName="active-link"
-            >
+            <NavLink to="./completed" className="nav-item" style={styleFunc}>
               <div>
                 <span>
                   <MdTaskAlt size={iconSize} />
@@ -116,11 +111,7 @@ const SideNav = () => {
                 <span>Completed</span>
               </div>
             </NavLink>
-            <NavLink
-              to="./solved"
-              className="nav-item"
-              activeClassName="active-link"
-            >
+            <NavLink to="./solved" className="nav-item" style={styleFunc}>
               <div>
                 <span>
                   <MdAccessTime size={iconSize} />
@@ -128,11 +119,7 @@ const SideNav = () => {
                 <span>Solved</span>
               </div>
             </NavLink>
-            <NavLink
-              to="./create-task"
-              className="nav-item"
-              activeClassName="active-link"
-            >
+            <NavLink to="./create-task" className="nav-item" style={styleFunc}>
               <div>
                 <span>
                   <MdAdd size={iconSize} />

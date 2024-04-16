@@ -12,8 +12,22 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   color: #fff;
+  gap: 1rem;
+}
+
+.items-register {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.items-register li {
+  list-style: none;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .register-wrapper {

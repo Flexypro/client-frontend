@@ -32,6 +32,7 @@ import { IoIosClose } from "react-icons/io";
 import ViewMore from "../../../../components/main/more/ScrollMore";
 import Support from "../../../../components/main/support/Support";
 import { MdHelpOutline } from "react-icons/md";
+import { MdContentCopy } from "react-icons/md";
 
 const OrderView = () => {
   const ordersUrl = `${import.meta.env.VITE_API_URL}/orders/`;
@@ -67,7 +68,6 @@ const OrderView = () => {
     orderId,
     setOrderContent
   );
-  const { DeleteModal, setShowDeleteModal } = useDeleteModal();
 
   const [loading, setLoading] = useState();
 
@@ -189,7 +189,6 @@ const OrderView = () => {
   };
 
   const getOrder = async (orderId) => {
-    console.log("Getting order...");
     try {
       setLoading(true);
       const getOrderById = await fetch(`${ordersUrl}${orderId}`, {
@@ -298,12 +297,38 @@ const OrderView = () => {
               <strong style={{ fontWeight: "bold" }}>
                 {orderContent?.title}
               </strong>
+              <article
+                style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+              >
+                Order ID{" "}
+                <span
+                  style={{
+                    fontSize: "1.4rem",
+                    cursor: "pointer",
+                    display: "flex",
+                    gap: "0.25rem",
+                  }}
+                >
+                  {orderContent.unique_code}
+                  <span>
+                    <MdContentCopy
+                      size={15}
+                      onClick={() => {
+                        toast.success("Copied to clipboard!");
+                        navigator.clipboard.writeText(orderContent.unique_code);
+                      }}
+                      title="Click to copy"
+                    />
+                  </span>
+                </span>
+              </article>
+
               <div className="order-elements">
-                <article>{orderContent?.category}</article>
+                <li>{orderContent?.category}</li>
                 {orderContent?.category === "Writing" ? (
-                  <article>{orderContent?.milestones} Pages</article>
+                  <li>{orderContent?.milestones} Pages</li>
                 ) : (
-                  <article>{orderContent?.milestones} Milestones</article>
+                  <li>{orderContent?.milestones} Milestones</li>
                 )}
                 <strong style={{ fontWeight: "bold" }}>
                   {!loading && "$" + orderContent?.amount}

@@ -9,6 +9,8 @@ import { IoEyeOff } from "react-icons/io5";
 import { MdOutlineMail } from "react-icons/md";
 import { useAuthContext } from "../../../providers/AuthProvider";
 import PulseLoader from "react-spinners/PulseLoader";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+
 // import
 const Register = () => {
   const iconSize = 30;
@@ -29,11 +31,56 @@ const Register = () => {
   return (
     <div className="register">
       <div className="register-info">
-        <h1>Register with us</h1>
-        <img
-          // src="https://img.freepik.com/free-vector/studying-concept-illustration_114360-1301.jpg?w=740&t=st=1699562478~exp=1699563078~hmac=f7e370e5ddf75e11e9d7d411932c595f3642961775fad204b6be5a17ed4f9dbe"
-          alt=""
-        />
+        <h1
+          style={{
+            fontSize: "3rem",
+            fontWeight: "bold",
+          }}
+        >
+          Let's get you started!
+        </h1>
+        <h1 style={{ fontSize: "1.5rem" }}>
+          Create your Gigitise account and get access to,
+        </h1>
+        <div className="items-register">
+          <li>
+            {" "}
+            <span>
+              <IoMdCheckmarkCircleOutline size={30} />
+            </span>{" "}
+            Unlimited pool of freelancers and writers
+          </li>
+          <li>
+            {" "}
+            <span>
+              <IoMdCheckmarkCircleOutline size={30} />
+            </span>{" "}
+            Original zero plagiarism work
+          </li>
+          <li>
+            {" "}
+            <span>
+              <IoMdCheckmarkCircleOutline size={30} />
+            </span>{" "}
+            Unlock new talents from our global experts
+          </li>
+          <li>
+            {" "}
+            <span>
+              <IoMdCheckmarkCircleOutline size={30} />
+            </span>{" "}
+            Access 50+ different gig categories handles by our professional
+            freelancers, both technical and non-technical
+          </li>
+          <li>
+            {" "}
+            <span>
+              <IoMdCheckmarkCircleOutline size={30} />
+            </span>{" "}
+            Access our archive of different tasks completed by our verified
+            freelancers
+          </li>
+        </div>
       </div>
       <div className="register-wrapper">
         <div className="register-box">

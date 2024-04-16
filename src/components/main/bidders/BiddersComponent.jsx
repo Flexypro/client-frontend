@@ -66,7 +66,9 @@ const BiddersComponent = ({
   };
 
   useEffect(() => {
-    orderId && getBiddersForOrder(1, orderId);
+    if (bidders.list === null && orderId) {
+      getBiddersForOrder(1, orderId);
+    }
   }, [orderId]);
 
   useEffect(() => {

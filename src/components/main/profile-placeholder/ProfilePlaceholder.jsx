@@ -1,5 +1,6 @@
 import { MdModeEditOutline } from "react-icons/md";
 import { useRef } from "react";
+import { toast } from "react-toastify";
 
 const ProfilePlaceholder = ({
   uploadProfilePhoto,
@@ -10,7 +11,6 @@ const ProfilePlaceholder = ({
   const fileInputRef = useRef(null);
 
   const openFileDialog = () => {
-    console.log("Open");
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
@@ -18,7 +18,6 @@ const ProfilePlaceholder = ({
 
   const updateProfilePhoto = (e) => {
     const profilePhoto = e.target.files[0];
-    console.log("Submitted");
 
     if (profilePhoto) {
       if (profilePhoto.size <= 5 * 1024 * 1024) {
@@ -32,10 +31,10 @@ const ProfilePlaceholder = ({
           setUserProfile(updateProfile);
         });
       } else {
-        console.log("Select lower resolution image");
+        toast.warn("Select lower resolution image");
       }
     } else {
-      console.log("Select correct img format");
+      toast.warn("Select correct img format");
     }
   };
 

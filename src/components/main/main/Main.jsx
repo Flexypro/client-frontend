@@ -18,7 +18,7 @@ import { Route, Routes } from "react-router-dom";
 import Dashboard from "../../../pages/main/dashboard/Dashboard";
 import { useAuthContext } from "../../../providers/AuthProvider";
 export default function Main() {
-  const { loadedUserProfile } = useAuthContext();
+  const { loadedUserProfile, userToken } = useAuthContext();
 
   return (
     <>
